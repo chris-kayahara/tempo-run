@@ -1,25 +1,43 @@
-import { useState } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import LoginPage from './pages/LoginPage/LoginPage'
+import LoginPage from "./pages/LoginPage/LoginPage";
+import HomePage from "./pages/HomePage/HomePage";
+import CreatePage from "./pages/CreatePage/CreatePage";
 
-import './App.scss'
+import "./App.scss";
 
 function App() {
-
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(
-    !!sessionStorage.getItem("token")
+  const [token, setToken] = useState<string>("");
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState<boolean>(
+    !!localStorage.getItem("token")
   );
 
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<LoginPage/>}/>
+          <Route
+            path="/"
+            element={
+              !isUserLoggedIn ? (
+                <LoginPage
+                  setToken={setToken}
+                  setIsUserLoggedIn={setIsUserLoggedIn}
+                />
+              ) : (
+                <HomePage
+                  setToken={setToken}
+                  setIsUserLoggedIn={setIsUserLoggedIn}
+                />
+              )
+            }
+          />
+          <Route path="/create" element={<CreatePage />}></Route>
         </Routes>
       </BrowserRouter>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
