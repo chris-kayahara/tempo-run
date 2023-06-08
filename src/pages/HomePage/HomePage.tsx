@@ -1,6 +1,11 @@
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 export default function HomePage({ setToken, setIsUserLoggedIn }) {
+  const [userSavedTracks, setUserSavedTracks] = useState();
+
+  useEffect(() => {}, []);
+
   const navigate = useNavigate();
 
   const handleLogout = () => {
