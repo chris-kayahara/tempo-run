@@ -1,6 +1,7 @@
 import { useState } from "react";
 import DualRange from "../../components/DualRange/DualRange";
 import Slider from "@mui/material/Slider";
+import Box from "@mui/material/Box";
 
 export default function CreatePage() {
   const [tempoRange, setTempoRange] = useState<number | number[]>([40, 50, 60]);
@@ -54,7 +55,7 @@ export default function CreatePage() {
   console.log(tempoRange);
 
   return (
-    <div>
+    <Box>
       <h1>Select pace range</h1>
       {/* <DualRange /> */}
       <Slider
@@ -68,6 +69,6 @@ export default function CreatePage() {
         onChange={handleTempoRangeChange}
       />
       <h1>Select Genres</h1>
-    </div>
+    </Box>
   );
 }
