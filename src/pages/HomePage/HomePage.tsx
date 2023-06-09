@@ -1,12 +1,42 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import axios from "axios";
 
-export default function HomePage({ setToken, setIsUserLoggedIn }) {
-  const [userSavedTracks, setUserSavedTracks] = useState();
+export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
+  const [accessToken, setAccessToken] = useState("");
+  const [userSavedTracks, setUserSavedTracks] = useState([]);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      setAccessToken(localStorage.getItem("token"));
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   console.log(token);
+  //   handleGetSavedTracks();
+  // }, []);
 
   const navigate = useNavigate();
+
+  const handleGetSavedTracks = () => {
+    axios
+      .get("https://api.spotify.com/v1/me/tracks", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          limit: 50,
+          offset: 0,
+        },
+      })
+      .then((response) => {
+        setUserSavedTracks(response.data.items);
+      })
+      .catch((error) => {
+        console.log(error.response.data.error);
+      });
+  };
 
   const handleLogout = () => {
     setToken("");
@@ -15,6 +45,7 @@ export default function HomePage({ setToken, setIsUserLoggedIn }) {
     localStorage.removeItem("tokenType");
     setIsUserLoggedIn(false);
   };
+  console.log(userSavedTracks);
 
   return (
     <div>
@@ -24,9 +55,13 @@ export default function HomePage({ setToken, setIsUserLoggedIn }) {
         and your songs BPM
       </p>
       <button onClick={handleLogout}>Logout</button>
+      <button onClick={handleGetSavedTracks}>Load Your Saved Tracks</button>
       <button onClick={() => navigate("/create")}>
         Create New Running Playlist
       </button>
+      {userSavedTracks.map((item) => {
+        return <p key={item.track.id}>{item.track.name}</p>;
+      })}
     </div>
   );
 }
