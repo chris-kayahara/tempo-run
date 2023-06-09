@@ -27,6 +27,7 @@ function App() {
                 />
               ) : (
                 <HomePage
+                  token={token}
                   setToken={setToken}
                   setIsUserLoggedIn={setIsUserLoggedIn}
                 />
