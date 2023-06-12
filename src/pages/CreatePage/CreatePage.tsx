@@ -4,46 +4,45 @@ import Slider from "@mui/material/Slider";
 import Box from "@mui/material/Box";
 
 export default function CreatePage() {
-  const [tempoRange, setTempoRange] = useState<number | number[]>([40, 50, 60]);
-
-  const marks = [
-    {
-      value: 0,
-      label: "60 BPM",
-    },
-    {
-      value: 100,
-      label: "200 BPM",
-    },
-  ];
+  const [tempoRange, setTempoRange] = useState<number[]>([40, 50, 60]);
 
   const minDistance = 10;
 
   const handleTempoRangeChange = (
     event: Event,
-    newTempoRange: number | number[],
+    value: number | number[],
     activeThumb: number
   ) => {
+    if (!Array.isArray(value)) {
+      return;
+    }
+
     switch (activeThumb) {
       case 0:
         setTempoRange([
-          Math.min(newTempoRange[0], tempoRange[2] - minDistance),
-          (tempoRange[2] - newTempoRange[0]) / 2 + newTempoRange[0],
+          Math.min(value[0], tempoRange[2] - minDistance),
+          Math.min(
+            (tempoRange[2] - value[0]) / 2 + value[0],
+            tempoRange[2] - minDistance / 2
+          ),
           tempoRange[2],
         ]);
         break;
       case 1:
         setTempoRange([
-          newTempoRange[1] - (tempoRange[2] - tempoRange[0]) / 2,
-          newTempoRange[1],
-          (tempoRange[2] - tempoRange[0]) / 2 + newTempoRange[1],
+          value[1] - (tempoRange[2] - tempoRange[0]) / 2,
+          value[1],
+          (tempoRange[2] - tempoRange[0]) / 2 + value[1],
         ]);
         break;
       case 2:
         setTempoRange([
           tempoRange[0],
-          (newTempoRange[2] - tempoRange[0]) / 2 + tempoRange[0],
-          Math.max(newTempoRange[2], tempoRange[0] + minDistance),
+          Math.max(
+            (value[2] - tempoRange[0]) / 2 + tempoRange[0],
+            tempoRange[0] + minDistance / 2
+          ),
+          Math.max(value[2], tempoRange[0] + minDistance),
         ]);
         break;
     }
@@ -63,7 +62,6 @@ export default function CreatePage() {
         aria-labelledby="track-range-slider"
         getAriaValueText={valuetext}
         value={tempoRange}
-        marks={marks}
         disableSwap
         valueLabelDisplay="auto"
         onChange={handleTempoRangeChange}
