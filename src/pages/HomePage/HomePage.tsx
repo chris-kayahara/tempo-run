@@ -123,14 +123,15 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
 
     // Merge data from API calls
     let mergedTrackData = [];
-    for (let i = 0; i < tracks.length; i++) {
+    for (let i = 0; i < trackAudioData.length; i++) {
       mergedTrackData.push({
-        ...tracks[i].track,
-        ...trackAudioData.find(
-          (itmInner) => itmInner.id === tracks[i].track.id
+        ...trackAudioData[i],
+        ...tracks.find(
+          (itmInner) => itmInner.track.id === trackAudioData[i].id
         ),
       });
     }
+    console.log(tracks);
     console.log(mergedTrackData);
     return mergedTrackData;
   };
@@ -166,8 +167,8 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
         <div className="user-tracks__title-column">
           {userSavedTracks.map((item) => {
             return (
-              <div className="user-tracks__title" key={item.id}>
-                {item.name}
+              <div className="user-tracks__title" key={item.track.id}>
+                {item.track.name}
               </div>
             );
           })}
