@@ -1,0 +1,14 @@
+.user-tracks {
+  &__container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__title {
+    height: 1.5rem;
+  }
+
+  &__tempo {
+    height: 1.5rem;
+  }
+}
