@@ -1,0 +1,160 @@
+.tracklist {
+  width: 100%;
+  padding: 1rem;
+
+  &__heading-container {
+    width: 100%;
+    padding: 1rem 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 1px lightgrey solid;
+  }
+
+  &__heading {
+    width: 20rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &-title {
+      @extend .tracklist__heading;
+      width: 20rem;
+    }
+    &-artist {
+      @extend .tracklist__heading;
+    }
+    &-album {
+      @extend .tracklist__heading;
+    }
+    &-length {
+      @extend .tracklist__heading;
+      width: 3rem;
+      min-width: 2.75rem;
+      &-icon {
+        @extend .tracklist__heading-length;
+        height: 2rem;
+      }
+    }
+    &-energy {
+      @extend .tracklist__heading;
+      width: 3rem;
+      min-width: 2.75rem;
+      &-icon {
+        @extend .tracklist__heading-energy;
+        height: 2rem;
+      }
+    }
+    &-bpm {
+      @extend .tracklist__heading;
+      width: 2rem;
+      min-width: 2rem;
+      text-align: end;
+      &-icon {
+        @extend .tracklist__heading-bpm;
+        height: 2rem;
+      }
+    }
+  }
+
+  &__row {
+    width: 100%;
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    height: 3.25rem;
+    border-bottom: 1px lightgrey solid;
+
+    &:hover {
+      background-color: rgb(245, 245, 245);
+    }
+  }
+
+  &__title-artist-container {
+    display: flex;
+    flex-direction: column;
+    width: 20rem;
+  }
+
+  &__data {
+    width: 20rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &-title {
+      @extend .tracklist__data;
+      font-weight: bold;
+      margin-bottom: 0.125rem;
+    }
+    &-artist {
+      @extend .tracklist__data;
+      font-size: 14px;
+    }
+    &-album {
+      @extend .tracklist__data;
+      font-size: 14px;
+    }
+    &-length {
+      @extend .tracklist__data;
+      width: 3rem;
+      min-width: 2.75rem;
+      text-align: center;
+    }
+    &-energy {
+      @extend .tracklist__data;
+      width: 3rem;
+      min-width: 2.75rem;
+      text-align: center;
+    }
+    &-bpm {
+      @extend .tracklist__data;
+      width: 2rem;
+      min-width: 2rem;
+      text-align: end;
+    }
+  }
+
+  &__pagination {
+    gap: 2rem;
+    margin: 1rem auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+    height: 2rem;
+  }
+
+  &__pagination-item {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__pagination-link {
+    cursor: pointer;
+
+    &--active {
+      width: 2rem;
+      height: 100%;
+      text-align: center;
+      font-weight: bold;
+      border: 1px black solid;
+      border-radius: 4px;
+    }
+  }
+
+  &__pagination-prev-next {
+  }
+
+  &__pagination-prev-next-link {
+    &--disabled {
+      color: lightgrey;
+    }
+  }
+}
