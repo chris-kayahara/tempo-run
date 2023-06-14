@@ -1,48 +1,64 @@
 import { useState } from "react";
-
-import "./DualRange.scss";
+import Slider from "@mui/material/Slider";
 
 export default function DualRange() {
-  const [minPace, setMinPace] = useState(0);
-  const [maxPace, setMaxPace] = useState(100);
-  const [midPace, setMidPace] = useState(100);
+  const [tempoRange, setTempoRange] = useState<number[]>([40, 50, 60]);
 
-  const handleMinChange = (event) => {
-    setMinPace(event.target.value);
+  const minDistance = 10;
+
+  const handleTempoRangeChange = (
+    event: Event,
+    value: number | number[],
+    activeThumb: number
+  ) => {
+    if (!Array.isArray(value)) {
+      return;
+    }
+
+    switch (activeThumb) {
+      case 0:
+        setTempoRange([
+          Math.min(value[0], tempoRange[2] - minDistance),
+          Math.min(
+            (tempoRange[2] - value[0]) / 2 + value[0],
+            tempoRange[2] - minDistance / 2
+          ),
+          tempoRange[2],
+        ]);
+        break;
+      case 1:
+        setTempoRange([
+          value[1] - (tempoRange[2] - tempoRange[0]) / 2,
+          value[1],
+          (tempoRange[2] - tempoRange[0]) / 2 + value[1],
+        ]);
+        break;
+      case 2:
+        setTempoRange([
+          tempoRange[0],
+          Math.max(
+            (value[2] - tempoRange[0]) / 2 + tempoRange[0],
+            tempoRange[0] + minDistance / 2
+          ),
+          Math.max(value[2], tempoRange[0] + minDistance),
+        ]);
+        break;
+    }
   };
 
-  const handleMaxChange = (event) => {
-    setMaxPace(event.target.value);
-  };
+  function valuetext(value: number) {
+    return `${value} BPM`;
+  }
 
   return (
-    <div className="dual-range">
-      <div className="dual-range__track"></div>
-      <div className="dual-range__range"></div>
-      <input
-        className="dual-range__slider-lower"
-        type="range"
-        min="1"
-        max="50"
-        value={minPace}
-        onChange={handleMinChange}
-      ></input>
-      <input
-        className="dual-range__slider-upper"
-        type="range"
-        min="50"
-        max="100"
-        value={maxPace}
-        onChange={handleMaxChange}
-      ></input>
-      <input
-        className="dual-range__slider-center"
-        type="range"
-        min="50"
-        max="100"
-      ></input>
-      <p>{minPace}</p>
-      <p>{maxPace}</p>
-    </div>
+    <Slider
+      style={{ width: "20rem" }}
+      aria-labelledby="track-range-slider"
+      getAriaValueText={valuetext}
+      value={tempoRange}
+      disableSwap
+      valueLabelDisplay="auto"
+      onChange={handleTempoRangeChange}
+    />
   );
 }

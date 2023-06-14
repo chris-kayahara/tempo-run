@@ -4,11 +4,14 @@ import axios from "axios";
 
 import "./HomePage.scss";
 
+import DualRange from "../../components/DualRange/DualRange";
+import Tracklist from "../../components/Tracklist/Tracklist";
+
 const AUDIO_FEATURES_ENDPOINT = "https://api.spotify.com/v1/audio-features";
 const TRACKS_ENDPOINT = "https://api.spotify.com/v1/me/tracks";
 
 export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
-  const [accessToken, setAccessToken] = useState("");
+  const [accessToken, setAccessToken] = useState<string>("");
   const [userSavedTracks, setUserSavedTracks] = useState([]);
   const [audioFeatures, setAudioFeatures] = useState([]);
   const navigate = useNavigate();
@@ -131,7 +134,6 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
         ),
       });
     }
-    console.log(tracks);
     console.log(mergedTrackData);
     return mergedTrackData;
   };
@@ -152,37 +154,18 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
   };
 
   return (
-    <div>
+    <>
       <h1>DJ Run</h1>
       <p>
         App that lets you create running playlists based on your specified pace
         and your songs BPM
       </p>
       <button onClick={handleLogout}>Logout</button>
-      <button onClick={getAllSavedTracks}>Load Your Saved Tracks</button>
       <button onClick={() => navigate("/create")}>
         Create New Running Playlist
       </button>
-      <div className="user-tracks__container">
-        <div className="user-tracks__title-column">
-          {userSavedTracks.map((item) => {
-            return (
-              <div className="user-tracks__title" key={item.track.id}>
-                {item.track.name}
-              </div>
-            );
-          })}
-        </div>
-        <div className="user-tracks__tempo-column">
-          {userSavedTracks.map((item) => {
-            return (
-              <div className="user-tracks__tempo" key={item.id}>
-                {!item.tempo ? "Not Available" : item.tempo}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </div>
+      <DualRange />
+      <Tracklist userSavedTracks={userSavedTracks} />
+    </>
   );
 }
