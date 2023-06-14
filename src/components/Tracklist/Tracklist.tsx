@@ -96,6 +96,7 @@ export default function Tracklist({ userSavedTracks }) {
         nextLinkClassName="tracklist__pagination-prev-next-link"
         disabledClassName="tracklist__pagination-prev-next--disabled"
         disabledLinkClassName="tracklist__pagination-prev-next-link--disabled"
+        breakLinkClassName="tracklist__pagination-break-link"
       />
     </div>
   );

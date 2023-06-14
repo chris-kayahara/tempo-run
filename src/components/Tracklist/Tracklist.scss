@@ -153,8 +153,13 @@
   }
 
   &__pagination-prev-next-link {
+    cursor: pointer;
     &--disabled {
       color: lightgrey;
     }
+  }
+
+  &__pagination-break-link {
+    cursor: pointer;
   }
 }
