@@ -2,15 +2,7 @@ import { useState } from "react";
 
 import "./DualSlider.scss";
 
-export default function DualSlider({
-  defaultMin,
-  defaultMid,
-  defaultMax,
-  min,
-  max,
-}) {
-  const [range, setRange] = useState([defaultMin, defaultMid, defaultMax]);
-
+export default function DualSlider({ min, max, range, setRange }) {
   const minDistance = 10;
 
   const handleRangeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
