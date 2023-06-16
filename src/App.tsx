@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import LoginPage from "./pages/LoginPage/LoginPage";
 import HomePage from "./pages/HomePage/HomePage";
-import CreatePage from "./components/DualRange/DualRange.tsx";
 
 import "./App.scss";
 
@@ -34,7 +33,6 @@ function App() {
               )
             }
           />
-          <Route path="/create" element={<CreatePage />}></Route>
         </Routes>
       </BrowserRouter>
     </>
