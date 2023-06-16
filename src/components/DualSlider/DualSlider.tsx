@@ -7,10 +7,11 @@ export default function DualSlider() {
 
   const minDistance = 10;
 
-  const handleRangeChange = (event) => {
-    const value = parseInt(event.target.value);
+  const handleRangeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(event.currentTarget.value);
+    const thumbIndex = event.currentTarget.id;
 
-    switch (event.target.id) {
+    switch (thumbIndex) {
       case "min":
         setRange([
           Math.min(value, range[2] - minDistance),
@@ -43,8 +44,6 @@ export default function DualSlider() {
 
   return (
     <div className="dual-range">
-      {/* <div className="dual-range__track"></div>
-      <div className="dual-range__range"></div> */}
       <div className="dual-range__input-container">
         <input
           className="dual-range__slider-lower"
