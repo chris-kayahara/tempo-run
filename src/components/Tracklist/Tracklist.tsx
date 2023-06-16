@@ -5,16 +5,16 @@ import durationIcon from "../../assets/duration.svg";
 import energyIcon from "../../assets/energy.svg";
 import tempoIcon from "../../assets/tempo.svg";
 
-export default function Tracklist({ userSavedTracks }) {
+export default function Tracklist({ tracksToDisplay }) {
   const [trackOffset, setTrackOffset] = useState(0);
   const [tracksPerPage, setTracksPerPage] = useState(10);
 
   const endOffset = trackOffset + tracksPerPage;
-  const currentPage = userSavedTracks.slice(trackOffset, endOffset);
-  const pageCount = Math.ceil(userSavedTracks.length / tracksPerPage);
+  const currentPage = tracksToDisplay.slice(trackOffset, endOffset);
+  const pageCount = Math.ceil(tracksToDisplay.length / tracksPerPage);
 
   const handlePageClick = (event) => {
-    const newOffset = (event.selected * tracksPerPage) % userSavedTracks.length;
+    const newOffset = (event.selected * tracksPerPage) % tracksToDisplay.length;
     setTrackOffset(newOffset);
   };
 
