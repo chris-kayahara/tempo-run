@@ -4,7 +4,7 @@ import axios from "axios";
 
 import "./HomePage.scss";
 
-import DualRange from "../../components/DualRange/DualRange";
+import DualSlider from "../../components/DualSlider/DualSlider";
 import Tracklist from "../../components/Tracklist/Tracklist";
 
 const AUDIO_FEATURES_ENDPOINT = "https://api.spotify.com/v1/audio-features";
@@ -164,7 +164,7 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
       <button onClick={() => navigate("/create")}>
         Create New Running Playlist
       </button>
-      <DualRange />
+      <DualSlider />
       <Tracklist userSavedTracks={userSavedTracks} />
     </>
   );
