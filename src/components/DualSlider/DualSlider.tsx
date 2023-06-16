@@ -2,8 +2,14 @@ import { useState } from "react";
 
 import "./DualSlider.scss";
 
-export default function DualSlider() {
-  const [range, setRange] = useState([25, 50, 75]);
+export default function DualSlider({
+  defaultMin,
+  defaultMid,
+  defaultMax,
+  min,
+  max,
+}) {
+  const [range, setRange] = useState([defaultMin, defaultMid, defaultMax]);
 
   const minDistance = 10;
 
@@ -39,8 +45,8 @@ export default function DualSlider() {
     }
   };
 
-  const minPos = ((range[0] - 0) / (100 - 0)) * 100;
-  const maxPos = ((range[2] - 0) / (100 - 0)) * 100;
+  const minPos = ((range[0] - min) / (max - min)) * 100;
+  const maxPos = ((range[2] - min) / (max - min)) * 100;
 
   return (
     <div className="dual-range">
@@ -48,8 +54,8 @@ export default function DualSlider() {
         <input
           className="dual-range__slider-lower"
           type="range"
-          min="0"
-          max="100"
+          min={min}
+          max={max}
           id="min"
           value={range[0]}
           onInput={handleRangeChange}
@@ -58,8 +64,8 @@ export default function DualSlider() {
         <input
           className="dual-range__slider-center"
           type="range"
-          min="0"
-          max="100"
+          min={min}
+          max={max}
           id="mid"
           value={range[1]}
           onInput={handleRangeChange}
@@ -68,8 +74,8 @@ export default function DualSlider() {
         <input
           className="dual-range__slider-upper"
           type="range"
-          min="0"
-          max="100"
+          min={min}
+          max={max}
           id="max"
           value={range[2]}
           onInput={handleRangeChange}
@@ -81,6 +87,10 @@ export default function DualSlider() {
           className="dual-range__inner-rail"
           style={{ left: `${minPos}%`, right: `${100 - maxPos}%` }}
         />
+      </div>
+      <div className="dual-range__min-max-container">
+        <div>{Math.round(min)}</div>
+        <div>{Math.round(max)}</div>
       </div>
     </div>
   );

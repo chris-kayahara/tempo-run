@@ -13,7 +13,11 @@ const TRACKS_ENDPOINT = "https://api.spotify.com/v1/me/tracks";
 export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
   const [accessToken, setAccessToken] = useState<string>("");
   const [userSavedTracks, setUserSavedTracks] = useState([]);
-  const [audioFeatures, setAudioFeatures] = useState([]);
+  const [minTempo, setMinTempo] = useState(60);
+  const [maxTempo, setMaxTempo] = useState(200);
+  const [minEnergy, setMinEnergy] = useState(40);
+  const [maxEnergy, setMaxEnergy] = useState(90);
+
   const navigate = useNavigate();
 
   // Store access token as state variable if it exists
@@ -25,7 +29,7 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
 
   useEffect(() => {
     if (accessToken) {
-      getAllData();
+      setAllData();
     }
   }, [accessToken]);
 
@@ -134,14 +138,53 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
         ),
       });
     }
-    console.log(mergedTrackData);
     return mergedTrackData;
   };
 
   // FUnction to gather all API data and set state
-  const getAllData = async () => {
+  const setAllData = async () => {
     const trackData = await getAllSavedTracks();
+    const minTempoValue = Math.min.apply(
+      null,
+      trackData.map((item) => {
+        if (item.tempo !== 0) {
+          return item.tempo;
+        } else {
+          return 300;
+        }
+      })
+    );
+    const maxTempoValue = Math.max.apply(
+      null,
+      trackData.map((item) => {
+        return item.tempo;
+      })
+    );
+    const minEnergyValue = Math.min.apply(
+      null,
+      trackData.map((item) => {
+        if (item.energy !== 0) {
+          return item.energy;
+        } else {
+          return 300;
+        }
+      })
+    );
+    const maxEnergyValue = Math.max.apply(
+      null,
+      trackData.map((item) => {
+        return item.energy;
+      })
+    );
+    setMinTempo(minTempoValue);
+    setMaxTempo(maxTempoValue);
+    setMinEnergy(minEnergyValue * 100);
+    setMaxEnergy(maxEnergyValue * 100);
     setUserSavedTracks(trackData);
+  };
+
+  const handleFilter = (event) => {
+    event.preventDefault();
   };
 
   // Function to handle logout
@@ -161,10 +204,24 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
         and your songs BPM
       </p>
       <button onClick={handleLogout}>Logout</button>
-      <button onClick={() => navigate("/create")}>
-        Create New Running Playlist
-      </button>
-      <DualSlider />
+
+      <h3>Tempo Selector</h3>
+      <DualSlider
+        min={minTempo}
+        max={maxTempo}
+        defaultMin={90}
+        defaultMid={100}
+        defaultMax={110}
+      />
+      <h3>Energy Selector</h3>
+      <DualSlider
+        min={minEnergy}
+        max={maxEnergy}
+        defaultMin={40}
+        defaultMid={65}
+        defaultMax={90}
+      />
+      <button onClick={handleFilter}>Filter</button>
       <Tracklist userSavedTracks={userSavedTracks} />
     </>
   );
