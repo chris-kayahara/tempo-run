@@ -18,12 +18,12 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .dual-range {
-  width: 100%;
+  max-width: 20rem;
   height: 20px;
   display: flex;
   flex-direction: row;
   position: relative;
-  background-color: lightgrey;
+  background-color: rgba(0, 0, 0, 0);
 
   &__slider {
     background-color: rgba(0, 0, 0, 0);
@@ -56,22 +56,32 @@ input[type="range"]::-moz-range-thumb {
     &-center {
       @extend .dual-range__slider;
       &::-webkit-slider-thumb {
+        outline-offset: -1px;
+        outline: 1px solid black;
         background: white;
       }
       &::-moz-range-thumb {
+        outline-offset: -1px;
+        outline: 1px solid black;
         background: white;
       }
     }
   }
 
-  &__track {
+  &__rail {
     position: absolute;
     width: 100%;
-    height: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 6px;
+    border-radius: 3px;
+    background: lightgrey;
+  }
 
-    &__range {
-      position: absolute;
-      z-index: 2;
-    }
+  &__inner-rail {
+    position: absolute;
+    height: 100%;
+    background: hotpink;
+    opacity: 0.5;
   }
 }
