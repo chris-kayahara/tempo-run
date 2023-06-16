@@ -13,6 +13,9 @@ const TRACKS_ENDPOINT = "https://api.spotify.com/v1/me/tracks";
 export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
   const [accessToken, setAccessToken] = useState<string>("");
   const [userSavedTracks, setUserSavedTracks] = useState([]);
+  const [tracksToDisplay, setTracksToDisplay] = useState([]);
+  const [tempoRange, setTempoRange] = useState([90, 100, 110]);
+  const [energyRange, setEnergyRange] = useState([40, 65, 90]);
   const [minTempo, setMinTempo] = useState(60);
   const [maxTempo, setMaxTempo] = useState(200);
   const [minEnergy, setMinEnergy] = useState(40);
@@ -181,10 +184,20 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
     setMinEnergy(minEnergyValue * 100);
     setMaxEnergy(maxEnergyValue * 100);
     setUserSavedTracks(trackData);
+    setTracksToDisplay(trackData);
   };
 
   const handleFilter = (event) => {
     event.preventDefault();
+    const filteredTracks = userSavedTracks.filter((track) => {
+      return (
+        track.tempo >= tempoRange[0] &&
+        track.tempo <= tempoRange[2] &&
+        track.energy * 100 >= energyRange[0] &&
+        track.energy * 100 <= energyRange[2]
+      );
+    });
+    setTracksToDisplay(filteredTracks);
   };
 
   // Function to handle logout
@@ -209,20 +222,18 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
       <DualSlider
         min={minTempo}
         max={maxTempo}
-        defaultMin={90}
-        defaultMid={100}
-        defaultMax={110}
+        range={tempoRange}
+        setRange={setTempoRange}
       />
       <h3>Energy Selector</h3>
       <DualSlider
         min={minEnergy}
         max={maxEnergy}
-        defaultMin={40}
-        defaultMid={65}
-        defaultMax={90}
+        range={energyRange}
+        setRange={setEnergyRange}
       />
       <button onClick={handleFilter}>Filter</button>
-      <Tracklist userSavedTracks={userSavedTracks} />
+      <Tracklist tracksToDisplay={tracksToDisplay} />
     </>
   );
 }
