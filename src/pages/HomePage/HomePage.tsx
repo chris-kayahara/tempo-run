@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -9,19 +8,24 @@ import Tracklist from "../../components/Tracklist/Tracklist";
 
 const AUDIO_FEATURES_ENDPOINT = "https://api.spotify.com/v1/audio-features";
 const TRACKS_ENDPOINT = "https://api.spotify.com/v1/me/tracks";
+const USER_ID_ENDPOINT = "https://api.spotify.com/v1/me";
 
 export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
   const [accessToken, setAccessToken] = useState<string>("");
+  // const [userId, setUserId] = useState("");
   const [userSavedTracks, setUserSavedTracks] = useState([]);
   const [tracksToDisplay, setTracksToDisplay] = useState([]);
   const [tempoRange, setTempoRange] = useState([90, 100, 110]);
-  const [energyRange, setEnergyRange] = useState([40, 65, 90]);
+  const [energyRange, setEnergyRange] = useState([79, 89, 99]);
   const [minTempo, setMinTempo] = useState(60);
   const [maxTempo, setMaxTempo] = useState(200);
   const [minEnergy, setMinEnergy] = useState(40);
   const [maxEnergy, setMaxEnergy] = useState(90);
-
-  const navigate = useNavigate();
+  const [playlistInfo, setPlaylistInfo] = useState({
+    name: "",
+    description: "",
+    public: false,
+  });
 
   // Store access token as state variable if it exists
   useEffect(() => {
@@ -185,6 +189,7 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
     setMaxEnergy(maxEnergyValue * 100);
     setUserSavedTracks(trackData);
     setTracksToDisplay(trackData);
+    console.log(trackData);
   };
 
   const handleFilter = (event) => {
@@ -198,6 +203,73 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
       );
     });
     setTracksToDisplay(filteredTracks);
+  };
+
+  const getUserId = async () => {
+    const userId = await axios
+      .get(USER_ID_ENDPOINT, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((response) => {
+        console.log(response.data.id);
+        return response.data.id;
+      })
+      .catch((error) => {
+        console.log(error.response.data.error);
+      });
+    return userId;
+  };
+
+  const handlePlaylistInfoChange = (event) => {
+    const value = event.target.value;
+    setPlaylistInfo({
+      ...playlistInfo,
+      [event.target.name]: value,
+    });
+    console.log(playlistInfo);
+  };
+
+  const handlePostPlaylist = async (event) => {
+    event.preventDefault();
+    const userId = await getUserId();
+    axios
+      .post(
+        `https://api.spotify.com/v1/users/${userId}/playlists`,
+        playlistInfo,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        const playlistId = response.data.id;
+        const trackIds = tracksToDisplay.map((track) => {
+          return track.uri;
+        });
+        axios
+          .post(
+            `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+            {
+              uris: trackIds,
+              position: 0,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
+            }
+          )
+          .then((response) => {
+            console.log(response);
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   // Function to handle logout
@@ -233,6 +305,41 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
         setRange={setEnergyRange}
       />
       <button onClick={handleFilter}>Filter</button>
+      <button onClick={handlePostPlaylist}>Create Playlist</button>
+      <form>
+        <label htmlFor="name">
+          Name
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={playlistInfo.name}
+            onChange={handlePlaylistInfoChange}
+          ></input>
+        </label>
+        <label htmlFor="description">
+          Description
+          <textarea
+            id="description"
+            name="description"
+            value={playlistInfo.description}
+            onChange={handlePlaylistInfoChange}
+          ></textarea>
+        </label>
+        <label htmlFor="public">
+          Public or private
+          <input
+            type="checkbox"
+            id="public"
+            name="public"
+            value={playlistInfo.public}
+            onChange={handlePlaylistInfoChange}
+          ></input>
+        </label>
+        <button type="submit" onClick={handlePostPlaylist}>
+          POST PLAYLIST TO SPOTIFY ACCOUNT
+        </button>
+      </form>
       <Tracklist tracksToDisplay={tracksToDisplay} />
     </>
   );
