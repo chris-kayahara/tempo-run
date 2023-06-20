@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
+import "./LoginPage.scss";
+import Button from "../../components/Button/Button";
 
 export default function LoginPage({ setToken, setIsUserLoggedIn }) {
+  const appName = "Spotify Running App";
   const CLIENT_ID = "a1974ecfcb7548a58a92b5b459147cdd";
   const REDIRECT_URI = "http://localhost:5173";
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
@@ -49,8 +52,17 @@ export default function LoginPage({ setToken, setIsUserLoggedIn }) {
   }, []);
 
   return (
-    <div>
-      <button onClick={handleLogin}>Login to Spotify</button>
+    <div className="login-page">
+      <h1 className="login-page__title">{appName}</h1>
+      <p className="login-page__text">
+        Welcome to the {appName}! The app that lets you create playlist for
+        running from your saved Spotify tracks, based on their tempo and energy
+        rating, so that you can run to the beat of your music.
+      </p>
+      <p className="login-page__text">
+        Get started by signing into your spotify account!
+      </p>
+      <Button onClick={handleLogin} text="LOGIN"></Button>
     </div>
   );
 }
