@@ -1,0 +1,11 @@
+@use "../../styles/partials/variables" as *;
+
+.button {
+  background-color: $spotify-green;
+  color: black;
+  outline: none;
+  border: none;
+  height: 2.5rem;
+  border-radius: 1.25rem;
+  font-weight: 600;
+}

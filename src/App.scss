@@ -8,6 +8,7 @@
 
 body {
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  background-color: #2b2d42;
 }
 
 button {
@@ -16,5 +17,10 @@ button {
 
 #root {
   max-width: 60rem;
+  height: 100vh;
   margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
 }
