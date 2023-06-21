@@ -1,38 +1,76 @@
-export default function CreatePlaylistModal() {
+import "./CreatePlaylistModal.scss";
+import Button from "../Button/Button";
+import closeIcon from "../../assets/close.svg";
+
+export default function CreatePlaylistModal({
+  playlistInfo,
+  handlePlaylistInfoChange,
+  closeModal,
+}) {
   return (
-    <form>
-      <label htmlFor="name">
-        Name
+    <div className="create-playlist-modal">
+      <form className="create-playlist-modal__form">
+        <h2 className="create-playlist-modal__heading">Create Playlist</h2>
+        <img
+          className="create-playlist-modal__close"
+          src={closeIcon}
+          onClick={closeModal}
+        ></img>
+        <h3 className="create-playlist-modal__label">Name</h3>
         <input
+          className="create-playlist-modal__input-name"
           type="text"
           id="name"
           name="name"
+          placeholder="Enter Playlist Name"
           value={playlistInfo.name}
           onChange={handlePlaylistInfoChange}
         ></input>
-      </label>
-      <label htmlFor="description">
-        Description
+        <h3 className="create-playlist-modal__label">Description</h3>
         <textarea
+          className="create-playlist-modal__input-description"
           id="description"
           name="description"
+          placeholder="Enter Playlist Description"
           value={playlistInfo.description}
           onChange={handlePlaylistInfoChange}
         ></textarea>
-      </label>
-      <label htmlFor="public">
-        Public or private
-        <input
-          type="checkbox"
-          id="public"
-          name="public"
-          value={playlistInfo.public}
-          onChange={handlePlaylistInfoChange}
-        ></input>
-      </label>
-      <button type="submit" onClick={handlePostPlaylist}>
-        POST PLAYLIST TO SPOTIFY ACCOUNT
-      </button>
-    </form>
+        <h3 className="create-playlist-modal__label">Visibility</h3>
+        <div className="create-playlist-modal__public-container">
+          <div className="create-playlist-modal__radio-container">
+            <input
+              className="create-playlist-modal__radio"
+              type="radio"
+              name="public"
+              id="private"
+              value="private"
+            />
+            <label
+              className="create-playlist-modal__label-radio"
+              htmlFor="private"
+            >
+              Private
+            </label>
+          </div>
+
+          <div className="create-playlist-modal__radio-container">
+            <input
+              className="create-playlist-modal__radio"
+              type="radio"
+              name="public"
+              id="public"
+              value="public"
+            />
+            <label
+              className="create-playlist-modal__label-radio"
+              htmlFor="public"
+            >
+              Public
+            </label>
+          </div>
+        </div>
+        <Button variant="primary" text="CREATE" />
+      </form>
+    </div>
   );
 }

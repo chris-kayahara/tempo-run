@@ -9,6 +9,7 @@
   border-radius: 1.25rem;
   font-weight: 600;
   width: 100%;
+  cursor: pointer;
 
   &-primary {
     @extend .button;
