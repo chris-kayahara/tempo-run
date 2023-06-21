@@ -1,0 +1,32 @@
+@use "../../styles/partials/variables" as *;
+
+.button {
+  letter-spacing: 2px;
+  font-size: 14px;
+  outline: none;
+  border: none;
+  height: 2.5rem;
+  border-radius: 1.25rem;
+  font-weight: 600;
+  width: 100%;
+
+  &-primary {
+    @extend .button;
+    color: black;
+    background-color: $spotify-green;
+
+    &-small {
+      @extend .button-primary;
+      color: $spotify-green;
+      background-color: $black;
+      border: $spotify-green solid 1px;
+      width: 5rem;
+    }
+  }
+  &-secondary {
+    @extend .button;
+    color: $spotify-green;
+    border: $spotify-green solid 1px;
+    background-color: $white;
+  }
+}
