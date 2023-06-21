@@ -7,12 +7,14 @@ import DualSlider from "../../components/DualSlider/DualSlider";
 import Tracklist from "../../components/Tracklist/Tracklist";
 import Header from "../../components/Header/Header";
 import Button from "../../components/Button/Button";
+import CreatePlaylistModal from "../../components/CreatePlaylistModal/CreatePlaylistModal";
 
 const AUDIO_FEATURES_ENDPOINT = "https://api.spotify.com/v1/audio-features";
 const TRACKS_ENDPOINT = "https://api.spotify.com/v1/me/tracks";
 const USER_ID_ENDPOINT = "https://api.spotify.com/v1/me";
 
 export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
+  const [showModal, setShowModal] = useState(true);
   const [accessToken, setAccessToken] = useState<string>("");
   const [userSavedTracks, setUserSavedTracks] = useState([]);
   const [tracksToDisplay, setTracksToDisplay] = useState([]);
@@ -235,6 +237,15 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
     console.log(playlistInfo);
   };
 
+  const closeModal = () => {
+    setPlaylistInfo({
+      name: "",
+      description: "",
+      public: false,
+    });
+    setShowModal(false);
+  };
+
   // Function to POST new filtered playlist
   const handlePostPlaylist = async (event) => {
     event.preventDefault();
@@ -304,19 +315,28 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
           />
           <div className="home-page__button-container">
             <Button
-              text={"Filter"}
+              text={"FILTER"}
               onClick={handleFilter}
               variant={"secondary"}
             />
             <Button
-              text={"Create Playlist"}
-              onClick={handlePostPlaylist}
+              text={"CREATE PLAYLIST"}
+              onClick={() => {
+                setShowModal(true);
+              }}
               variant={"primary"}
             />
           </div>
         </div>
         <Tracklist tracksToDisplay={tracksToDisplay} />
       </div>
+      {showModal && (
+        <CreatePlaylistModal
+          closeModal={closeModal}
+          playlistInfo={playlistInfo}
+          handlePlaylistInfoChange={handlePlaylistInfoChange}
+        />
+      )}
     </>
   );
 }
