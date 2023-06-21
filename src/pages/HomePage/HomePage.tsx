@@ -5,6 +5,8 @@ import "./HomePage.scss";
 
 import DualSlider from "../../components/DualSlider/DualSlider";
 import Tracklist from "../../components/Tracklist/Tracklist";
+import Header from "../../components/Header/Header";
+import Button from "../../components/Button/Button";
 
 const AUDIO_FEATURES_ENDPOINT = "https://api.spotify.com/v1/audio-features";
 const TRACKS_ENDPOINT = "https://api.spotify.com/v1/me/tracks";
@@ -12,7 +14,6 @@ const USER_ID_ENDPOINT = "https://api.spotify.com/v1/me";
 
 export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
   const [accessToken, setAccessToken] = useState<string>("");
-  // const [userId, setUserId] = useState("");
   const [userSavedTracks, setUserSavedTracks] = useState([]);
   const [tracksToDisplay, setTracksToDisplay] = useState([]);
   const [tempoRange, setTempoRange] = useState([90, 100, 110]);
@@ -192,6 +193,7 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
     console.log(trackData);
   };
 
+  // Function to handle filter button click. Filter songs by selected BPM and energy range
   const handleFilter = (event) => {
     event.preventDefault();
     const filteredTracks = userSavedTracks.filter((track) => {
@@ -205,6 +207,7 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
     setTracksToDisplay(filteredTracks);
   };
 
+  // Function to get userId
   const getUserId = async () => {
     const userId = await axios
       .get(USER_ID_ENDPOINT, {
@@ -222,6 +225,7 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
     return userId;
   };
 
+  // Function to handle Playlist creating info form changes
   const handlePlaylistInfoChange = (event) => {
     const value = event.target.value;
     setPlaylistInfo({
@@ -231,6 +235,7 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
     console.log(playlistInfo);
   };
 
+  // Function to POST new filtered playlist
   const handlePostPlaylist = async (event) => {
     event.preventDefault();
     const userId = await getUserId();
@@ -272,75 +277,46 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
       });
   };
 
-  // Function to handle logout
-  const handleLogout = () => {
-    setToken("");
-    localStorage.removeItem("token");
-    localStorage.removeItem("expiresIn");
-    localStorage.removeItem("tokenType");
-    setIsUserLoggedIn(false);
-  };
-
   return (
     <>
-      <h1>DJ Run</h1>
-      <p>
-        App that lets you create running playlists based on your specified pace
-        and your songs BPM
-      </p>
-      <button onClick={handleLogout}>Logout</button>
-
-      <h3>Tempo Selector</h3>
-      <DualSlider
-        min={minTempo}
-        max={maxTempo}
-        range={tempoRange}
-        setRange={setTempoRange}
-      />
-      <h3>Energy Selector</h3>
-      <DualSlider
-        min={minEnergy}
-        max={maxEnergy}
-        range={energyRange}
-        setRange={setEnergyRange}
-      />
-      <button onClick={handleFilter}>Filter</button>
-      <button onClick={handlePostPlaylist}>Create Playlist</button>
-      <form>
-        <label htmlFor="name">
-          Name
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={playlistInfo.name}
-            onChange={handlePlaylistInfoChange}
-          ></input>
-        </label>
-        <label htmlFor="description">
-          Description
-          <textarea
-            id="description"
-            name="description"
-            value={playlistInfo.description}
-            onChange={handlePlaylistInfoChange}
-          ></textarea>
-        </label>
-        <label htmlFor="public">
-          Public or private
-          <input
-            type="checkbox"
-            id="public"
-            name="public"
-            value={playlistInfo.public}
-            onChange={handlePlaylistInfoChange}
-          ></input>
-        </label>
-        <button type="submit" onClick={handlePostPlaylist}>
-          POST PLAYLIST TO SPOTIFY ACCOUNT
-        </button>
-      </form>
-      <Tracklist tracksToDisplay={tracksToDisplay} />
+      <Header setToken={setToken} setIsUserLoggedIn={setIsUserLoggedIn} />
+      <div className="home-page">
+        <div className="home-page__info-container">
+          <p className="home-page__text">
+            App that lets you create running playlists based on your specified
+            pace and your songs BPM
+          </p>
+        </div>
+        <div className="home-page__filter-container">
+          <h3 className="home-page__filter-header">Tempo Selector</h3>
+          <DualSlider
+            min={minTempo}
+            max={maxTempo}
+            range={tempoRange}
+            setRange={setTempoRange}
+          />
+          <h3 className="home-page__filter-header">Energy Selector</h3>
+          <DualSlider
+            min={minEnergy}
+            max={maxEnergy}
+            range={energyRange}
+            setRange={setEnergyRange}
+          />
+          <div className="home-page__button-container">
+            <Button
+              text={"Filter"}
+              onClick={handleFilter}
+              variant={"secondary"}
+            />
+            <Button
+              text={"Create Playlist"}
+              onClick={handlePostPlaylist}
+              variant={"primary"}
+            />
+          </div>
+        </div>
+        <Tracklist tracksToDisplay={tracksToDisplay} />
+      </div>
     </>
   );
 }
