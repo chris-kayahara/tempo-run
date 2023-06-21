@@ -3,6 +3,7 @@ import ReactPaginate from "react-paginate";
 import "./Tracklist.scss";
 import durationIcon from "../../assets/duration.svg";
 import energyIcon from "../../assets/energy.svg";
+import energyFilledIcon from "../../assets/energy-filled.svg";
 import tempoIcon from "../../assets/tempo.svg";
 
 export default function Tracklist({ tracksToDisplay }) {
@@ -31,58 +32,92 @@ export default function Tracklist({ tracksToDisplay }) {
       <div className="tracklist__heading-container">
         <h4 className="tracklist__heading-title">Title</h4>
         <h4 className="tracklist__heading-album">Album</h4>
-        <img
-          className="tracklist__heading-length-icon"
-          src={durationIcon}
-          alt="Duration"
-        />
-        <img
-          className="tracklist__heading-energy-icon"
-          src={energyIcon}
-          alt="Duration"
-        />
-        <img
-          className="tracklist__heading-bpm-icon"
-          src={tempoIcon}
-          alt="Duration"
-        />
-        {/* <h4 className="tracklist__heading-length">Length</h4>
-        <h4 className="tracklist__heading-energy">Energy</h4>
-        <h4 className="tracklist__heading-bpm">BPM</h4> */}
+        <div className="tracklist__heading-icon-container">
+          <img
+            className="tracklist__heading-length-icon"
+            src={durationIcon}
+            alt="length"
+          />
+          <img
+            className="tracklist__heading-bpm-icon"
+            src={tempoIcon}
+            alt="tempo"
+          />
+          <img
+            className="tracklist__heading-energy-icon"
+            src={energyIcon}
+            alt="duration"
+          />
+        </div>
       </div>
       <div className="tracklist__list">
         {currentPage.map((track) => {
           let artists = track.track.artists.map((artist) => artist.name);
           return (
             <div className="tracklist__row" key={track.track.id}>
-              <div className="tracklist__title-artist-container">
-                <div className="tracklist__data-title">{track.track.name}</div>
-                <div className="tracklist__data-artist">
-                  {artists.join(", ")}
+              <div className="tracklist__info-container">
+                <div className="tracklist__title-artist-container">
+                  <div className="tracklist__data-title">
+                    {track.track.name}
+                  </div>
+                  <div className="tracklist__data-artist">
+                    {artists.join(", ")}
+                  </div>
+                </div>
+                <div className="tracklist__data-album">
+                  {track.track.album.name}
                 </div>
               </div>
-              <div className="tracklist__data-album">
-                {track.track.album.name}
-              </div>
-              <div className="tracklist__data-length">
-                {msToTime(track.track.duration_ms)}
-              </div>
-              <div className="tracklist__data-energy">
-                {!track.energy ? "N/A" : track.energy.toFixed(3)}
-              </div>
-              <div className="tracklist__data-bpm">
-                {!track.tempo ? "N/A" : Math.round(track.tempo)}
+              <div className="tracklist__data-container">
+                <div className="tracklist__data-length">
+                  {msToTime(track.track.duration_ms)}
+                </div>
+                <div className="tracklist__data-bpm">
+                  {!track.tempo ? "N/A" : Math.round(track.tempo) + " bpm"}
+                </div>
+                <div className="tracklist__data-energy">
+                  {/* {!track.energy
+                    ? "N/A"
+                    : Math.round(track.energy.toFixed(1) * 5)} */}
+                  {[...Array(Math.round(track.energy.toFixed(1) * 5))].map(
+                    (e, i) => {
+                      return (
+                        <img
+                          className="tracklist__data-energy-icon"
+                          src={energyFilledIcon}
+                          key={i}
+                        ></img>
+                      );
+                    }
+                  )}
+                  {/* {5 - Math.round(track.energy.toFixed(1) * 5) ? (
+                    [...Array(5 - Math.round(track.energy.toFixed(1) * 5))].map(
+                      (e, i) => {
+                        return (
+                          <img
+                            className="tracklist__data-energy-icon"
+                            src={energyIcon}
+                            key={i}
+                          ></img>
+                        );
+                      }
+                    )
+                  ) : (
+                    <div></div>
+                  )} */}
+                  {/* {} */}
+                </div>
               </div>
             </div>
           );
         })}
       </div>
       <ReactPaginate
-        breakLabel="..."
+        breakLabel=""
         nextLabel=">"
         onPageChange={handlePageClick}
-        pageRangeDisplayed={3}
-        marginPagesDisplayed={3}
+        pageRangeDisplayed={0}
+        marginPagesDisplayed={0}
         pageCount={pageCount}
         previousLabel="<"
         renderOnZeroPageCount={null}

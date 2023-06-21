@@ -10,6 +10,7 @@ export default function LoginPage({ setToken, setIsUserLoggedIn }) {
   const SCOPES = [
     "user-library-read",
     "playlist-modify-private",
+    "playlist-modify-public",
     "playlist-read-private",
   ];
   const SPACE_DELIMITER = "%20";
@@ -62,7 +63,8 @@ export default function LoginPage({ setToken, setIsUserLoggedIn }) {
       <p className="login-page__text">
         Get started by signing into your spotify account!
       </p>
-      <Button onClick={handleLogin} text="LOGIN"></Button>
+      <Button onClick={handleLogin} text="LOGIN" variant={"primary"}></Button>
+      <a href="https://www.spotify.com/signup">OR REGISTER HERE!</a>
     </div>
   );
 }
