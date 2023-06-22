@@ -183,8 +183,8 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
       return (
         track.tempo >= tempoRange[0] &&
         track.tempo <= tempoRange[1] &&
-        track.energy * 5 >= energyRange[0] &&
-        track.energy * 5 <= energyRange[1]
+        Math.ceil(track.energy * 5) >= energyRange[0] + 1 &&
+        Math.ceil(track.energy * 5) <= energyRange[1]
       );
     });
     setTracksToDisplay(filteredTracks);

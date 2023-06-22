@@ -76,36 +76,17 @@ export default function Tracklist({ tracksToDisplay }) {
                   {!track.tempo ? "N/A" : Math.round(track.tempo) + " bpm"}
                 </div>
                 <div className="tracklist__data-energy">
-                  {/* {!track.energy
+                  {!track.energy
                     ? "N/A"
-                    : Math.round(track.energy.toFixed(1) * 5)} */}
-                  {[...Array(Math.round(track.energy.toFixed(1) * 5))].map(
-                    (e, i) => {
-                      return (
-                        <img
-                          className="tracklist__data-energy-icon"
-                          src={energyFilledIcon}
-                          key={i}
-                        ></img>
-                      );
-                    }
-                  )}
-                  {/* {5 - Math.round(track.energy.toFixed(1) * 5) ? (
-                    [...Array(5 - Math.round(track.energy.toFixed(1) * 5))].map(
-                      (e, i) => {
+                    : [...Array(Math.ceil(track.energy * 5))].map((e, i) => {
                         return (
                           <img
                             className="tracklist__data-energy-icon"
-                            src={energyIcon}
+                            src={energyFilledIcon}
                             key={i}
                           ></img>
                         );
-                      }
-                    )
-                  ) : (
-                    <div></div>
-                  )} */}
-                  {/* {} */}
+                      })}
                 </div>
               </div>
             </div>
@@ -113,11 +94,11 @@ export default function Tracklist({ tracksToDisplay }) {
         })}
       </div>
       <ReactPaginate
-        breakLabel=""
+        breakLabel="..."
         nextLabel=">"
         onPageChange={handlePageClick}
-        pageRangeDisplayed={0}
-        marginPagesDisplayed={0}
+        pageRangeDisplayed={3}
+        marginPagesDisplayed={3}
         pageCount={pageCount}
         previousLabel="<"
         renderOnZeroPageCount={null}
