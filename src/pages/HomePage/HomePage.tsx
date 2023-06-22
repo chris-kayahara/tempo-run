@@ -8,22 +8,21 @@ import Tracklist from "../../components/Tracklist/Tracklist";
 import Header from "../../components/Header/Header";
 import Button from "../../components/Button/Button";
 import CreatePlaylistModal from "../../components/CreatePlaylistModal/CreatePlaylistModal";
+import SliderMarks from "../../components/SliderMarks/SliderMarks";
 
 const AUDIO_FEATURES_ENDPOINT = "https://api.spotify.com/v1/audio-features";
 const TRACKS_ENDPOINT = "https://api.spotify.com/v1/me/tracks";
 const USER_ID_ENDPOINT = "https://api.spotify.com/v1/me";
 
 export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const [accessToken, setAccessToken] = useState<string>("");
   const [userSavedTracks, setUserSavedTracks] = useState([]);
   const [tracksToDisplay, setTracksToDisplay] = useState([]);
-  const [tempoRange, setTempoRange] = useState([90, 100, 110]);
-  const [energyRange, setEnergyRange] = useState([79, 89, 99]);
+  const [tempoRange, setTempoRange] = useState([70, 90]);
+  const [energyRange, setEnergyRange] = useState([4, 5]);
   const [minTempo, setMinTempo] = useState(60);
   const [maxTempo, setMaxTempo] = useState(200);
-  const [minEnergy, setMinEnergy] = useState(40);
-  const [maxEnergy, setMaxEnergy] = useState(90);
   const [playlistInfo, setPlaylistInfo] = useState({
     name: "",
     description: "",
@@ -170,26 +169,8 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
         return item.tempo;
       })
     );
-    const minEnergyValue = Math.min.apply(
-      null,
-      trackData.map((item) => {
-        if (item.energy !== 0) {
-          return item.energy;
-        } else {
-          return 300;
-        }
-      })
-    );
-    const maxEnergyValue = Math.max.apply(
-      null,
-      trackData.map((item) => {
-        return item.energy;
-      })
-    );
     setMinTempo(minTempoValue);
     setMaxTempo(maxTempoValue);
-    setMinEnergy(minEnergyValue * 100);
-    setMaxEnergy(maxEnergyValue * 100);
     setUserSavedTracks(trackData);
     setTracksToDisplay(trackData);
     console.log(trackData);
@@ -201,9 +182,9 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
     const filteredTracks = userSavedTracks.filter((track) => {
       return (
         track.tempo >= tempoRange[0] &&
-        track.tempo <= tempoRange[2] &&
-        track.energy * 100 >= energyRange[0] &&
-        track.energy * 100 <= energyRange[2]
+        track.tempo <= tempoRange[1] &&
+        track.energy * 5 >= energyRange[0] &&
+        track.energy * 5 <= energyRange[1]
       );
     });
     setTracksToDisplay(filteredTracks);
@@ -292,40 +273,53 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
     <>
       <Header setToken={setToken} setIsUserLoggedIn={setIsUserLoggedIn} />
       <div className="home-page">
-        <div className="home-page__info-container">
-          <p className="home-page__text">
-            App that lets you create running playlists based on your specified
-            pace and your songs BPM
-          </p>
-        </div>
-        <div className="home-page__filter-container">
-          <h3 className="home-page__filter-header">Tempo Selector</h3>
-          <DualSlider
-            min={minTempo}
-            max={maxTempo}
-            range={tempoRange}
-            setRange={setTempoRange}
-          />
-          <h3 className="home-page__filter-header">Energy Selector</h3>
-          <DualSlider
-            min={minEnergy}
-            max={maxEnergy}
-            range={energyRange}
-            setRange={setEnergyRange}
-          />
-          <div className="home-page__button-container">
-            <Button
-              text={"FILTER"}
-              onClick={handleFilter}
-              variant={"secondary"}
-            />
-            <Button
-              text={"CREATE PLAYLIST"}
-              onClick={() => {
-                setShowModal(true);
-              }}
-              variant={"primary"}
-            />
+        <div className="home-page__hero-container">
+          <div className="home-page__info-container">
+            <p className="home-page__text">
+              App that lets you create running playlists based on your specified
+              pace and your songs BPM
+            </p>
+          </div>
+          <div className="home-page__filter-container">
+            <div className="home-page__slider-container">
+              <div>
+                <h3 className="home-page__filter-header">Tempo Selector</h3>
+                <DualSlider
+                  min={minTempo}
+                  max={maxTempo}
+                  range={tempoRange}
+                  minDistance={10}
+                  setRange={setTempoRange}
+                  showMarks={true}
+                />
+              </div>
+              <div>
+                <h3 className="home-page__filter-header">Energy Selector</h3>
+                <DualSlider
+                  min={0}
+                  max={5}
+                  range={energyRange}
+                  minDistance={1}
+                  setRange={setEnergyRange}
+                  showMarks={false}
+                />
+                <SliderMarks />
+              </div>
+            </div>
+            <div className="home-page__button-container">
+              <Button
+                text={"FILTER"}
+                onClick={handleFilter}
+                variant={"secondary"}
+              />
+              <Button
+                text={"CREATE PLAYLIST"}
+                onClick={() => {
+                  setShowModal(true);
+                }}
+                variant={"primary"}
+              />
+            </div>
           </div>
         </div>
         <Tracklist tracksToDisplay={tracksToDisplay} />
