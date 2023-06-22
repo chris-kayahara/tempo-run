@@ -1,0 +1,23 @@
+@use "../../styles/partials/variables" as *;
+
+.slider-marks {
+  margin-top: -1rem;
+  position: relative;
+  width: calc(100% - 17px);
+  margin: 0 auto;
+  margin-top: -0.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  &__tick {
+    position: relative;
+    width: 2px;
+    height: 0.75rem;
+    background-color: #d3d3d3;
+  }
+
+  &__number {
+    margin-top: 0.75rem;
+  }
+}
