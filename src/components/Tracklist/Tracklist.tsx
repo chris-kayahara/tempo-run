@@ -97,8 +97,8 @@ export default function Tracklist({ tracksToDisplay }) {
         breakLabel="..."
         nextLabel=">"
         onPageChange={handlePageClick}
-        pageRangeDisplayed={3}
-        marginPagesDisplayed={3}
+        pageRangeDisplayed={1}
+        marginPagesDisplayed={1}
         pageCount={pageCount}
         previousLabel="<"
         renderOnZeroPageCount={null}
