@@ -1,23 +1,32 @@
 @use "../../styles/partials/variables" as *;
 
 .slider-marks {
-  margin-top: -1rem;
-  position: relative;
   width: calc(100% - 17px);
-  margin: 0 auto;
-  margin-top: -0.5rem;
+  margin: 1.5rem auto 2rem auto;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 
   &__tick {
-    position: relative;
     width: 2px;
     height: 0.75rem;
     background-color: #d3d3d3;
   }
 
   &__number {
-    margin-top: 0.75rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    transition: all 0.2s ease-in-out;
+
+    &--selected {
+      @extend .slider-marks__number;
+      background-color: $spotify-green-light;
+      transition: all 0.2s ease-in-out;
+    }
   }
 }
