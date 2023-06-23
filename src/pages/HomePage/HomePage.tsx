@@ -19,7 +19,7 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
   const [accessToken, setAccessToken] = useState<string>("");
   const [userSavedTracks, setUserSavedTracks] = useState([]);
   const [tracksToDisplay, setTracksToDisplay] = useState([]);
-  const [tempoRange, setTempoRange] = useState([70, 90]);
+  const [tempoRange, setTempoRange] = useState([170, 180]);
   const [energyRange, setEnergyRange] = useState([4, 5]);
   const [minTempo, setMinTempo] = useState(60);
   const [maxTempo, setMaxTempo] = useState(200);
@@ -157,7 +157,7 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
       null,
       trackData.map((item) => {
         if (item.tempo !== 0) {
-          return item.tempo;
+          return Math.round(item.tempo);
         } else {
           return 300;
         }
@@ -166,7 +166,7 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
     const maxTempoValue = Math.max.apply(
       null,
       trackData.map((item) => {
-        return item.tempo;
+        return Math.round(item.tempo);
       })
     );
     setMinTempo(minTempoValue);
@@ -181,8 +181,8 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
     event.preventDefault();
     const filteredTracks = userSavedTracks.filter((track) => {
       return (
-        track.tempo >= tempoRange[0] &&
-        track.tempo <= tempoRange[1] &&
+        Math.round(track.tempo) >= tempoRange[0] &&
+        Math.round(track.tempo) <= tempoRange[1] &&
         Math.ceil(track.energy * 5) >= energyRange[0] + 1 &&
         Math.ceil(track.energy * 5) <= energyRange[1]
       );
@@ -291,6 +291,7 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
                   minDistance={10}
                   setRange={setTempoRange}
                   showMarks={true}
+                  showThumbLabel={true}
                 />
               </div>
               <div>
@@ -302,6 +303,7 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
                   minDistance={1}
                   setRange={setEnergyRange}
                   showMarks={false}
+                  showThumbLabel={false}
                 />
                 <SliderMarks />
               </div>

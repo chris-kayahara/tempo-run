@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import "./DualSlider.scss";
 
 export default function DualSlider({
@@ -9,6 +7,7 @@ export default function DualSlider({
   setRange,
   minDistance,
   showMarks,
+  showThumbLabel,
 }) {
   const handleRangeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(event.currentTarget.value);
@@ -40,6 +39,21 @@ export default function DualSlider({
           onInput={handleRangeChange}
           onChange={handleRangeChange}
         ></input>
+        {showThumbLabel && (
+          <label
+            className="dual-range__input-range-label-lower"
+            htmlFor="min"
+            style={{
+              left: `max(calc(${minPos}% + (${8 - minPos * 0.15}px)), 2rem)`,
+            }}
+          >
+            <div className="dual-range__input-range-label-box">
+              <span className="dual-range__input-range-label-value">
+                {range[0]}
+              </span>
+            </div>
+          </label>
+        )}
         <input
           className="dual-range__input-range-upper"
           type="range"
@@ -50,6 +64,23 @@ export default function DualSlider({
           onInput={handleRangeChange}
           onChange={handleRangeChange}
         ></input>
+        {showThumbLabel && (
+          <label
+            className="dual-range__input-range-label-upper"
+            htmlFor="max"
+            style={{
+              left: `min(calc(${maxPos}% + (${
+                8 - maxPos * 0.15
+              }px)), calc(100% - 2rem))`,
+            }}
+          >
+            <div className="dual-range__input-range-label-box">
+              <span className="dual-range__input-range-label-value">
+                {range[1]}
+              </span>
+            </div>
+          </label>
+        )}
       </div>
       <div className="dual-range__rail">
         <div
