@@ -1,3 +1,4 @@
+import SliderMarks from "../SliderMarks/SliderMarks";
 import "./DualSlider.scss";
 
 export default function DualSlider({
@@ -8,6 +9,7 @@ export default function DualSlider({
   minDistance,
   showMarks,
   showThumbLabel,
+  showOffsetSliderMarks,
 }) {
   const handleRangeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(event.currentTarget.value);
@@ -44,7 +46,7 @@ export default function DualSlider({
             className="dual-range__input-range-label-lower"
             htmlFor="min"
             style={{
-              left: `max(calc(${minPos}% + (${8 - minPos * 0.15}px)), 2rem)`,
+              left: `max(calc(${minPos}% + (${8 - minPos * 0.15}px)), 1.5rem)`,
             }}
           >
             <div className="dual-range__input-range-label-box">
@@ -71,7 +73,7 @@ export default function DualSlider({
             style={{
               left: `min(calc(${maxPos}% + (${
                 8 - maxPos * 0.15
-              }px)), calc(100% - 2rem))`,
+              }px)), calc(100% - 1.5rem))`,
             }}
           >
             <div className="dual-range__input-range-label-box">
@@ -94,6 +96,7 @@ export default function DualSlider({
           <div>{Math.round(max)}</div>
         </div>
       )}
+      {showOffsetSliderMarks && <SliderMarks range={range} />}
     </div>
   );
 }
