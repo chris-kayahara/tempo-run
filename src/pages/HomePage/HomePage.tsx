@@ -292,6 +292,7 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
                   setRange={setTempoRange}
                   showMarks={true}
                   showThumbLabel={true}
+                  showOffsetSliderMarks={false}
                 />
               </div>
               <div>
@@ -304,8 +305,8 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
                   setRange={setEnergyRange}
                   showMarks={false}
                   showThumbLabel={false}
+                  showOffsetSliderMarks={true}
                 />
-                <SliderMarks />
               </div>
             </div>
             <div className="home-page__button-container">
