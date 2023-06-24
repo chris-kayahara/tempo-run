@@ -13,6 +13,8 @@ export default function CreatePlaylistModal({
   tracksToDisplay,
   playlistInfo,
   setPlaylistInfo,
+  toast,
+  setToast,
 }) {
   // Function to get userId
   const getUserId = async () => {
@@ -23,7 +25,6 @@ export default function CreatePlaylistModal({
         },
       })
       .then((response) => {
-        console.log(response.data.id);
         return response.data.id;
       })
       .catch((error) => {
@@ -51,6 +52,7 @@ export default function CreatePlaylistModal({
   // Function to POST new filtered playlist
   const handlePostPlaylist = async (event) => {
     event.preventDefault();
+
     const userId = await getUserId();
     axios
       .post(
@@ -81,11 +83,40 @@ export default function CreatePlaylistModal({
             }
           )
           .then((response) => {
+            setToast({
+              show: true,
+              message: "Playlist successfully added to your Spotify Account!",
+              type: "success",
+            });
+            setTimeout(() => {
+              setToast({ ...toast, show: false });
+            }, 2900);
+            closeModal();
+          })
+          .catch((error) => {
+            console.log(error);
+            setToast({
+              show: true,
+              message: "Error adding tracks to playlist. Try logging back in.",
+              type: "error",
+            });
+            setTimeout(() => {
+              setToast({ ...toast, show: false });
+            }, 2900);
             closeModal();
           });
       })
       .catch((error) => {
         console.log(error);
+        setToast({
+          show: true,
+          message: "Error creating playlist. Try logging back in.",
+          type: "error",
+        });
+        setTimeout(() => {
+          setToast({ ...toast, show: false });
+        }, 2900);
+        closeModal();
       });
   };
 
