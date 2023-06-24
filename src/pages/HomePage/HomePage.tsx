@@ -12,7 +12,6 @@ import SliderMarks from "../../components/SliderMarks/SliderMarks";
 
 const AUDIO_FEATURES_ENDPOINT = "https://api.spotify.com/v1/audio-features";
 const TRACKS_ENDPOINT = "https://api.spotify.com/v1/me/tracks";
-const USER_ID_ENDPOINT = "https://api.spotify.com/v1/me";
 
 export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
   const [showModal, setShowModal] = useState(false);
@@ -173,7 +172,6 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
     setMaxTempo(maxTempoValue);
     setUserSavedTracks(trackData);
     setTracksToDisplay(trackData);
-    console.log(trackData);
   };
 
   // Function to handle filter button click. Filter songs by selected BPM and energy range
@@ -190,34 +188,6 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
     setTracksToDisplay(filteredTracks);
   };
 
-  // Function to get userId
-  const getUserId = async () => {
-    const userId = await axios
-      .get(USER_ID_ENDPOINT, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      .then((response) => {
-        console.log(response.data.id);
-        return response.data.id;
-      })
-      .catch((error) => {
-        console.log(error.response.data.error);
-      });
-    return userId;
-  };
-
-  // Function to handle Playlist creating info form changes
-  const handlePlaylistInfoChange = (event) => {
-    const value = event.target.value;
-    setPlaylistInfo({
-      ...playlistInfo,
-      [event.target.name]: value,
-    });
-    console.log(playlistInfo);
-  };
-
   const closeModal = () => {
     setPlaylistInfo({
       name: "",
@@ -225,48 +195,6 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
       public: false,
     });
     setShowModal(false);
-  };
-
-  // Function to POST new filtered playlist
-  const handlePostPlaylist = async (event) => {
-    event.preventDefault();
-    const userId = await getUserId();
-    axios
-      .post(
-        `https://api.spotify.com/v1/users/${userId}/playlists`,
-        playlistInfo,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response);
-        const playlistId = response.data.id;
-        const trackIds = tracksToDisplay.map((track) => {
-          return track.uri;
-        });
-        axios
-          .post(
-            `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
-            {
-              uris: trackIds,
-              position: 0,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-              },
-            }
-          )
-          .then((response) => {
-            console.log(response);
-          });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
 
   return (
@@ -330,8 +258,10 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
       {showModal && (
         <CreatePlaylistModal
           closeModal={closeModal}
+          accessToken={accessToken}
+          tracksToDisplay={tracksToDisplay}
           playlistInfo={playlistInfo}
-          handlePlaylistInfoChange={handlePlaylistInfoChange}
+          setPlaylistInfo={setPlaylistInfo}
         />
       )}
     </>

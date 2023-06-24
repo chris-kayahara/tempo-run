@@ -28,6 +28,10 @@ export default function DualSlider({
   const minPos = ((range[0] - min) / (max - min)) * 100;
   const maxPos = ((range[1] - min) / (max - min)) * 100;
 
+  //TODO
+  // Add markers for recommended pace
+  // Make recommended pace the max pace and add message if there are no songs (tell them to add more songs to their saved tracks)
+
   return (
     <div className="dual-range">
       <div className="dual-range__input-container">
