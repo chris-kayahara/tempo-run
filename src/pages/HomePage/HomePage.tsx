@@ -8,13 +8,18 @@ import Tracklist from "../../components/Tracklist/Tracklist";
 import Header from "../../components/Header/Header";
 import Button from "../../components/Button/Button";
 import CreatePlaylistModal from "../../components/CreatePlaylistModal/CreatePlaylistModal";
-import SliderMarks from "../../components/SliderMarks/SliderMarks";
+import Toast from "../../components/Toast/Toast";
 
 const AUDIO_FEATURES_ENDPOINT = "https://api.spotify.com/v1/audio-features";
 const TRACKS_ENDPOINT = "https://api.spotify.com/v1/me/tracks";
 
 export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
   const [showModal, setShowModal] = useState(false);
+  const [toast, setToast] = useState({
+    show: false,
+    message: "",
+    type: "success",
+  });
   const [accessToken, setAccessToken] = useState<string>("");
   const [userSavedTracks, setUserSavedTracks] = useState([]);
   const [tracksToDisplay, setTracksToDisplay] = useState([]);
@@ -262,8 +267,11 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
           tracksToDisplay={tracksToDisplay}
           playlistInfo={playlistInfo}
           setPlaylistInfo={setPlaylistInfo}
+          toast={toast}
+          setToast={setToast}
         />
       )}
+      <Toast playlistInfo={playlistInfo} toast={toast} />
     </>
   );
 }
