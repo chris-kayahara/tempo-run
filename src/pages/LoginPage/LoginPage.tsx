@@ -41,9 +41,11 @@ export default function LoginPage({ setToken, setIsUserLoggedIn }) {
       const { access_token, expires_in, token_type } = getToken(
         window.location.hash
       );
+      const currentDate = new Date().getTime();
+      const expiresAt = currentDate + expires_in * 1000;
       localStorage.clear();
       localStorage.setItem("token", access_token);
-      localStorage.setItem("expiresIn", expires_in);
+      localStorage.setItem("expiresAt", expiresAt.toString());
       localStorage.setItem("tokenType", token_type);
       window.location.hash = "";
       setToken(access_token);
