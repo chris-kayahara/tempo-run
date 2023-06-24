@@ -6,7 +6,7 @@ export default function Header({ setToken, setIsUserLoggedIn }) {
   const handleLogout = () => {
     setToken("");
     localStorage.removeItem("token");
-    localStorage.removeItem("expiresIn");
+    localStorage.removeItem("expiresAt");
     localStorage.removeItem("tokenType");
     setIsUserLoggedIn(false);
   };
