@@ -33,10 +33,19 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
     public: false,
   });
 
-  // Store access token as state variable if it exists
+  // Store access token as state variable if it exists and check if token has expired
   useEffect(() => {
+    const currentDate = new Date().getTime();
+
     if (localStorage.getItem("token")) {
       setAccessToken(localStorage.getItem("token"));
+    }
+    if (localStorage.getItem("expiresAt") * 1 < currentDate) {
+      setToken("");
+      localStorage.removeItem("token");
+      localStorage.removeItem("expiresAt");
+      localStorage.removeItem("tokenType");
+      setIsUserLoggedIn(false);
     }
   }, []);
 

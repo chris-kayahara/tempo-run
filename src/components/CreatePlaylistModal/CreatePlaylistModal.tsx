@@ -97,7 +97,7 @@ export default function CreatePlaylistModal({
             console.log(error);
             setToast({
               show: true,
-              message: "Error adding tracks to playlist. Try logging back in.",
+              message: "Error creating playlist. Try refreshing the page.",
               type: "error",
             });
             setTimeout(() => {
@@ -110,7 +110,7 @@ export default function CreatePlaylistModal({
         console.log(error);
         setToast({
           show: true,
-          message: "Error creating playlist. Try logging back in.",
+          message: "Error creating playlist. Try refreshing the page.",
           type: "error",
         });
         setTimeout(() => {
