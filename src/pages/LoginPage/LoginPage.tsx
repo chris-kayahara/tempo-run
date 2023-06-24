@@ -33,7 +33,6 @@ export default function LoginPage({ setToken, setIsUserLoggedIn }) {
       },
       {}
     );
-    console.log(paramsSplitUp);
     return paramsSplitUp;
   };
 
