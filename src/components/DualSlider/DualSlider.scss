@@ -49,7 +49,7 @@ input[type="range"]::-moz-range-thumb {
         background: $black;
       }
       &:active + .dual-range__input-range-label-lower {
-        display: block;
+        opacity: 1;
       }
     }
     &-upper {
@@ -64,7 +64,7 @@ input[type="range"]::-moz-range-thumb {
         z-index: -1;
       }
       &:active + .dual-range__input-range-label-upper {
-        display: block;
+        opacity: 1;
       }
     }
   }
@@ -75,11 +75,13 @@ input[type="range"]::-moz-range-thumb {
 
     &-lower {
       @extend .dual-range__input-range-label;
-      display: none;
+      opacity: 0;
+      transition: opacity 0.2s ease-in-out;
     }
     &-upper {
       @extend .dual-range__input-range-label;
-      display: none;
+      opacity: 0;
+      transition: opacity 0.2s ease-in-out;
     }
   }
   &__input-range-label-box {
