@@ -5,6 +5,7 @@ The Spotify Running App is a front-end application which allows users to log int
 
 ### TODO
 - Add playlist data after filtered (eg. total playlist length, number of tracks, etc)
+- Add toast message when user is logged out after session expires
 - Add instructions
 - Add UX cues
 - Final styling edits
