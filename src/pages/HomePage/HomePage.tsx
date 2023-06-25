@@ -13,7 +13,12 @@ import Toast from "../../components/Toast/Toast";
 const AUDIO_FEATURES_ENDPOINT = "https://api.spotify.com/v1/audio-features";
 const TRACKS_ENDPOINT = "https://api.spotify.com/v1/me/tracks";
 
-export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
+export default function HomePage({
+  token,
+  setToken,
+  setIsUserLoggedIn,
+  setShowExpiredMessage,
+}) {
   const [showModal, setShowModal] = useState(false);
   const [toast, setToast] = useState({
     show: false,
@@ -46,6 +51,7 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
       localStorage.removeItem("expiresAt");
       localStorage.removeItem("tokenType");
       setIsUserLoggedIn(false);
+      setShowExpiredMessage(true);
     }
   }, []);
 
@@ -280,7 +286,7 @@ export default function HomePage({ token, setToken, setIsUserLoggedIn }) {
           setToast={setToast}
         />
       )}
-      <Toast playlistInfo={playlistInfo} toast={toast} />
+      <Toast toast={toast} />
     </>
   );
 }

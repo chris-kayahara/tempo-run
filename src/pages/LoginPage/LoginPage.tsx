@@ -1,8 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "./LoginPage.scss";
 import Button from "../../components/Button/Button";
 
-export default function LoginPage({ setToken, setIsUserLoggedIn }) {
+export default function LoginPage({
+  setToken,
+  setIsUserLoggedIn,
+  showExpiredMessage,
+}) {
   const appName = "Spotify Running App";
   const CLIENT_ID = "a1974ecfcb7548a58a92b5b459147cdd";
   const REDIRECT_URI = "http://localhost:5173";
@@ -43,6 +47,8 @@ export default function LoginPage({ setToken, setIsUserLoggedIn }) {
       );
       const currentDate = new Date().getTime();
       const expiresAt = currentDate + expires_in * 1000;
+      // TEST VALUE FOR TOKEN EXPIRATION
+      // const expiresAt = currentDate + 30000;
       localStorage.clear();
       localStorage.setItem("token", access_token);
       localStorage.setItem("expiresAt", expiresAt.toString());
@@ -64,6 +70,12 @@ export default function LoginPage({ setToken, setIsUserLoggedIn }) {
       <p className="login-page__text">
         Get started by signing into your spotify account!
       </p>
+      {showExpiredMessage && (
+        <p className="login-page__expired-message">
+          Session expired.<br></br>Please log back in to continue using this
+          application.
+        </p>
+      )}
       <Button onClick={handleLogin} text="LOGIN" variant={"primary"}></Button>
       <a href="https://www.spotify.com/signup">OR REGISTER HERE!</a>
     </div>
