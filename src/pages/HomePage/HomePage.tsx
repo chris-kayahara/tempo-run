@@ -37,6 +37,7 @@ export default function HomePage({
     description: "",
     public: false,
   });
+  const [listIsFiltered, setListIsFiltered] = useState(false);
 
   // Store access token as state variable if it exists and check if token has expired
   useEffect(() => {
@@ -205,6 +206,7 @@ export default function HomePage({
         Math.ceil(track.energy * 5) <= energyRange[1]
       );
     });
+    setListIsFiltered(true);
     setTracksToDisplay(filteredTracks);
   };
 
@@ -259,11 +261,13 @@ export default function HomePage({
             </div>
             <div className="home-page__button-container">
               <Button
+                disabled={false}
                 text={"FILTER"}
                 onClick={handleFilter}
                 variant={"secondary"}
               />
               <Button
+                disabled={!listIsFiltered}
                 text={"CREATE PLAYLIST"}
                 onClick={() => {
                   setShowModal(true);
@@ -273,7 +277,10 @@ export default function HomePage({
             </div>
           </div>
         </div>
-        <Tracklist tracksToDisplay={tracksToDisplay} />
+        <Tracklist
+          tracksToDisplay={tracksToDisplay}
+          listIsFiltered={listIsFiltered}
+        />
       </div>
       {showModal && (
         <CreatePlaylistModal
