@@ -6,7 +6,7 @@ import energyIcon from "../../assets/energy.svg";
 import energyFilledIcon from "../../assets/energy-filled.svg";
 import tempoIcon from "../../assets/tempo.svg";
 
-export default function Tracklist({ tracksToDisplay }) {
+export default function Tracklist({ listIsFiltered, tracksToDisplay }) {
   const [trackOffset, setTrackOffset] = useState(0);
   const [tracksPerPage, setTracksPerPage] = useState(10);
 
@@ -29,6 +29,15 @@ export default function Tracklist({ tracksToDisplay }) {
 
   return (
     <div className="tracklist">
+      {!listIsFiltered && (
+        <div className="tracklist__mask">
+          <p className="tracklist__mask-text-container">
+            <span className="tracklist__mask-text">
+              Use the filter options above to select tracks.
+            </span>
+          </p>
+        </div>
+      )}
       <div className="tracklist__heading-container">
         <h4 className="tracklist__heading-title">Title</h4>
         <h4 className="tracklist__heading-album">Album</h4>
