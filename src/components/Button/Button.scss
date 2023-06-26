@@ -16,6 +16,13 @@
     color: black;
     background-color: $spotify-green;
 
+    &--disabled {
+      @extend .button-primary;
+      background-color: $medium-light-grey;
+      color: $grey;
+      cursor: not-allowed;
+    }
+
     &-small {
       @extend .button-primary;
       color: $spotify-green;
