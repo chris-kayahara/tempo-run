@@ -5,8 +5,13 @@ import durationIcon from "../../assets/duration.svg";
 import energyIcon from "../../assets/energy.svg";
 import energyFilledIcon from "../../assets/energy-filled.svg";
 import tempoIcon from "../../assets/tempo.svg";
+import Loading from "../Loading/Loading";
 
-export default function Tracklist({ listIsFiltered, tracksToDisplay }) {
+export default function Tracklist({
+  listIsFiltered,
+  tracksToDisplay,
+  userSavedTracks,
+}) {
   const [trackOffset, setTrackOffset] = useState(0);
   const [tracksPerPage, setTracksPerPage] = useState(10);
 
@@ -14,22 +19,22 @@ export default function Tracklist({ listIsFiltered, tracksToDisplay }) {
   const currentPage = tracksToDisplay.slice(trackOffset, endOffset);
   const pageCount = Math.ceil(tracksToDisplay.length / tracksPerPage);
 
-  const handlePageClick = (event) => {
-    const newOffset = (event.selected * tracksPerPage) % tracksToDisplay.length;
+  const handlePageClick = ({ selected }: { selected: number }) => {
+    const newOffset = (selected * tracksPerPage) % tracksToDisplay.length;
     setTrackOffset(newOffset);
   };
 
-  const msToTime = (millis: number) => {
-    const minutes = Math.floor(millis / 60000);
-    const seconds = ((millis % 60000) / 1000).toFixed(0);
-    return seconds == 60
+  const msToTime = (ms: number) => {
+    const minutes = Math.floor(ms / 60000);
+    const seconds = parseInt(((ms % 60000) / 1000).toFixed(0));
+    return seconds === 60
       ? minutes + 1 + ":00"
       : minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
   };
 
   return (
     <div className="tracklist">
-      {!listIsFiltered && (
+      {!listIsFiltered && userSavedTracks.length !== 0 && (
         <div className="tracklist__mask">
           <p className="tracklist__mask-text-container">
             <span className="tracklist__mask-text">
@@ -60,47 +65,51 @@ export default function Tracklist({ listIsFiltered, tracksToDisplay }) {
         </div>
       </div>
       <div className="tracklist__list">
-        {currentPage.map((track) => {
-          let artists = track.track.artists.map((artist) => artist.name);
-          return (
-            <div className="tracklist__row" key={track.track.id}>
-              <div className="tracklist__info-container">
-                <div className="tracklist__title-artist-container">
-                  <div className="tracklist__data-title">
-                    {track.track.name}
+        {userSavedTracks.length === 0 ? (
+          <Loading rowCount={5} />
+        ) : (
+          currentPage.map((track) => {
+            let artists = track.track.artists.map((artist) => artist.name);
+            return (
+              <div className="tracklist__row" key={track.track.id}>
+                <div className="tracklist__info-container">
+                  <div className="tracklist__title-artist-container">
+                    <div className="tracklist__data-title">
+                      {track.track.name}
+                    </div>
+                    <div className="tracklist__data-artist">
+                      {artists.join(", ")}
+                    </div>
                   </div>
-                  <div className="tracklist__data-artist">
-                    {artists.join(", ")}
+                  <div className="tracklist__data-album">
+                    {track.track.album.name}
                   </div>
                 </div>
-                <div className="tracklist__data-album">
-                  {track.track.album.name}
+                <div className="tracklist__data-container">
+                  <div className="tracklist__data-length">
+                    {msToTime(track.track.duration_ms)}
+                  </div>
+                  <div className="tracklist__data-bpm">
+                    {!track.tempo ? "N/A" : Math.round(track.tempo) + " bpm"}
+                  </div>
+                  <div className="tracklist__data-energy">
+                    {!track.energy
+                      ? "N/A"
+                      : [...Array(Math.ceil(track.energy * 5))].map((e, i) => {
+                          return (
+                            <img
+                              className="tracklist__data-energy-icon"
+                              src={energyFilledIcon}
+                              key={i}
+                            ></img>
+                          );
+                        })}
+                  </div>
                 </div>
               </div>
-              <div className="tracklist__data-container">
-                <div className="tracklist__data-length">
-                  {msToTime(track.track.duration_ms)}
-                </div>
-                <div className="tracklist__data-bpm">
-                  {!track.tempo ? "N/A" : Math.round(track.tempo) + " bpm"}
-                </div>
-                <div className="tracklist__data-energy">
-                  {!track.energy
-                    ? "N/A"
-                    : [...Array(Math.ceil(track.energy * 5))].map((e, i) => {
-                        return (
-                          <img
-                            className="tracklist__data-energy-icon"
-                            src={energyFilledIcon}
-                            key={i}
-                          ></img>
-                        );
-                      })}
-                </div>
-              </div>
-            </div>
-          );
-        })}
+            );
+          })
+        )}
       </div>
       <ReactPaginate
         breakLabel="..."
