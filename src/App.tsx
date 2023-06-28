@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import LoginPage from "./pages/LoginPage/LoginPage";
 import HomePage from "./pages/HomePage/HomePage";
@@ -15,29 +14,20 @@ function App() {
 
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              !isUserLoggedIn ? (
-                <LoginPage
-                  setToken={setToken}
-                  setIsUserLoggedIn={setIsUserLoggedIn}
-                  showExpiredMessage={showExpiredMessage}
-                />
-              ) : (
-                <HomePage
-                  token={token}
-                  setToken={setToken}
-                  setIsUserLoggedIn={setIsUserLoggedIn}
-                  setShowExpiredMessage={setShowExpiredMessage}
-                />
-              )
-            }
-          />
-        </Routes>
-      </BrowserRouter>
+      {!isUserLoggedIn ? (
+        <LoginPage
+          setToken={setToken}
+          setIsUserLoggedIn={setIsUserLoggedIn}
+          showExpiredMessage={showExpiredMessage}
+        />
+      ) : (
+        <HomePage
+          token={token}
+          setToken={setToken}
+          setIsUserLoggedIn={setIsUserLoggedIn}
+          setShowExpiredMessage={setShowExpiredMessage}
+        />
+      )}
     </>
   );
 }
