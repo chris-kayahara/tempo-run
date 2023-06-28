@@ -5,7 +5,7 @@ export default function Loading({ rowCount }) {
     <>
       {[...Array(rowCount)].map((e, i) => {
         return (
-          <div className="loading">
+          <div className="loading" key={i}>
             <div className="loading__container-info">
               <div className="loading__container-title-artist">
                 <div className="loading__data-title"></div>

@@ -16,6 +16,8 @@ export default function CreatePlaylistModal({
   toast,
   setToast,
 }) {
+  const [error, setError] = useState(false);
+
   // Function to get userId
   const getUserId = async () => {
     const userId = await axios
@@ -52,30 +54,13 @@ export default function CreatePlaylistModal({
   // Function to POST new filtered playlist
   const handlePostPlaylist = async (event) => {
     event.preventDefault();
-
     const userId = await getUserId();
-    axios
-      .post(
-        `https://api.spotify.com/v1/users/${userId}/playlists`,
-        playlistInfo,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      )
-      .then((response) => {
-        const playlistId = response.data.id;
-        const trackIds = tracksToDisplay.map((track) => {
-          return track.uri;
-        });
-        axios
+    !playlistInfo.name || !playlistInfo.description
+      ? setError(true)
+      : axios
           .post(
-            `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
-            {
-              uris: trackIds,
-              position: 0,
-            },
+            `https://api.spotify.com/v1/users/${userId}/playlists`,
+            playlistInfo,
             {
               headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -83,15 +68,47 @@ export default function CreatePlaylistModal({
             }
           )
           .then((response) => {
-            setToast({
-              show: true,
-              message: "Playlist successfully added to your Spotify Account!",
-              type: "success",
+            const playlistId = response.data.id;
+            const trackIds = tracksToDisplay.map((track) => {
+              return track.uri;
             });
-            setTimeout(() => {
-              setToast({ ...toast, show: false });
-            }, 2900);
-            closeModal();
+            axios
+              .post(
+                `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+                {
+                  uris: trackIds,
+                  position: 0,
+                },
+                {
+                  headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                  },
+                }
+              )
+              .then((response) => {
+                setToast({
+                  show: true,
+                  message:
+                    "Playlist successfully added to your Spotify Account!",
+                  type: "success",
+                });
+                setTimeout(() => {
+                  setToast({ ...toast, show: false });
+                }, 2900);
+                closeModal();
+              })
+              .catch((error) => {
+                console.log(error);
+                setToast({
+                  show: true,
+                  message: "Error creating playlist. Try refreshing the page.",
+                  type: "error",
+                });
+                setTimeout(() => {
+                  setToast({ ...toast, show: false });
+                }, 2900);
+                closeModal();
+              });
           })
           .catch((error) => {
             console.log(error);
@@ -105,19 +122,6 @@ export default function CreatePlaylistModal({
             }, 2900);
             closeModal();
           });
-      })
-      .catch((error) => {
-        console.log(error);
-        setToast({
-          show: true,
-          message: "Error creating playlist. Try refreshing the page.",
-          type: "error",
-        });
-        setTimeout(() => {
-          setToast({ ...toast, show: false });
-        }, 2900);
-        closeModal();
-      });
   };
 
   return (
@@ -129,9 +133,15 @@ export default function CreatePlaylistModal({
           src={closeIcon}
           onClick={closeModal}
         ></img>
-        <h3 className="create-playlist-modal__label">Name</h3>
+        <h3 className="create-playlist-modal__label">
+          Name<span className="create-playlist-modal__required"> *</span>
+        </h3>
         <input
-          className="create-playlist-modal__input-name"
+          className={
+            error && !playlistInfo.name
+              ? "create-playlist-modal__input-name--error"
+              : "create-playlist-modal__input-name"
+          }
           type="text"
           id="name"
           name="name"
@@ -139,53 +149,21 @@ export default function CreatePlaylistModal({
           value={playlistInfo.name}
           onChange={handlePlaylistInfoChange}
         ></input>
-        <h3 className="create-playlist-modal__label">Description</h3>
+        <h3 className="create-playlist-modal__label">
+          Description<span className="create-playlist-modal__required"> *</span>
+        </h3>
         <textarea
-          className="create-playlist-modal__input-description"
+          className={
+            error && !playlistInfo.description
+              ? "create-playlist-modal__input-description--error"
+              : "create-playlist-modal__input-description"
+          }
           id="description"
           name="description"
           placeholder="Enter Playlist Description"
           value={playlistInfo.description}
           onChange={handlePlaylistInfoChange}
         ></textarea>
-        <h3 className="create-playlist-modal__label">Visibility</h3>
-        <div className="create-playlist-modal__public-container">
-          <div className="create-playlist-modal__radio-container">
-            <input
-              className="create-playlist-modal__radio"
-              type="radio"
-              name="public"
-              id="private"
-              value="private"
-              onChange={handlePlaylistInfoChange}
-              checked={!playlistInfo.public}
-            />
-            <label
-              className="create-playlist-modal__label-radio"
-              htmlFor="private"
-            >
-              Private
-            </label>
-          </div>
-
-          <div className="create-playlist-modal__radio-container">
-            <input
-              className="create-playlist-modal__radio"
-              type="radio"
-              name="public"
-              id="public"
-              value="public"
-              onChange={handlePlaylistInfoChange}
-              checked={playlistInfo.public}
-            />
-            <label
-              className="create-playlist-modal__label-radio"
-              htmlFor="public"
-            >
-              Public
-            </label>
-          </div>
-        </div>
         <Button variant="primary" text="CREATE" onClick={handlePostPlaylist} />
       </form>
     </div>
