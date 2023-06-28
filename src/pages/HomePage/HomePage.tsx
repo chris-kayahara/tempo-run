@@ -278,6 +278,7 @@ export default function HomePage({
           </div>
         </div>
         <Tracklist
+          userSavedTracks={userSavedTracks}
           tracksToDisplay={tracksToDisplay}
           listIsFiltered={listIsFiltered}
         />
