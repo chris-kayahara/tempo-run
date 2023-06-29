@@ -1,12 +1,22 @@
 @use "../../styles/partials/variables" as *;
 
+@mixin animate($animation, $duration, $method, $times) {
+  animation: $animation $duration $method $times;
+}
+
+@mixin keyframes($name) {
+  @keyframes #{$name} {
+    @content;
+  }
+}
+
 .button {
   letter-spacing: 0.5px;
   font-size: 14px;
   outline: none;
   border: none;
-  height: 2.5rem;
-  border-radius: 1.25rem;
+  height: 3rem;
+  border-radius: 1.5rem;
   font-weight: 600;
   width: 100%;
   cursor: pointer;
@@ -16,20 +26,23 @@
     color: black;
     background-color: $spotify-green;
 
+    &:hover {
+      &:not([disabled]) {
+        background-color: $spotify-green-medium-light;
+      }
+    }
+
+    &:active {
+      &:not([disabled]) {
+        background-color: $spotify-green-medium-dark;
+      }
+    }
+
     &--disabled {
       @extend .button-primary;
       background-color: $medium-light-grey;
       color: $grey;
       cursor: not-allowed;
-    }
-
-    &-small {
-      @extend .button-primary;
-      color: $spotify-green;
-      background-color: $black;
-      border: $spotify-green solid 1px;
-      width: 5rem;
-      font-size: 0.75rem;
     }
   }
   &-secondary {
@@ -37,5 +50,41 @@
     color: $spotify-green;
     border: $spotify-green solid 1px;
     background-color: $white;
+
+    &:hover {
+      background-color: $spotify-green-extra-light;
+    }
+
+    &:active {
+      background-color: $spotify-green-light;
+      color: $white;
+    }
+  }
+
+  &-tertiary {
+    @extend .button;
+    color: $spotify-green;
+    background-color: $black;
+    border: $spotify-green solid 1px;
+    width: 5rem;
+    height: 2.5rem;
+    font-size: 0.75rem;
+
+    &:hover {
+      background-color: $spotify-green-extra-light;
+    }
+  }
+
+  &--flashing {
+    @extend .button;
+    @include keyframes(fade) {
+      0% {
+        box-shadow: rgb(30, 215, 96, 0.5) 0px 0px 20px 4px;
+      }
+      100% {
+        box-shadow: rgba(30, 215, 96, 0.1) 0px 0px 20px 4px;
+      }
+    }
+    animation: fade alternate 1s infinite;
   }
 }
