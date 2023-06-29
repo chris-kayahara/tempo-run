@@ -36,11 +36,11 @@ export default function Tracklist({
     <div className="tracklist">
       {!listIsFiltered && userSavedTracks.length !== 0 && (
         <div className="tracklist__mask">
-          <p className="tracklist__mask-text-container">
+          {/* <p className="tracklist__mask-text-container">
             <span className="tracklist__mask-text">
               Use the filter options above to select tracks.
             </span>
-          </p>
+          </p> */}
         </div>
       )}
       <div className="tracklist__heading-container">

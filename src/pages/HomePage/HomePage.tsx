@@ -35,7 +35,7 @@ export default function HomePage({
   const [playlistInfo, setPlaylistInfo] = useState({
     name: "",
     description: "",
-    public: false,
+    public: true,
   });
   const [listIsFiltered, setListIsFiltered] = useState(false);
 
@@ -214,7 +214,7 @@ export default function HomePage({
     setPlaylistInfo({
       name: "",
       description: "",
-      public: false,
+      public: true,
     });
     setShowModal(false);
   };
@@ -226,8 +226,7 @@ export default function HomePage({
         <div className="home-page__hero-container">
           <div className="home-page__info-container">
             <p className="home-page__text">
-              App that lets you create running playlists based on your specified
-              pace and your songs BPM
+              Use the filters to select tracks from your Spotify saved library.
             </p>
           </div>
           <div className="home-page__filter-container">
@@ -261,6 +260,7 @@ export default function HomePage({
             </div>
             <div className="home-page__button-container">
               <Button
+                flashing={!listIsFiltered}
                 disabled={false}
                 text={"FILTER"}
                 onClick={handleFilter}
