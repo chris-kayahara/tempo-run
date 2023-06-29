@@ -15,11 +15,7 @@ export default function Header({ setToken, setIsUserLoggedIn }) {
     <div className="header">
       <div className="header__content">
         <h2 className="header__logo">DJ Run</h2>
-        <Button
-          onClick={handleLogout}
-          text={"Logout"}
-          variant={"primary-small"}
-        />
+        <Button onClick={handleLogout} text={"Logout"} variant={"tertiary"} />
       </div>
     </div>
   );

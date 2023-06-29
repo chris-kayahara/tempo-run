@@ -77,7 +77,12 @@ export default function LoginPage({
         </p>
       )}
       <Button onClick={handleLogin} text="LOGIN" variant={"primary"}></Button>
-      <a href="https://www.spotify.com/signup">OR REGISTER HERE!</a>
+      <a
+        className="login-page__register-link"
+        href="https://www.spotify.com/signup"
+      >
+        SIGN UP
+      </a>
     </div>
   );
 }

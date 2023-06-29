@@ -64,11 +64,11 @@
         color: $grey;
       }
       &:focus {
-        border: 2px solid $spotify-green;
+        border: 1px solid $spotify-green;
       }
       &--error {
         @extend .create-playlist-modal__input-name;
-        border: 2px solid $red;
+        border: 1px solid $red;
       }
     }
 
@@ -84,11 +84,11 @@
       }
       &:focus {
         outline: none !important;
-        border: 2px solid $spotify-green;
+        border: 1px solid $spotify-green;
       }
       &--error {
         @extend .create-playlist-modal__input-description;
-        border: 2px solid $red;
+        border: 1px solid $red;
       }
     }
   }

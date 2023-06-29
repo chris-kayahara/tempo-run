@@ -1,6 +1,6 @@
 import "./Button.scss";
 
-export default function Button({ onClick, text, variant, disabled }) {
+export default function Button({ onClick, text, variant, disabled, flashing }) {
   return (
     <button
       disabled={disabled}
@@ -8,10 +8,12 @@ export default function Button({ onClick, text, variant, disabled }) {
       className={
         variant === "primary" && !disabled
           ? "button-primary"
-          : variant === "secondary" && !disabled
+          : variant === "secondary" && !disabled && !flashing
           ? "button-secondary"
-          : variant === "primary-small" && !disabled
-          ? "button-primary-small"
+          : variant === "secondary" && !disabled && flashing
+          ? "button-secondary button--flashing"
+          : variant === "tertiary" && !disabled
+          ? "button-tertiary"
           : "primary" && disabled
           ? "button-primary--disabled"
           : "button"
