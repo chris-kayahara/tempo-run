@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { msToTime } from "../../utils/utils";
 import ReactPaginate from "react-paginate";
 import "./Tracklist.scss";
 import durationIcon from "../../assets/duration.svg";
@@ -22,14 +23,6 @@ export default function Tracklist({
   const handlePageClick = ({ selected }: { selected: number }) => {
     const newOffset = (selected * tracksPerPage) % tracksToDisplay.length;
     setTrackOffset(newOffset);
-  };
-
-  const msToTime = (ms: number) => {
-    const minutes = Math.floor(ms / 60000);
-    const seconds = parseInt(((ms % 60000) / 1000).toFixed(0));
-    return seconds === 60
-      ? minutes + 1 + ":00"
-      : minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
   };
 
   return (
