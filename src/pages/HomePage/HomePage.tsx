@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { msToTime } from "../../utils/utils";
 import axios from "axios";
 
 import "./HomePage.scss";
@@ -9,6 +10,7 @@ import Header from "../../components/Header/Header";
 import Button from "../../components/Button/Button";
 import CreatePlaylistModal from "../../components/CreatePlaylistModal/CreatePlaylistModal";
 import Toast from "../../components/Toast/Toast";
+import HeightDropdown from "../../components/HeightDropdown/HeightDropdown";
 
 const AUDIO_FEATURES_ENDPOINT = "https://api.spotify.com/v1/audio-features";
 const TRACKS_ENDPOINT = "https://api.spotify.com/v1/me/tracks";
@@ -28,7 +30,7 @@ export default function HomePage({
   const [accessToken, setAccessToken] = useState<string>("");
   const [userSavedTracks, setUserSavedTracks] = useState([]);
   const [tracksToDisplay, setTracksToDisplay] = useState([]);
-  const [tempoRange, setTempoRange] = useState([170, 180]);
+  const [tempoRange, setTempoRange] = useState([160, 180]);
   const [energyRange, setEnergyRange] = useState([4, 5]);
   const [minTempo, setMinTempo] = useState(60);
   const [maxTempo, setMaxTempo] = useState(200);
@@ -38,6 +40,11 @@ export default function HomePage({
     public: true,
   });
   const [listIsFiltered, setListIsFiltered] = useState(false);
+  const [playlistData, setPlaylistData] = useState({
+    length: 0,
+    count: "",
+    steps: "",
+  });
 
   // Store access token as state variable if it exists and check if token has expired
   useEffect(() => {
@@ -56,6 +63,7 @@ export default function HomePage({
     }
   }, []);
 
+  // useEffect to set all data once the accessToken is set
   useEffect(() => {
     if (accessToken) {
       setAllData();
@@ -189,10 +197,32 @@ export default function HomePage({
         return Math.round(item.tempo);
       })
     );
+
     setMinTempo(minTempoValue);
     setMaxTempo(maxTempoValue);
     setUserSavedTracks(trackData);
     setTracksToDisplay(trackData);
+    console.log(trackData);
+  };
+
+  // Function to set filtered playlist data
+  const setFilteredPlaylistData = (trackData) => {
+    let playlistLength = 0;
+    let totalSteps = 0;
+    for (let i = 0; i < trackData.length; i++) {
+      playlistLength = playlistLength + trackData[i].duration_ms;
+      totalSteps =
+        totalSteps + (trackData[i].duration_ms / 60000) * trackData[i].tempo;
+    }
+
+    const playlistCount = trackData.length;
+
+    setPlaylistData({
+      ...playlistData,
+      steps: Math.floor(totalSteps).toLocaleString("en-US"),
+      length: playlistLength,
+      count: playlistCount.toLocaleString("en-US"),
+    });
   };
 
   // Function to handle filter button click. Filter songs by selected BPM and energy range
@@ -208,8 +238,10 @@ export default function HomePage({
     });
     setListIsFiltered(true);
     setTracksToDisplay(filteredTracks);
+    setFilteredPlaylistData(filteredTracks);
   };
 
+  // Function to handle closing the CreatePlaylistModal
   const closeModal = () => {
     setPlaylistInfo({
       name: "",
@@ -224,44 +256,60 @@ export default function HomePage({
       <Header setToken={setToken} setIsUserLoggedIn={setIsUserLoggedIn} />
       <div className="home-page">
         <div className="home-page__hero-container">
-          <div className="home-page__info-container">
-            <p className="home-page__text">
+          <div className="home-page__filter-container">
+            <p className="home-page__filter-text">
               Use the filters to select tracks from your Spotify saved library.
             </p>
+            <div className="home-page__tempo-container">
+              <h3 className="home-page__filter-header">Cadence</h3>
+              <DualSlider
+                min={minTempo}
+                max={maxTempo}
+                range={tempoRange}
+                minDistance={10}
+                setRange={setTempoRange}
+                showMarks={true}
+                showThumbLabel={true}
+                showOffsetSliderMarks={false}
+              />
+            </div>
+            <div className="home-page__energy-container">
+              <h3 className="home-page__filter-header">Energy</h3>
+              <DualSlider
+                min={0}
+                max={5}
+                range={energyRange}
+                minDistance={1}
+                setRange={setEnergyRange}
+                showMarks={false}
+                showThumbLabel={false}
+                showOffsetSliderMarks={true}
+              />
+            </div>
           </div>
-          <div className="home-page__filter-container">
-            <div className="home-page__slider-container">
-              <div>
-                <h3 className="home-page__filter-header">Tempo Selector</h3>
-                <DualSlider
-                  min={minTempo}
-                  max={maxTempo}
-                  range={tempoRange}
-                  minDistance={10}
-                  setRange={setTempoRange}
-                  showMarks={true}
-                  showThumbLabel={true}
-                  showOffsetSliderMarks={false}
-                />
+          <div className="home-page__playlist-data-button-container">
+            <div className="home-page__playlist-data-container">
+              <div className="home-page__playlist-data-row">
+                <h4>Total Length</h4>
+                <h4>
+                  {!playlistData.length
+                    ? "- - -"
+                    : msToTime(playlistData.length)}
+                </h4>
               </div>
-              <div>
-                <h3 className="home-page__filter-header">Energy Selector</h3>
-                <DualSlider
-                  min={0}
-                  max={5}
-                  range={energyRange}
-                  minDistance={1}
-                  setRange={setEnergyRange}
-                  showMarks={false}
-                  showThumbLabel={false}
-                  showOffsetSliderMarks={true}
-                />
+              <div className="home-page__playlist-data-row">
+                <h4>No. of Tracks</h4>
+                <h4>{!playlistData.count ? "- - -" : playlistData.count}</h4>
+              </div>
+              <div className="home-page__playlist-data-row">
+                <h4>Total Steps</h4>
+                <h4>{!playlistData.steps ? "- - -" : playlistData.steps}</h4>
               </div>
             </div>
             <div className="home-page__button-container">
               <Button
                 flashing={!listIsFiltered}
-                disabled={false}
+                disabled={userSavedTracks.length === 0}
                 text={"FILTER"}
                 onClick={handleFilter}
                 variant={"secondary"}
