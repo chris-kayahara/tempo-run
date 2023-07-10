@@ -14,7 +14,7 @@ body {
   background-color: $white;
   color: $black;
   @include tablet {
-    background-color: $dark-grey;
+    background-color: $light-grey;
   }
 }
 
