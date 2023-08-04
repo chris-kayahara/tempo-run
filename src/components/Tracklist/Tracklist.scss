@@ -130,6 +130,10 @@
     }
   }
 
+  &__list {
+    margin-bottom: 1rem;
+  }
+
   &__row {
     &:first-child {
       border-top: 1px lightgrey solid;
@@ -268,7 +272,7 @@
 
   &__pagination {
     gap: 2rem;
-    margin: 1rem auto;
+    margin: 0rem auto 1rem auto;
     display: flex;
     flex-direction: row;
     align-items: center;
