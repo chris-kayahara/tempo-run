@@ -10,7 +10,8 @@ import Header from "../../components/Header/Header";
 import Button from "../../components/Button/Button";
 import CreatePlaylistModal from "../../components/CreatePlaylistModal/CreatePlaylistModal";
 import Toast from "../../components/Toast/Toast";
-import HeightDropdown from "../../components/HeightDropdown/HeightDropdown";
+import FilterHeader from "../../components/FilterHeader/FilterHeader";
+import HelpModal from "../../components/HelpModal/HelpModal";
 
 const AUDIO_FEATURES_ENDPOINT = "https://api.spotify.com/v1/audio-features";
 const TRACKS_ENDPOINT = "https://api.spotify.com/v1/me/tracks";
@@ -22,6 +23,8 @@ export default function HomePage({
   setShowExpiredMessage,
 }) {
   const [showModal, setShowModal] = useState(false);
+  const [showHelpModal, setShowHelpModal] = useState(false);
+  const [helpModalContent, setHelpModalContent] = useState({});
   const [toast, setToast] = useState({
     show: false,
     message: "",
@@ -30,7 +33,7 @@ export default function HomePage({
   const [accessToken, setAccessToken] = useState<string>("");
   const [userSavedTracks, setUserSavedTracks] = useState([]);
   const [tracksToDisplay, setTracksToDisplay] = useState([]);
-  const [tempoRange, setTempoRange] = useState([160, 180]);
+  const [tempoRange, setTempoRange] = useState([160, 170]);
   const [energyRange, setEnergyRange] = useState([4, 5]);
   const [minTempo, setMinTempo] = useState(60);
   const [maxTempo, setMaxTempo] = useState(200);
@@ -45,6 +48,23 @@ export default function HomePage({
     count: "",
     steps: "",
   });
+
+  const helpInfo = {
+    tempo: {
+      heading: "Tempo (Cadence)",
+      image: "tempo.svg",
+      text: "Tempo refers to the speed or pace of a piece of music, measured in beats per minute (bpm). In this case, the tempo will represent your running cadence, which refers to the number of steps per minute (spm) you take as you run.",
+      recommendation:
+        "The recommended running cadence range is 160-180spm. If you are unsure of your ideal running cadence, start slow and work your way up to reduce your risk of injury.",
+    },
+    energy: {
+      heading: "Energy",
+      image: "energy.svg",
+      text: 'Spotify defines a song\'s energy as a "perceptual measure of intensity and activity." For example, heavy metal has high energy, while a lullaby has low energy. Here we have sorted each track into energy levels from 1 to 5.',
+      recommendation:
+        "We recommend starting with level 5 energy to ensure your playlist has the high intensity you need to run that extra mile!",
+    },
+  };
 
   // Store access token as state variable if it exists and check if token has expired
   useEffect(() => {
@@ -257,11 +277,14 @@ export default function HomePage({
       <div className="home-page">
         <div className="home-page__hero-container">
           <div className="home-page__filter-container">
-            <p className="home-page__filter-text">
-              Use the filters to select tracks from your Spotify saved library.
-            </p>
             <div className="home-page__tempo-container">
-              <h3 className="home-page__filter-header">Cadence</h3>
+              <FilterHeader
+                text={helpInfo.tempo.heading}
+                setShowHelpModal={setShowHelpModal}
+                setHelpModalContent={() => {
+                  setHelpModalContent(helpInfo.tempo);
+                }}
+              />
               <DualSlider
                 min={minTempo}
                 max={maxTempo}
@@ -274,7 +297,13 @@ export default function HomePage({
               />
             </div>
             <div className="home-page__energy-container">
-              <h3 className="home-page__filter-header">Energy</h3>
+              <FilterHeader
+                text={helpInfo.energy.heading}
+                setShowHelpModal={setShowHelpModal}
+                setHelpModalContent={() => {
+                  setHelpModalContent(helpInfo.energy);
+                }}
+              />
               <DualSlider
                 min={0}
                 max={5}
@@ -340,6 +369,12 @@ export default function HomePage({
           setPlaylistInfo={setPlaylistInfo}
           toast={toast}
           setToast={setToast}
+        />
+      )}
+      {showHelpModal && (
+        <HelpModal
+          setShowHelpModal={setShowHelpModal}
+          helpModalContent={helpModalContent}
         />
       )}
       <Toast toast={toast} />
