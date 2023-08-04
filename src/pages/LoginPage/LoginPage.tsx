@@ -1,13 +1,14 @@
 import { useEffect } from "react";
 import "./LoginPage.scss";
 import Button from "../../components/Button/Button";
+import logo from "../../assets/logo.svg";
 
 export default function LoginPage({
   setToken,
   setIsUserLoggedIn,
   showExpiredMessage,
 }) {
-  const appName = "Spotify Running App";
+  const appName = "Tempo Run";
   const CLIENT_ID = "a1974ecfcb7548a58a92b5b459147cdd";
   const REDIRECT_URI = "http://localhost:5173";
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
@@ -61,14 +62,15 @@ export default function LoginPage({
 
   return (
     <div className="login-page">
+      <img className="login-page__logo" src={logo} />
       <h1 className="login-page__title">{appName}</h1>
       <p className="login-page__text">
-        Welcome to the {appName}! The app that lets you create playlist for
-        running from your saved Spotify tracks, based on their tempo and energy
-        rating, so that you can run to the beat of your music.
+        Create jogging playlists from the saved songs in your Spotify library
+        and run to the beat of your music, while also tracking your total
+        jogging time and total steps taken.
       </p>
       <p className="login-page__text">
-        Get started by signing into your spotify account!
+        Get started by signing into your spotify account.
       </p>
       {showExpiredMessage && (
         <p className="login-page__expired-message">
