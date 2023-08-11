@@ -2,18 +2,24 @@
 @use "../../styles/partials/mixins" as *;
 
 .home-page {
-  display: flex;
-  flex-direction: column;
-  background-color: $white;
-  margin: 0 auto;
-  max-width: 70rem;
-  padding: 0 1rem;
-
   @include tablet {
-    padding: 2rem 2rem 0 2rem;
-    margin: 1.5rem auto;
-    box-shadow: $card-shadow;
-    border-radius: 8px;
+    padding: 1.5rem;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    background-color: $white;
+    margin: 0 auto;
+    max-width: 70rem;
+    padding: 0 1rem;
+
+    @include tablet {
+      padding: 2rem 2rem 0 2rem;
+      margin: 0 auto;
+      box-shadow: $card-shadow;
+      border-radius: 8px;
+    }
   }
 
   &__hero-container {
@@ -31,7 +37,7 @@
     gap: 1rem;
     margin: 0 auto;
     width: 100%;
-    padding: 1rem;
+    padding: 1.5rem 0.5rem 1rem 0.5rem;
     @include tablet {
       width: 50%;
     }

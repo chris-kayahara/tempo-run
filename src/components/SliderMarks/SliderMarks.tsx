@@ -1,6 +1,6 @@
 import "./SliderMarks.scss";
 
-export default function SliderMarks({ range }) {
+export default function SliderMarks({ range, dataIsLoaded }) {
   const defaultClass = "slider-marks__number";
   const selectedClass = "slider-marks__number--selected";
   // Math.ceil(track.energy * 5) >= energyRange[0] + 1 &&
@@ -19,7 +19,9 @@ export default function SliderMarks({ range }) {
       <div className="slider-marks__tick"></div>
       <div
         className={
-          1 >= range[0] + 1 && 1 <= range[1] ? selectedClass : defaultClass
+          dataIsLoaded && 1 >= range[0] + 1 && 1 <= range[1]
+            ? selectedClass
+            : defaultClass
         }
       >
         1
@@ -27,7 +29,9 @@ export default function SliderMarks({ range }) {
       <div className="slider-marks__tick"></div>
       <div
         className={
-          2 >= range[0] + 1 && 2 <= range[1] ? selectedClass : defaultClass
+          dataIsLoaded && 2 >= range[0] + 1 && 2 <= range[1]
+            ? selectedClass
+            : defaultClass
         }
       >
         2
@@ -35,7 +39,9 @@ export default function SliderMarks({ range }) {
       <div className="slider-marks__tick"></div>
       <div
         className={
-          3 >= range[0] + 1 && 3 <= range[1] ? selectedClass : defaultClass
+          dataIsLoaded && 3 >= range[0] + 1 && 3 <= range[1]
+            ? selectedClass
+            : defaultClass
         }
       >
         3
@@ -43,7 +49,9 @@ export default function SliderMarks({ range }) {
       <div className="slider-marks__tick"></div>
       <div
         className={
-          4 >= range[0] + 1 && 4 <= range[1] ? selectedClass : defaultClass
+          dataIsLoaded && 4 >= range[0] + 1 && 4 <= range[1]
+            ? selectedClass
+            : defaultClass
         }
       >
         4
@@ -51,7 +59,9 @@ export default function SliderMarks({ range }) {
       <div className="slider-marks__tick"></div>
       <div
         className={
-          5 >= range[0] + 1 && 5 <= range[1] ? selectedClass : defaultClass
+          dataIsLoaded && 5 >= range[0] + 1 && 5 <= range[1]
+            ? selectedClass
+            : defaultClass
         }
       >
         5
