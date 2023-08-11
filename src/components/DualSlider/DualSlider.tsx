@@ -10,6 +10,7 @@ export default function DualSlider({
   showMarks,
   showThumbLabel,
   showOffsetSliderMarks,
+  dataIsLoaded,
 }) {
   const handleRangeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(event.currentTarget.value);
@@ -36,7 +37,11 @@ export default function DualSlider({
     <div className="dual-range">
       <div className="dual-range__input-container">
         <input
-          className="dual-range__input-range-lower"
+          className={
+            dataIsLoaded
+              ? "dual-range__input-range-lower"
+              : "dual-range__input-range-lower--hidden"
+          }
           type="range"
           min={min}
           max={max}
@@ -61,7 +66,11 @@ export default function DualSlider({
           </label>
         )}
         <input
-          className="dual-range__input-range-upper"
+          className={
+            dataIsLoaded
+              ? "dual-range__input-range-upper"
+              : "dual-range__input-range-upper--hidden"
+          }
           type="range"
           min={min}
           max={max}
@@ -88,9 +97,17 @@ export default function DualSlider({
           </label>
         )}
       </div>
-      <div className="dual-range__rail">
+      <div
+        className={
+          dataIsLoaded ? "dual-range__rail" : "dual-range__rail--loading"
+        }
+      >
         <div
-          className="dual-range__inner-rail"
+          className={
+            dataIsLoaded
+              ? "dual-range__inner-rail"
+              : "dual-range__inner-rail--hidden"
+          }
           style={{ left: `${minPos}%`, right: `${100 - maxPos}%` }}
         />
       </div>
@@ -100,7 +117,9 @@ export default function DualSlider({
           <div>{Math.round(max)}</div>
         </div>
       )}
-      {showOffsetSliderMarks && <SliderMarks range={range} />}
+      {showOffsetSliderMarks && (
+        <SliderMarks range={range} dataIsLoaded={dataIsLoaded} />
+      )}
     </div>
   );
 }
