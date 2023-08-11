@@ -275,90 +275,94 @@ export default function HomePage({
     <>
       <Header setToken={setToken} setIsUserLoggedIn={setIsUserLoggedIn} />
       <div className="home-page">
-        <div className="home-page__hero-container">
-          <div className="home-page__filter-container">
-            <div className="home-page__tempo-container">
-              <FilterHeader
-                text={helpInfo.tempo.heading}
-                setShowHelpModal={setShowHelpModal}
-                setHelpModalContent={() => {
-                  setHelpModalContent(helpInfo.tempo);
-                }}
-              />
-              <DualSlider
-                min={minTempo}
-                max={maxTempo}
-                range={tempoRange}
-                minDistance={10}
-                setRange={setTempoRange}
-                showMarks={true}
-                showThumbLabel={true}
-                showOffsetSliderMarks={false}
-              />
+        <div className="home-page__content">
+          <div className="home-page__hero-container">
+            <div className="home-page__filter-container">
+              <div className="home-page__tempo-container">
+                <FilterHeader
+                  text={helpInfo.tempo.heading}
+                  setShowHelpModal={setShowHelpModal}
+                  setHelpModalContent={() => {
+                    setHelpModalContent(helpInfo.tempo);
+                  }}
+                />
+                <DualSlider
+                  dataIsLoaded={userSavedTracks.length != 0}
+                  min={minTempo}
+                  max={maxTempo}
+                  range={tempoRange}
+                  minDistance={10}
+                  setRange={setTempoRange}
+                  showMarks={true}
+                  showThumbLabel={true}
+                  showOffsetSliderMarks={false}
+                />
+              </div>
+              <div className="home-page__energy-container">
+                <FilterHeader
+                  text={helpInfo.energy.heading}
+                  setShowHelpModal={setShowHelpModal}
+                  setHelpModalContent={() => {
+                    setHelpModalContent(helpInfo.energy);
+                  }}
+                />
+                <DualSlider
+                  dataIsLoaded={userSavedTracks.length != 0}
+                  min={0}
+                  max={5}
+                  range={energyRange}
+                  minDistance={1}
+                  setRange={setEnergyRange}
+                  showMarks={false}
+                  showThumbLabel={false}
+                  showOffsetSliderMarks={true}
+                />
+              </div>
             </div>
-            <div className="home-page__energy-container">
-              <FilterHeader
-                text={helpInfo.energy.heading}
-                setShowHelpModal={setShowHelpModal}
-                setHelpModalContent={() => {
-                  setHelpModalContent(helpInfo.energy);
-                }}
-              />
-              <DualSlider
-                min={0}
-                max={5}
-                range={energyRange}
-                minDistance={1}
-                setRange={setEnergyRange}
-                showMarks={false}
-                showThumbLabel={false}
-                showOffsetSliderMarks={true}
-              />
+            <div className="home-page__playlist-data-button-container">
+              <div className="home-page__playlist-data-container">
+                <div className="home-page__playlist-data-row">
+                  <h4>Total Length</h4>
+                  <h4>
+                    {!playlistData.length
+                      ? "- - -"
+                      : msToTime(playlistData.length)}
+                  </h4>
+                </div>
+                <div className="home-page__playlist-data-row">
+                  <h4>No. of Tracks</h4>
+                  <h4>{!playlistData.count ? "- - -" : playlistData.count}</h4>
+                </div>
+                <div className="home-page__playlist-data-row">
+                  <h4>Total Steps</h4>
+                  <h4>{!playlistData.steps ? "- - -" : playlistData.steps}</h4>
+                </div>
+              </div>
+              <div className="home-page__button-container">
+                <Button
+                  flashing={!listIsFiltered}
+                  disabled={userSavedTracks.length === 0}
+                  text={"FILTER"}
+                  onClick={handleFilter}
+                  variant={"secondary"}
+                />
+                <Button
+                  disabled={!listIsFiltered}
+                  text={"CREATE PLAYLIST"}
+                  onClick={() => {
+                    setShowModal(true);
+                  }}
+                  variant={"primary"}
+                />
+              </div>
             </div>
           </div>
-          <div className="home-page__playlist-data-button-container">
-            <div className="home-page__playlist-data-container">
-              <div className="home-page__playlist-data-row">
-                <h4>Total Length</h4>
-                <h4>
-                  {!playlistData.length
-                    ? "- - -"
-                    : msToTime(playlistData.length)}
-                </h4>
-              </div>
-              <div className="home-page__playlist-data-row">
-                <h4>No. of Tracks</h4>
-                <h4>{!playlistData.count ? "- - -" : playlistData.count}</h4>
-              </div>
-              <div className="home-page__playlist-data-row">
-                <h4>Total Steps</h4>
-                <h4>{!playlistData.steps ? "- - -" : playlistData.steps}</h4>
-              </div>
-            </div>
-            <div className="home-page__button-container">
-              <Button
-                flashing={!listIsFiltered}
-                disabled={userSavedTracks.length === 0}
-                text={"FILTER"}
-                onClick={handleFilter}
-                variant={"secondary"}
-              />
-              <Button
-                disabled={!listIsFiltered}
-                text={"CREATE PLAYLIST"}
-                onClick={() => {
-                  setShowModal(true);
-                }}
-                variant={"primary"}
-              />
-            </div>
-          </div>
+          <Tracklist
+            userSavedTracks={userSavedTracks}
+            tracksToDisplay={tracksToDisplay}
+            listIsFiltered={listIsFiltered}
+          />
         </div>
-        <Tracklist
-          userSavedTracks={userSavedTracks}
-          tracksToDisplay={tracksToDisplay}
-          listIsFiltered={listIsFiltered}
-        />
       </div>
       {showModal && (
         <CreatePlaylistModal

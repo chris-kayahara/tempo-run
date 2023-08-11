@@ -9,7 +9,7 @@ export default function HelpModal({ setShowHelpModal, helpModalContent }) {
       <div className="help-modal__container">
         <h2 className="help-modal__heading">{helpModalContent.heading}</h2>
         <img
-          className="create-playlist-modal__close"
+          className="help-modal__close"
           src={closeIcon}
           onClick={() => {
             setShowHelpModal(false);

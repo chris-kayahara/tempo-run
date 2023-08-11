@@ -1,5 +1,13 @@
 @use "../../styles/partials/variables" as *;
 
+$base-color: #e4e4e4;
+$shine-color: #f4f4f4;
+$animation-duration: 1.6s;
+
+@mixin flashing-animation {
+  animation: flash 2s ease-in-out infinite;
+}
+
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   border-radius: 50%;
@@ -41,6 +49,10 @@ input[type="range"]::-moz-range-thumb {
     &-lower {
       @extend .dual-range__input-range;
       transform: translateY(5px);
+
+      &--hidden {
+        display: none;
+      }
       &::-webkit-slider-thumb {
         background: $black;
         overflow: visible;
@@ -55,6 +67,11 @@ input[type="range"]::-moz-range-thumb {
     &-upper {
       @extend .dual-range__input-range;
       transform: translateY(5px);
+
+      &--hidden {
+        display: none;
+      }
+
       &::-webkit-slider-thumb {
         background: $black;
         z-index: -1;
@@ -105,12 +122,21 @@ input[type="range"]::-moz-range-thumb {
     height: 6px;
     border-radius: 3px;
     background: lightgrey;
+
+    &--loading {
+      @extend .dual-range__rail;
+      animation: flash 1s ease-in-out alternate infinite;
+    }
   }
 
   &__inner-rail {
     position: absolute;
     height: 100%;
     background: $spotify-green-light;
+
+    &--hidden {
+      display: none;
+    }
   }
 
   &__min-max-container {
@@ -120,5 +146,14 @@ input[type="range"]::-moz-range-thumb {
     flex-direction: row;
     justify-content: space-between;
     top: 100%;
+  }
+}
+
+@keyframes flash {
+  from {
+    background-color: $base-color;
+  }
+  to {
+    background-color: $shine-color;
   }
 }
