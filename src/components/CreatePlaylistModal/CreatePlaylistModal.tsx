@@ -89,12 +89,12 @@ export default function CreatePlaylistModal({
                 setToast({
                   show: true,
                   message:
-                    "Playlist successfully added to your Spotify Account!",
+                    "Playlist successfully added to your Spotify Account! Open Spotify to listen.",
                   type: "success",
                 });
                 setTimeout(() => {
                   setToast({ ...toast, show: false });
-                }, 2900);
+                }, 4900);
                 closeModal();
               })
               .catch((error) => {
@@ -106,7 +106,7 @@ export default function CreatePlaylistModal({
                 });
                 setTimeout(() => {
                   setToast({ ...toast, show: false });
-                }, 2900);
+                }, 4900);
                 closeModal();
               });
           })
@@ -119,7 +119,7 @@ export default function CreatePlaylistModal({
             });
             setTimeout(() => {
               setToast({ ...toast, show: false });
-            }, 2900);
+            }, 4900);
             closeModal();
           });
   };

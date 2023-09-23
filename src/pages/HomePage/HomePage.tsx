@@ -12,6 +12,7 @@ import CreatePlaylistModal from "../../components/CreatePlaylistModal/CreatePlay
 import Toast from "../../components/Toast/Toast";
 import FilterHeader from "../../components/FilterHeader/FilterHeader";
 import HelpModal from "../../components/HelpModal/HelpModal";
+import Footer from "../../components/Footer/Footer";
 
 const AUDIO_FEATURES_ENDPOINT = "https://api.spotify.com/v1/audio-features";
 const TRACKS_ENDPOINT = "https://api.spotify.com/v1/me/tracks";
@@ -382,6 +383,7 @@ export default function HomePage({
         />
       )}
       <Toast toast={toast} />
+      <Footer />
     </>
   );
 }
