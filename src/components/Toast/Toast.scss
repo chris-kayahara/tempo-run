@@ -4,75 +4,82 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 15rem;
-  height: 4rem;
-  background-color: $spotify-green;
-  color: $black;
+  width: 100%;
+  max-width: 320px;
+  height: 5rem;
+  background-color: $white;
   padding: 0.75rem;
   padding: 1rem;
-  border-radius: 4px;
+  border-radius: 0.5rem;
   font-size: 1rem;
   position: fixed;
-  top: 1rem;
-  right: 1rem;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 9;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   visibility: hidden;
 
   &--show {
     visibility: visible;
-    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 4.5s;
+    animation: fadein 0.5s, fadeout 0.5s 4.5s;
   }
 
   &--success {
-    background-color: $spotify-green;
+    color: $spotify-green;
+    border: $spotify-green 2px solid;
   }
   &--error {
-    background-color: $red;
+    color: $red;
+    border: $red 2px solid;
+  }
+
+  &__message {
+    text-align: center;
   }
 }
 
 @-webkit-keyframes fadein {
   from {
-    right: 0;
+    bottom: 0;
     opacity: 0;
   }
   to {
-    right: 1rem;
+    bottom: 2%;
     opacity: 1;
   }
 }
 
 @keyframes fadein {
   from {
-    right: 0;
+    bottom: 0;
     opacity: 0;
   }
   to {
-    right: 1rem;
+    bottom: 2rem;
     opacity: 1;
   }
 }
 
 @-webkit-keyframes fadeout {
   from {
-    right: 1rem;
+    bottom: 2rem;
     opacity: 1;
   }
   to {
-    right: 0;
+    bottom: 0;
     opacity: 0;
   }
 }
 
 @keyframes fadeout {
   from {
-    right: 1rem;
+    bottom: 2rem;
     opacity: 1;
   }
   to {
-    right: 0;
+    bottom: 0;
     opacity: 0;
   }
 }
