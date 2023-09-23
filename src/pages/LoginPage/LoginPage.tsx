@@ -2,15 +2,16 @@ import { useEffect } from "react";
 import "./LoginPage.scss";
 import Button from "../../components/Button/Button";
 import logo from "../../assets/logo.svg";
+import Footer from "../../components/Footer/Footer";
 
 export default function LoginPage({
   setToken,
   setIsUserLoggedIn,
   showExpiredMessage,
 }) {
-  const appName = "Tempo Run";
-  const CLIENT_ID = "a1974ecfcb7548a58a92b5b459147cdd";
-  const REDIRECT_URI = "http://localhost:5173";
+  const appName = "TEMPO RUN";
+  const CLIENT_ID = import.meta.env.VITE_CLIENT_ID;
+  const REDIRECT_URI = import.meta.env.VITE_REDIRECT_URI;
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
   const SCOPES = [
     "user-library-read",
@@ -67,11 +68,10 @@ export default function LoginPage({
         <h1 className="login-page__title">{appName}</h1>
         <p className="login-page__text">
           Create jogging playlists from the saved songs in your Spotify library
-          and run to the beat of your music, while also tracking your total
-          jogging time and total steps taken.
+          and run to the beat of your music!
         </p>
         <p className="login-page__text">
-          Get started by signing into your spotify account.
+          Get started by signing into your Spotify account.
         </p>
         {showExpiredMessage && (
           <p className="login-page__expired-message">
@@ -87,6 +87,7 @@ export default function LoginPage({
           SIGN UP
         </a>
       </div>
+      <Footer />
     </div>
   );
 }

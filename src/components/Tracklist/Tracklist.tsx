@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { msToTime } from "../../utils/utils";
 import ReactPaginate from "react-paginate";
 import "./Tracklist.scss";
@@ -13,8 +13,9 @@ export default function Tracklist({
   tracksToDisplay,
   userSavedTracks,
 }) {
-  const [trackOffset, setTrackOffset] = useState(0);
   const [tracksPerPage, setTracksPerPage] = useState(10);
+  const [trackOffset, setTrackOffset] = useState(0);
+  const [currentPageNumber, setCurrentPageNumber] = useState(0);
 
   const endOffset = trackOffset + tracksPerPage;
   const currentPage = tracksToDisplay.slice(trackOffset, endOffset);
@@ -22,19 +23,19 @@ export default function Tracklist({
 
   const handlePageClick = ({ selected }: { selected: number }) => {
     const newOffset = (selected * tracksPerPage) % tracksToDisplay.length;
+    setCurrentPageNumber(selected);
     setTrackOffset(newOffset);
   };
+
+  useEffect(() => {
+    setTrackOffset(0);
+    setCurrentPageNumber(0);
+  }, [tracksToDisplay]);
 
   return (
     <div className="tracklist">
       {!listIsFiltered && userSavedTracks.length !== 0 && (
-        <div className="tracklist__mask">
-          {/* <p className="tracklist__mask-text-container">
-            <span className="tracklist__mask-text">
-              Use the filter options above to select tracks.
-            </span>
-          </p> */}
-        </div>
+        <div className="tracklist__mask"></div>
       )}
       <div className="tracklist__heading-container">
         <h4 className="tracklist__heading-title">Title</h4>
@@ -103,16 +104,22 @@ export default function Tracklist({
             );
           })
         )}
+        {userSavedTracks.length !== 0 && (
+          <div className="tracklist__pagination-count">
+            <b>{Math.floor(trackOffset / tracksPerPage + 1)}</b> of {pageCount}
+          </div>
+        )}
       </div>
       <ReactPaginate
-        breakLabel="..."
+        breakLabel=""
         nextLabel=">"
         onPageChange={handlePageClick}
-        pageRangeDisplayed={1}
-        marginPagesDisplayed={1}
+        pageRangeDisplayed={0}
+        marginPagesDisplayed={0}
         pageCount={pageCount}
         previousLabel="<"
         renderOnZeroPageCount={null}
+        forcePage={currentPageNumber}
         containerClassName="tracklist__pagination"
         pageClassName="tracklist__pagination-item"
         pageLinkClassName="tracklist__pagination-link"

@@ -50,12 +50,13 @@ export default function DualSlider({
           onInput={handleRangeChange}
           onChange={handleRangeChange}
         ></input>
-        {showThumbLabel && (
+        {showThumbLabel && dataIsLoaded && (
           <label
             className="dual-range__input-range-label-lower"
             htmlFor="min"
             style={{
-              left: `max(calc(${minPos}% + (${8 - minPos * 0.15}px)), 1.5rem)`,
+              //prettier-ignore
+              left: `max(min(calc(${minPos}% + (${8 - minPos * 0.15}px)), calc(${maxPos}% - 3rem)), 1.5rem)`,
             }}
           >
             <div className="dual-range__input-range-label-box">
@@ -79,14 +80,13 @@ export default function DualSlider({
           onInput={handleRangeChange}
           onChange={handleRangeChange}
         ></input>
-        {showThumbLabel && (
+        {showThumbLabel && dataIsLoaded && (
           <label
             className="dual-range__input-range-label-upper"
             htmlFor="max"
             style={{
-              left: `min(calc(${maxPos}% + (${
-                8 - maxPos * 0.15
-              }px)), calc(100% - 1.5rem))`,
+              //prettier-ignore
+              left: `min(max(calc(${maxPos}% + (${8 - maxPos * 0.15}px)), calc(${minPos}% + 2.5rem)), calc(100% - 1.5rem))`,
             }}
           >
             <div className="dual-range__input-range-label-box">
@@ -113,8 +113,8 @@ export default function DualSlider({
       </div>
       {showMarks && (
         <div className="dual-range__min-max-container">
-          <div>{Math.round(min)}</div>
-          <div>{Math.round(max)}</div>
+          <div>{!dataIsLoaded ? "---" : Math.round(min)}</div>
+          <div>{!dataIsLoaded ? "---" : Math.round(max)}</div>
         </div>
       )}
       {showOffsetSliderMarks && (
