@@ -88,28 +88,32 @@ input[type="range"]::-moz-range-thumb {
 
   &__input-range-label {
     position: absolute;
-    transform: translateX(-50%) translateY(-25px);
-
-    &-lower {
-      @extend .dual-range__input-range-label;
-      transition: opacity 0.2s ease-in-out;
-    }
-    &-upper {
-      @extend .dual-range__input-range-label;
-      transition: opacity 0.2s ease-in-out;
-    }
+    transform: translateY(-1.6rem) translateX(-50%);
+    width: 5rem;
+    height: 1.5rem;
   }
+
   &__input-range-label-box {
+    position: absolute;
     background-color: $spotify-green-light;
-    width: 3rem;
+    width: 5rem;
     height: 1.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 4px;
+    z-index: 9;
   }
-  &__input-range-label-value {
-    color: $black;
+
+  &__input-range-label-arrow {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    width: 1rem;
+    height: 1rem;
+    background-color: $spotify-green-light;
+    transform: translateX(-50%) rotate(45deg);
+    z-index: 1;
   }
 
   &__rail {
