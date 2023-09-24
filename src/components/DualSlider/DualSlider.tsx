@@ -29,6 +29,8 @@ export default function DualSlider({
   const minPos = ((range[0] - min) / (max - min)) * 100;
   const maxPos = ((range[1] - min) / (max - min)) * 100;
 
+  const labelPos = (maxPos - minPos) / 2 + minPos;
+
   //TODO
   // Add markers for recommended pace
   // Make recommended pace the max pace and add message if there are no songs (tell them to add more songs to their saved tracks)
@@ -50,22 +52,22 @@ export default function DualSlider({
           onInput={handleRangeChange}
           onChange={handleRangeChange}
         ></input>
-        {showThumbLabel && dataIsLoaded && (
+        {/* {showThumbLabel && dataIsLoaded && (
           <label
             className="dual-range__input-range-label-lower"
             htmlFor="min"
             style={{
               //prettier-ignore
-              left: `max(min(calc(${minPos}% + (${8 - minPos * 0.15}px)), calc(${maxPos}% - 3rem)), 1.5rem)`,
+              left: `max(calc(${minPos}% + (${8 - minPos * 0.15}px)), 2.5rem)`,
             }}
           >
             <div className="dual-range__input-range-label-box">
               <span className="dual-range__input-range-label-value">
-                {range[0]}
+                {"Min " + range[0]}
               </span>
             </div>
           </label>
-        )}
+        )} */}
         <input
           className={
             dataIsLoaded
@@ -80,21 +82,20 @@ export default function DualSlider({
           onInput={handleRangeChange}
           onChange={handleRangeChange}
         ></input>
+
         {showThumbLabel && dataIsLoaded && (
-          <label
-            className="dual-range__input-range-label-upper"
-            htmlFor="max"
+          <div
+            className="dual-range__input-range-label"
             style={{
               //prettier-ignore
-              left: `min(max(calc(${maxPos}% + (${8 - maxPos * 0.15}px)), calc(${minPos}% + 2.5rem)), calc(100% - 1.5rem))`,
+              left: `calc(${labelPos}% + (${10 - labelPos * 0.2}px))`,
             }}
           >
+            <div className="dual-range__input-range-label-arrow"></div>
             <div className="dual-range__input-range-label-box">
-              <span className="dual-range__input-range-label-value">
-                {range[1]}
-              </span>
+              {range[0] + " - " + range[1]}
             </div>
-          </label>
+          </div>
         )}
       </div>
       <div
