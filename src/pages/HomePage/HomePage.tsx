@@ -294,7 +294,7 @@ export default function HomePage({
                   range={tempoRange}
                   minDistance={10}
                   setRange={setTempoRange}
-                  showMarks={true}
+                  showMarks={false}
                   showThumbLabel={true}
                   showOffsetSliderMarks={false}
                 />
