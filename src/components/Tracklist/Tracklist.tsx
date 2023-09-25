@@ -104,6 +104,13 @@ export default function Tracklist({
             );
           })
         )}
+        {!tracksToDisplay.length && listIsFiltered && (
+          <div className="tracklist__filter-error">
+            No tracks in your library that match the selected filter values.{" "}
+            <br></br>Please adjust the sliders above to include a wider or
+            different range for each setting.
+          </div>
+        )}
         {userSavedTracks.length !== 0 && (
           <div className="tracklist__pagination-count">
             <b>{Math.floor(trackOffset / tracksPerPage + 1)}</b> of {pageCount}

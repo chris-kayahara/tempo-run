@@ -38,16 +38,12 @@ export default function HomePage({
   const [energyRange, setEnergyRange] = useState([4, 5]);
   const [minTempo, setMinTempo] = useState(60);
   const [maxTempo, setMaxTempo] = useState(200);
-  const [playlistInfo, setPlaylistInfo] = useState({
-    name: "",
-    description: "",
-    public: true,
-  });
+
   const [listIsFiltered, setListIsFiltered] = useState(false);
   const [playlistData, setPlaylistData] = useState({
     length: 0,
-    count: "",
-    steps: "",
+    count: 0,
+    steps: 0,
   });
 
   const helpInfo = {
@@ -61,7 +57,7 @@ export default function HomePage({
     energy: {
       heading: "Energy",
       image: "energy.svg",
-      text: 'Spotify defines a song\'s energy as a "perceptual measure of intensity and activity." For example, heavy metal has high energy, while a lullaby has low energy. Here we have sorted each track into energy levels from 1 to 5.',
+      text: 'Spotify defines a song\'s energy as a "perceptual measure of intensity and activity." For example, a heavy metal song will have high energy, while a lullaby has low energy. Here we have sorted each track into energy levels from 1 to 5.',
       recommendation:
         "We recommend starting with level 5 energy to ensure your playlist has the high intensity you need to run that extra mile!",
     },
@@ -223,7 +219,6 @@ export default function HomePage({
     setMaxTempo(maxTempoValue);
     setUserSavedTracks(trackData);
     setTracksToDisplay(trackData);
-    console.log(trackData);
   };
 
   // Function to set filtered playlist data
@@ -260,16 +255,6 @@ export default function HomePage({
     setListIsFiltered(true);
     setTracksToDisplay(filteredTracks);
     setFilteredPlaylistData(filteredTracks);
-  };
-
-  // Function to handle closing the CreatePlaylistModal
-  const closeModal = () => {
-    setPlaylistInfo({
-      name: "",
-      description: "",
-      public: true,
-    });
-    setShowModal(false);
   };
 
   return (
@@ -321,22 +306,50 @@ export default function HomePage({
               </div>
             </div>
             <div className="home-page__playlist-data-button-container">
-              <div className="home-page__playlist-data-container">
-                <div className="home-page__playlist-data-row">
-                  <h4>Total Length</h4>
-                  <h4>
-                    {!playlistData.length
-                      ? "- - -"
-                      : msToTime(playlistData.length)}
-                  </h4>
-                </div>
-                <div className="home-page__playlist-data-row">
-                  <h4>No. of Tracks</h4>
-                  <h4>{!playlistData.count ? "- - -" : playlistData.count}</h4>
-                </div>
-                <div className="home-page__playlist-data-row">
-                  <h4>Total Steps</h4>
-                  <h4>{!playlistData.steps ? "- - -" : playlistData.steps}</h4>
+              <div className="home-page__playlist-data-content">
+                <div className="home-page__playlist-data-container">
+                  <div className="home-page__playlist-data-row">
+                    <h4>Total Length</h4>
+                    <h4
+                      className={
+                        !playlistData.length
+                          ? "home-page__playlist-data--unloaded"
+                          : "home-page__playlist-data"
+                      }
+                    >
+                      {!playlistData.length
+                        ? "- - -"
+                        : msToTime(playlistData.length)}
+                    </h4>
+                  </div>
+                  <div className="home-page__playlist-data-row">
+                    <h4>No. of Tracks</h4>
+                    <h4
+                      className={
+                        !playlistData.count || playlistData.count == 0
+                          ? "home-page__playlist-data--unloaded"
+                          : "home-page__playlist-data"
+                      }
+                    >
+                      {!playlistData.count || playlistData.count == 0
+                        ? "- - -"
+                        : playlistData.count + " Tracks"}
+                    </h4>
+                  </div>
+                  <div className="home-page__playlist-data-row">
+                    <h4>Total Steps</h4>
+                    <h4
+                      className={
+                        !playlistData.steps || playlistData.steps == 0
+                          ? "home-page__playlist-data--unloaded"
+                          : "home-page__playlist-data"
+                      }
+                    >
+                      {!playlistData.steps || playlistData.steps == 0
+                        ? "- - -"
+                        : playlistData.steps + " Steps"}
+                    </h4>
+                  </div>
                 </div>
               </div>
               <div className="home-page__button-container">
@@ -367,13 +380,13 @@ export default function HomePage({
       </div>
       {showModal && (
         <CreatePlaylistModal
-          closeModal={closeModal}
           accessToken={accessToken}
           tracksToDisplay={tracksToDisplay}
-          playlistInfo={playlistInfo}
-          setPlaylistInfo={setPlaylistInfo}
           toast={toast}
           setToast={setToast}
+          tempoRange={tempoRange}
+          playlistData={playlistData}
+          setShowModal={setShowModal}
         />
       )}
       {showHelpModal && (
@@ -383,7 +396,6 @@ export default function HomePage({
         />
       )}
       <Toast toast={toast} />
-      <Footer />
     </>
   );
 }

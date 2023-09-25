@@ -3,7 +3,7 @@
 
 .home-page {
   @include tablet {
-    padding: 1.5rem 1.5rem 4rem 1.5rem;
+    padding: 1.5rem 1.5rem 1.5rem 1.5rem;
   }
 
   &__content {
@@ -12,7 +12,7 @@
     background-color: $white;
     margin: 0 auto;
     max-width: 70rem;
-    padding: 0 1rem 2rem 1rem;
+    padding: 0 1rem 0 1rem;
 
     @include tablet {
       padding: 2rem 2rem 0 2rem;
@@ -27,6 +27,9 @@
     @include tablet {
       display: flex;
       flex-direction: row;
+      gap: 1rem;
+    }
+    @include laptop {
       gap: 2rem;
     }
   }
@@ -34,13 +37,14 @@
   &__filter-container {
     display: flex;
     flex-direction: column;
-    gap: 2.4rem;
+    gap: 1.5rem;
     margin: 0 auto;
     width: 100%;
-    padding: 1.5rem 0.5rem 1rem 0.5rem;
+    padding: 1.5rem 0.5rem 0.5rem 0.5rem;
     @include tablet {
+      justify-content: center;
       width: 50%;
-      gap: 2.4rem;
+      gap: 1.5rem;
       padding: 0rem 0.5rem 0rem 0.5rem;
     }
   }
@@ -65,14 +69,21 @@
     }
   }
 
+  &__playlist-data-content {
+    @include tablet {
+      margin: 0 auto;
+      width: 100%;
+      max-width: 30rem;
+    }
+  }
+
   &__playlist-data-container {
-    padding: 1rem;
-    margin-bottom: 1rem;
+    padding: 1rem 1rem 1.5rem 1rem;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     @include tablet {
-      padding: 0 1rem 1rem 1rem;
+      padding: 0 1rem 1.5rem 1rem;
     }
   }
 
@@ -80,7 +91,17 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     gap: 0.5rem;
+  }
+
+  &__playlist-data {
+    font-size: 1.25rem;
+
+    &--unloaded {
+      @extend .home-page__playlist-data;
+      color: $grey;
+    }
   }
 
   &__button-container {
