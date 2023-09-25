@@ -9,13 +9,24 @@ const USER_ID_ENDPOINT = "https://api.spotify.com/v1/me";
 
 export default function CreatePlaylistModal({
   accessToken,
-  closeModal,
   tracksToDisplay,
-  playlistInfo,
-  setPlaylistInfo,
   toast,
   setToast,
+  tempoRange,
+  playlistData,
+  setShowModal,
 }) {
+  const [playlistInfo, setPlaylistInfo] = useState({
+    name: "",
+    description:
+      tempoRange[0] +
+      " - " +
+      tempoRange[1] +
+      "bpm | " +
+      playlistData.steps +
+      " steps",
+    public: true,
+  });
   const [error, setError] = useState(false);
 
   // Function to get userId
@@ -122,6 +133,16 @@ export default function CreatePlaylistModal({
             }, 4900);
             closeModal();
           });
+  };
+
+  // Function to handle closing the CreatePlaylistModal
+  const closeModal = () => {
+    setPlaylistInfo({
+      name: "",
+      description: "",
+      public: true,
+    });
+    setShowModal(false);
   };
 
   return (
