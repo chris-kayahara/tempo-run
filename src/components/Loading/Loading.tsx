@@ -23,6 +23,7 @@ export default function Loading({ rowCount }) {
           </div>
         );
       })}
+      <div className="loading__bottom-padding"></div>
     </>
   );
 }
