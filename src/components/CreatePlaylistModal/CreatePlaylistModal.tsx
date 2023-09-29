@@ -4,8 +4,23 @@ import axios from "axios";
 import "./CreatePlaylistModal.scss";
 import Button from "../Button/Button";
 import closeIcon from "../../assets/close.svg";
+import { ToastData, Track } from "../../common/types";
 
 const USER_ID_ENDPOINT = "https://api.spotify.com/v1/me";
+
+type Props = {
+  accessToken: string | null;
+  tracksToDisplay: Track[];
+  toast: { show: boolean; message: string; type: string };
+  setToast: React.Dispatch<React.SetStateAction<ToastData>>;
+  tempoRange: number[];
+  playlistData: {
+    length: string;
+    count: string | number;
+    steps: string | number;
+  };
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 export default function CreatePlaylistModal({
   accessToken,
@@ -15,7 +30,7 @@ export default function CreatePlaylistModal({
   tempoRange,
   playlistData,
   setShowModal,
-}) {
+}: Props) {
   const [playlistInfo, setPlaylistInfo] = useState({
     name: "",
     description:
@@ -47,23 +62,16 @@ export default function CreatePlaylistModal({
   };
 
   // Function to handle Playlist creating info form changes
-  const handlePlaylistInfoChange = (event) => {
-    let value = event.target.value;
-    if (event.target.name === "public") {
-      if (event.target.value === "private") {
-        value = false;
-      } else {
-        value = true;
-      }
-    }
+  const handlePlaylistInfoChange = (event: React.SyntheticEvent) => {
+    let value = (event.target as HTMLInputElement).value;
     setPlaylistInfo({
       ...playlistInfo,
-      [event.target.name]: value,
+      [(event.target as HTMLInputElement).name]: value,
     });
   };
 
   // Function to POST new filtered playlist
-  const handlePostPlaylist = async (event) => {
+  const handlePostPlaylist = async (event: React.SyntheticEvent) => {
     event.preventDefault();
     const userId = await getUserId();
     !playlistInfo.name || !playlistInfo.description
@@ -80,7 +88,7 @@ export default function CreatePlaylistModal({
           )
           .then((response) => {
             const playlistId = response.data.id;
-            const trackIds = tracksToDisplay.map((track) => {
+            const trackIds = tracksToDisplay.map((track: Track) => {
               return track.uri;
             });
             axios
@@ -147,7 +155,10 @@ export default function CreatePlaylistModal({
 
   return (
     <div className="create-playlist-modal">
-      <form className="create-playlist-modal__form">
+      <form
+        className="create-playlist-modal__form"
+        onSubmit={handlePostPlaylist}
+      >
         <h2 className="create-playlist-modal__heading">Create Playlist</h2>
         <img
           className="create-playlist-modal__close"
@@ -185,7 +196,13 @@ export default function CreatePlaylistModal({
           value={playlistInfo.description}
           onChange={handlePlaylistInfoChange}
         ></textarea>
-        <Button variant="primary" text="CREATE" onClick={handlePostPlaylist} />
+        <Button
+          type="submit"
+          variant="primary"
+          text="CREATE"
+          disabled={false}
+          flashing={false}
+        />
       </form>
     </div>
   );

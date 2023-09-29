@@ -1,17 +1,17 @@
 import helpIcon from "../../assets/help.svg";
 import "./FilterHeader.scss";
 
-interface FilterInfo {
+type Props = {
   text: string;
   setShowHelpModal: Function;
   setHelpModalContent: Function;
-}
+};
 
 export default function FilterHeader({
   text,
   setShowHelpModal,
   setHelpModalContent,
-}: FilterInfo) {
+}: Props) {
   return (
     <div className="filter-header">
       <h3 className="filter-header__text">{text}</h3>

@@ -1,6 +1,10 @@
 import "./Toast.scss";
 
-export default function Toast({ toast }) {
+type Props = {
+  toast: { show: boolean; message: string; type: string };
+};
+
+export default function Toast({ toast }: Props) {
   return (
     <div
       className={
