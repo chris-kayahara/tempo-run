@@ -6,38 +6,90 @@
   position: relative;
 
   &__content {
+    background-color: $light-grey;
     position: absolute;
     display: flex;
-    justify-content: center;
     flex-direction: column;
     width: 90%;
     max-width: 30rem;
-    gap: 1.5rem;
-    background-color: #ffffff;
-    border-radius: 0.5rem;
+    border-radius: 2rem;
     transform: translate(-50%, -50%);
     top: 50%;
     left: 50%;
+    box-shadow: $card-shadow;
 
     @include tablet {
-      padding: 1.5rem;
-      box-shadow: $card-shadow;
+      max-width: 40rem;
+    }
+
+    @include desktop {
+      flex-direction: row-reverse;
+      max-width: 70rem;
+    }
+  }
+
+  &__logo-container {
+    background-color: $white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 3rem 1.5rem;
+    width: 100%;
+    border-radius: 2rem;
+
+    @include tablet {
+      padding: 3rem 2.5rem;
+    }
+
+    @include desktop {
+      padding: 3rem 3rem;
+      width: 50%;
     }
   }
 
   &__logo {
-    width: 10rem;
-    margin: 1rem auto;
+    width: 30%;
+    &--grey {
+      @extend .login-page__logo;
+      filter: invert(99%) sepia(4%) saturate(237%) hue-rotate(235deg)
+        brightness(115%) contrast(80%);
+    }
+    &--light-grey {
+      @extend .login-page__logo;
+      filter: invert(100%) sepia(23%) saturate(68%) hue-rotate(186deg)
+        brightness(109%) contrast(91%);
+    }
+  }
+
+  &__text-container {
+    padding: 1.5rem;
+
+    @include tablet {
+      padding: 2rem;
+    }
+    @include desktop {
+      padding: 5.625rem 3.5rem 5.625rem 5.625rem;
+      width: 50%;
+    }
   }
 
   &__title {
-    text-align: center;
-    font-size: 2.5rem;
-    font-weight: 200;
+    letter-spacing: 3px;
+    font-size: 1.875rem;
+    font-weight: 300;
+    margin-bottom: 0.875rem;
+
+    @include tablet {
+      font-size: 2.5rem;
+    }
   }
 
   &__text {
-    text-align: center;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+    @include tablet {
+      font-size: 1rem;
+    }
   }
 
   &__expired-message {
@@ -46,18 +98,15 @@
     font-weight: 400;
   }
 
-  &__register-link {
-    width: auto;
-    margin: 0 auto;
-    text-decoration: none;
-    text-align: center;
-    font-weight: 600;
-    font-size: 0.875rem;
-    color: $grey;
+  &__button-container {
+    margin-top: 1.5rem;
 
-    &:hover {
-      transform: scale(1.035);
-      color: $black;
+    @include tablet {
+      margin-top: 2rem;
+    }
+
+    @include desktop {
+      width: 10rem;
     }
   }
 }

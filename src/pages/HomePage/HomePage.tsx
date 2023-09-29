@@ -1,18 +1,22 @@
 import { useState, useEffect } from "react";
-import { msToTime } from "../../common/utils";
+import { msToTime, msToHourMin } from "../../common/utils";
 import axios from "axios";
 
 import "./HomePage.scss";
 
 import DualSlider from "../../components/DualSlider/DualSlider";
 import Tracklist from "../../components/Tracklist/Tracklist";
-import Header from "../../components/Header/Header";
 import Button from "../../components/Button/Button";
 import CreatePlaylistModal from "../../components/CreatePlaylistModal/CreatePlaylistModal";
 import Toast from "../../components/Toast/Toast";
 import FilterHeader from "../../components/FilterHeader/FilterHeader";
 import HelpModal from "../../components/HelpModal/HelpModal";
-import { HelpModalProps, ToastData, Track } from "../../common/types";
+import {
+  HelpModalProps,
+  ToastData,
+  Track,
+  PlaylistData,
+} from "../../common/types";
 
 const AUDIO_FEATURES_ENDPOINT = "https://api.spotify.com/v1/audio-features";
 const TRACKS_ENDPOINT = "https://api.spotify.com/v1/me/tracks";
@@ -24,14 +28,7 @@ type Props = {
   setShowExpiredMessage: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-type PlaylistData = {
-  length: string;
-  count: string | number;
-  steps: string | number;
-};
-
 export default function HomePage({
-  token,
   setToken,
   setIsUserLoggedIn,
   setShowExpiredMessage,
@@ -59,21 +56,21 @@ export default function HomePage({
 
   const [listIsFiltered, setListIsFiltered] = useState(false);
   const [playlistData, setPlaylistData] = useState<PlaylistData>({
-    length: "",
+    length: 0,
     count: 0,
     steps: 0,
   });
 
   const helpInfo = {
     tempo: {
-      heading: "Tempo (Cadence)",
+      heading: "CADENCE (TEMPO)",
       image: "tempo.svg",
       text: "Tempo refers to the speed or pace of a piece of music, measured in beats per minute (bpm). In this case, the tempo will represent your running cadence, which refers to the number of steps per minute (spm) you take as you run.",
       recommendation:
         "The recommended running cadence range is 160-180spm. If you are unsure of your ideal running cadence, start slow and work your way up to reduce your risk of injury.",
     },
     energy: {
-      heading: "Energy",
+      heading: "ENERGY",
       image: "energy.svg",
       text: 'Spotify defines a song\'s energy as a "perceptual measure of intensity and activity." For example, a heavy metal song will have high energy, while a lullaby has low energy. Here we have sorted each track into energy levels from 1 to 5.',
       recommendation:
@@ -256,9 +253,9 @@ export default function HomePage({
 
     setPlaylistData({
       ...playlistData,
-      steps: Math.floor(totalSteps).toLocaleString("en-US"),
-      length: msToTime(playlistLength),
-      count: playlistCount.toLocaleString("en-US"),
+      steps: Math.floor(totalSteps),
+      length: playlistLength,
+      count: playlistCount,
     });
   };
 
@@ -277,100 +274,76 @@ export default function HomePage({
     setFilteredPlaylistData(filteredTracks);
   };
 
+  // Function to handle logout
+  const handleLogout = () => {
+    setToken("");
+    localStorage.removeItem("token");
+    localStorage.removeItem("expiresAt");
+    localStorage.removeItem("tokenType");
+    setIsUserLoggedIn(false);
+  };
+
   return (
     <>
-      <Header setToken={setToken} setIsUserLoggedIn={setIsUserLoggedIn} />
       <div className="home-page">
-        <div className="home-page__content">
-          <div className="home-page__hero-container">
-            <div className="home-page__filter-container">
-              <div className="home-page__tempo-container">
-                <FilterHeader
-                  text={helpInfo.tempo.heading}
-                  setShowHelpModal={setShowHelpModal}
-                  setHelpModalContent={() => {
-                    setHelpModalContent(helpInfo.tempo);
-                  }}
-                />
-                <DualSlider
-                  dataIsLoaded={userSavedTracks.length != 0}
-                  min={minTempo}
-                  max={maxTempo}
-                  range={tempoRange}
-                  minDistance={10}
-                  setRange={setTempoRange}
-                  showMarks={false}
-                  showThumbLabel={true}
-                  showOffsetSliderMarks={false}
-                />
-              </div>
-              <div className="home-page__energy-container">
-                <FilterHeader
-                  text={helpInfo.energy.heading}
-                  setShowHelpModal={setShowHelpModal}
-                  setHelpModalContent={() => {
-                    setHelpModalContent(helpInfo.energy);
-                  }}
-                />
-                <DualSlider
-                  dataIsLoaded={userSavedTracks.length != 0}
-                  min={0}
-                  max={5}
-                  range={energyRange}
-                  minDistance={1}
-                  setRange={setEnergyRange}
-                  showMarks={false}
-                  showThumbLabel={false}
-                  showOffsetSliderMarks={true}
-                />
-              </div>
+        <div className="home-page__container">
+          <div className="home-page__header">
+            <h1 className="home-page__header-heading">TEMPO RUN</h1>
+            <div className="home-page__header-button-container">
+              <Button
+                onClick={handleLogout}
+                text={"Logout"}
+                variant={"tertiary"}
+                disabled={false}
+                flashing={false}
+              />
             </div>
-            <div className="home-page__playlist-data-button-container">
-              <div className="home-page__playlist-data-content">
-                <div className="home-page__playlist-data-container">
-                  <div className="home-page__playlist-data-row">
-                    <h4>Total Length</h4>
-                    <h4
-                      className={
-                        !playlistData.length
-                          ? "home-page__playlist-data--unloaded"
-                          : "home-page__playlist-data"
-                      }
-                    >
-                      {!playlistData.length ? "- - -" : playlistData.length}
-                    </h4>
+          </div>
+          <div className="home-page__content">
+            <div className="home-page__hero-container">
+              <div className="home-page__filter-container">
+                <div className="home-page__filter-input-container">
+                  <div className="home-page__tempo-container">
+                    <FilterHeader
+                      text={helpInfo.tempo.heading}
+                      setShowHelpModal={setShowHelpModal}
+                      setHelpModalContent={() => {
+                        setHelpModalContent(helpInfo.tempo);
+                      }}
+                    />
+                    <DualSlider
+                      dataIsLoaded={userSavedTracks.length != 0}
+                      min={minTempo}
+                      max={maxTempo}
+                      range={tempoRange}
+                      minDistance={10}
+                      setRange={setTempoRange}
+                      showMarks={false}
+                      showThumbLabel={true}
+                      showOffsetSliderMarks={false}
+                    />
                   </div>
-                  <div className="home-page__playlist-data-row">
-                    <h4>No. of Tracks</h4>
-                    <h4
-                      className={
-                        !playlistData.count || playlistData.count == 0
-                          ? "home-page__playlist-data--unloaded"
-                          : "home-page__playlist-data"
-                      }
-                    >
-                      {!playlistData.count || playlistData.count == 0
-                        ? "- - -"
-                        : playlistData.count + " Tracks"}
-                    </h4>
-                  </div>
-                  <div className="home-page__playlist-data-row">
-                    <h4>Total Steps</h4>
-                    <h4
-                      className={
-                        !playlistData.steps || playlistData.steps == 0
-                          ? "home-page__playlist-data--unloaded"
-                          : "home-page__playlist-data"
-                      }
-                    >
-                      {!playlistData.steps || playlistData.steps == 0
-                        ? "- - -"
-                        : playlistData.steps + " Steps"}
-                    </h4>
+                  <div className="home-page__energy-container">
+                    <FilterHeader
+                      text={helpInfo.energy.heading}
+                      setShowHelpModal={setShowHelpModal}
+                      setHelpModalContent={() => {
+                        setHelpModalContent(helpInfo.energy);
+                      }}
+                    />
+                    <DualSlider
+                      dataIsLoaded={userSavedTracks.length != 0}
+                      min={0}
+                      max={5}
+                      range={energyRange}
+                      minDistance={1}
+                      setRange={setEnergyRange}
+                      showMarks={false}
+                      showThumbLabel={false}
+                      showOffsetSliderMarks={true}
+                    />
                   </div>
                 </div>
-              </div>
-              <div className="home-page__button-container">
                 <Button
                   flashing={!listIsFiltered}
                   disabled={userSavedTracks.length === 0}
@@ -378,22 +351,86 @@ export default function HomePage({
                   onClick={handleFilter}
                   variant={"secondary"}
                 />
-                <Button
-                  disabled={!listIsFiltered}
-                  text={"CREATE PLAYLIST"}
-                  onClick={() => {
-                    setShowModal(true);
-                  }}
-                  variant={"primary"}
-                />
+              </div>
+              <div className="home-page__playlist-data-button-container">
+                <div className="home-page__playlist-data-content">
+                  <div className="home-page__playlist-data-container">
+                    <div
+                      className={
+                        !playlistData.length
+                          ? "home-page__playlist-data-box--unloaded"
+                          : "home-page__playlist-data-box"
+                      }
+                    >
+                      <h4 className="home-page__playlist-data-title">
+                        Total Length
+                      </h4>
+                      <h4 className="home-page__playlist-data">
+                        {!playlistData.length
+                          ? "0min"
+                          : msToHourMin(playlistData.length)}
+                      </h4>
+                    </div>
+                    <div
+                      className={
+                        !playlistData.count || playlistData.count == 0
+                          ? "home-page__playlist-data-box--unloaded"
+                          : "home-page__playlist-data-box"
+                      }
+                    >
+                      <h4 className="home-page__playlist-data-title">
+                        No. of Tracks
+                      </h4>
+                      <h4 className="home-page__playlist-data">
+                        {!playlistData.count || playlistData.count == 0
+                          ? "0"
+                          : playlistData.count >= 10000
+                          ? Math.floor(
+                              playlistData.count / 1000
+                            ).toLocaleString("en-US") + "K"
+                          : playlistData.count.toLocaleString("en-US")}
+                      </h4>
+                    </div>
+                    <div
+                      className={
+                        !playlistData.steps || playlistData.steps == 0
+                          ? "home-page__playlist-data-box--unloaded"
+                          : "home-page__playlist-data-box"
+                      }
+                    >
+                      <h4 className="home-page__playlist-data-title">
+                        Total Steps
+                      </h4>
+                      <h4 className="home-page__playlist-data">
+                        {!playlistData.steps || playlistData.steps == 0
+                          ? "0"
+                          : playlistData.steps >= 10000
+                          ? Math.floor(
+                              playlistData.steps / 1000
+                            ).toLocaleString("en-US") + "K"
+                          : playlistData.steps.toLocaleString("en-US")}
+                      </h4>
+                    </div>
+                  </div>
+                </div>
+                <div className="home-page__button-container">
+                  <Button
+                    disabled={!listIsFiltered}
+                    text={"CREATE PLAYLIST"}
+                    onClick={() => {
+                      setShowModal(true);
+                    }}
+                    variant={"primary"}
+                  />
+                </div>
               </div>
             </div>
+            <Tracklist
+              userSavedTracks={userSavedTracks}
+              tracksToDisplay={tracksToDisplay}
+              listIsFiltered={listIsFiltered}
+            />
           </div>
-          <Tracklist
-            userSavedTracks={userSavedTracks}
-            tracksToDisplay={tracksToDisplay}
-            listIsFiltered={listIsFiltered}
-          />
         </div>
       </div>
       {showModal && (

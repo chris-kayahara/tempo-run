@@ -37,7 +37,8 @@
 
     &--selected {
       @extend .slider-marks__number;
-      background-color: $spotify-green-light;
+      background-color: $spotify-green;
+      color: $white;
       transition: all 0.2s ease-in-out;
     }
   }
