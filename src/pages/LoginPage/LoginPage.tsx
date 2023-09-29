@@ -4,11 +4,24 @@ import Button from "../../components/Button/Button";
 import logo from "../../assets/logo.svg";
 import Footer from "../../components/Footer/Footer";
 
+type Props = {
+  setToken: React.Dispatch<React.SetStateAction<string>>;
+  setIsUserLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  showExpiredMessage: boolean;
+};
+
+type Token = {
+  [key: string]: any;
+  access_token: string;
+  expires_in: number;
+  token_type: string;
+};
+
 export default function LoginPage({
   setToken,
   setIsUserLoggedIn,
   showExpiredMessage,
-}) {
+}: Props) {
   const appName = "TEMPO RUN";
   const CLIENT_ID = import.meta.env.VITE_CLIENT_ID;
   const REDIRECT_URI = import.meta.env.VITE_REDIRECT_URI;
@@ -25,32 +38,34 @@ export default function LoginPage({
   const SHOW_DIALOG = true;
 
   const handleLogin = () => {
-    window.location = `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=${SCOPES_URL_PARAM}&response_type=${RESPONSE_TYPE}&show_dialog=${SHOW_DIALOG}`;
+    window.location.href = `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=${SCOPES_URL_PARAM}&response_type=${RESPONSE_TYPE}&show_dialog=${SHOW_DIALOG}`;
   };
 
-  const getToken = (hash) => {
+  const getToken = (hash: string) => {
     const urlHash = hash.substring(1);
     const paramsInUrl = urlHash.split("&");
-    const paramsSplitUp = paramsInUrl.reduce(
-      (accumulator: object, currentValue: string) => {
-        const [key, value] = currentValue.split("=");
-        accumulator[key] = value;
-        return accumulator;
-      },
-      {}
-    );
+
+    let paramsSplitUp: Token = {
+      access_token: "",
+      expires_in: 0,
+      token_type: "",
+    };
+    paramsInUrl.forEach((param) => {
+      const key: string = param.split("=")[0];
+      const value: string = param.split("=")[1];
+      paramsSplitUp[key as keyof typeof paramsSplitUp] = value;
+    });
+
     return paramsSplitUp;
   };
 
   useEffect(() => {
     if (!window.localStorage.getItem("token") && window.location.hash) {
-      const { access_token, expires_in, token_type } = getToken(
+      const { access_token, expires_in, token_type }: Token = getToken(
         window.location.hash
       );
       const currentDate = new Date().getTime();
       const expiresAt = currentDate + expires_in * 1000;
-      // TEST VALUE FOR TOKEN EXPIRATION
-      // const expiresAt = currentDate + 30000;
       localStorage.clear();
       localStorage.setItem("token", access_token);
       localStorage.setItem("expiresAt", expiresAt.toString());

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { msToTime } from "../../utils/utils";
+import { msToTime } from "../../common/utils";
 import ReactPaginate from "react-paginate";
 import "./Tracklist.scss";
 import durationIcon from "../../assets/duration.svg";
@@ -7,18 +7,25 @@ import energyIcon from "../../assets/energy.svg";
 import energyFilledIcon from "../../assets/energy-filled.svg";
 import tempoIcon from "../../assets/tempo.svg";
 import Loading from "../Loading/Loading";
+import { Track } from "../../common/types";
+
+type Props = {
+  listIsFiltered: boolean;
+  tracksToDisplay: object[];
+  userSavedTracks: object[];
+};
 
 export default function Tracklist({
   listIsFiltered,
   tracksToDisplay,
   userSavedTracks,
-}) {
+}: Props) {
   const [tracksPerPage, setTracksPerPage] = useState(10);
   const [trackOffset, setTrackOffset] = useState(0);
   const [currentPageNumber, setCurrentPageNumber] = useState(0);
 
   const endOffset = trackOffset + tracksPerPage;
-  const currentPage = tracksToDisplay.slice(trackOffset, endOffset);
+  const currentPage = tracksToDisplay.slice(trackOffset, endOffset) as Track[];
   const pageCount = Math.ceil(tracksToDisplay.length / tracksPerPage);
 
   const handlePageClick = ({ selected }: { selected: number }) => {
@@ -62,7 +69,7 @@ export default function Tracklist({
         {userSavedTracks.length === 0 ? (
           <Loading rowCount={5} />
         ) : (
-          currentPage.map((track) => {
+          currentPage.map((track: Track) => {
             let artists = track.track.artists.map((artist) => artist.name);
             return (
               <div className="tracklist__row" key={track.track.id}>

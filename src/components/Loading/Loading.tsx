@@ -1,6 +1,10 @@
 import "./Loading.scss";
 
-export default function Loading({ rowCount }) {
+type Props = {
+  rowCount: number;
+};
+
+export default function Loading({ rowCount }: Props) {
   return (
     <>
       {[...Array(rowCount)].map((e, i) => {
