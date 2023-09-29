@@ -2,8 +2,17 @@ import "./HelpModal.scss";
 import closeIcon from "../../assets/close.svg";
 import tempoIcon from "../../assets/tempo.svg";
 import energyIcon from "../../assets/energy.svg";
+import { HelpModalProps } from "../../common/types";
 
-export default function HelpModal({ setShowHelpModal, helpModalContent }) {
+type Props = {
+  setShowHelpModal: React.Dispatch<React.SetStateAction<boolean>>;
+  helpModalContent: HelpModalProps;
+};
+
+export default function HelpModal({
+  setShowHelpModal,
+  helpModalContent,
+}: Props) {
   return (
     <div className="help-modal">
       <div className="help-modal__container">

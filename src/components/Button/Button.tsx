@@ -1,8 +1,25 @@
 import "./Button.scss";
 
-export default function Button({ onClick, text, variant, disabled, flashing }) {
+type Props = {
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  text: string;
+  type?: "button" | "submit" | "reset" | undefined;
+  variant: string;
+  disabled?: boolean;
+  flashing?: boolean;
+};
+
+export default function Button({
+  onClick,
+  text,
+  type,
+  variant,
+  disabled,
+  flashing,
+}: Props) {
   return (
     <button
+      type={type}
       disabled={disabled}
       onClick={onClick}
       className={

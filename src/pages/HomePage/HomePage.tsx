@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { msToTime } from "../../utils/utils";
+import { msToTime } from "../../common/utils";
 import axios from "axios";
 
 import "./HomePage.scss";
@@ -12,36 +12,54 @@ import CreatePlaylistModal from "../../components/CreatePlaylistModal/CreatePlay
 import Toast from "../../components/Toast/Toast";
 import FilterHeader from "../../components/FilterHeader/FilterHeader";
 import HelpModal from "../../components/HelpModal/HelpModal";
-import Footer from "../../components/Footer/Footer";
+import { HelpModalProps, ToastData, Track } from "../../common/types";
 
 const AUDIO_FEATURES_ENDPOINT = "https://api.spotify.com/v1/audio-features";
 const TRACKS_ENDPOINT = "https://api.spotify.com/v1/me/tracks";
+
+type Props = {
+  token: string;
+  setToken: React.Dispatch<React.SetStateAction<string>>;
+  setIsUserLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowExpiredMessage: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+type PlaylistData = {
+  length: string;
+  count: string | number;
+  steps: string | number;
+};
 
 export default function HomePage({
   token,
   setToken,
   setIsUserLoggedIn,
   setShowExpiredMessage,
-}) {
+}: Props) {
   const [showModal, setShowModal] = useState(false);
   const [showHelpModal, setShowHelpModal] = useState(false);
-  const [helpModalContent, setHelpModalContent] = useState({});
-  const [toast, setToast] = useState({
+  const [helpModalContent, setHelpModalContent] = useState<HelpModalProps>({
+    heading: "",
+    image: "",
+    text: "",
+    recommendation: "",
+  });
+  const [toast, setToast] = useState<ToastData>({
     show: false,
     message: "",
     type: "success",
   });
-  const [accessToken, setAccessToken] = useState<string>("");
-  const [userSavedTracks, setUserSavedTracks] = useState([]);
-  const [tracksToDisplay, setTracksToDisplay] = useState([]);
+  const [accessToken, setAccessToken] = useState<string | null>("");
+  const [userSavedTracks, setUserSavedTracks] = useState<Track[]>([]);
+  const [tracksToDisplay, setTracksToDisplay] = useState<Track[]>([]);
   const [tempoRange, setTempoRange] = useState([160, 170]);
   const [energyRange, setEnergyRange] = useState([4, 5]);
   const [minTempo, setMinTempo] = useState(60);
   const [maxTempo, setMaxTempo] = useState(200);
 
   const [listIsFiltered, setListIsFiltered] = useState(false);
-  const [playlistData, setPlaylistData] = useState({
-    length: 0,
+  const [playlistData, setPlaylistData] = useState<PlaylistData>({
+    length: "",
     count: 0,
     steps: 0,
   });
@@ -66,11 +84,13 @@ export default function HomePage({
   // Store access token as state variable if it exists and check if token has expired
   useEffect(() => {
     const currentDate = new Date().getTime();
+    const token: string | null = localStorage.getItem("token");
+    const expiresAt: any = localStorage.getItem("expiresAt");
 
-    if (localStorage.getItem("token")) {
-      setAccessToken(localStorage.getItem("token"));
+    if (token) {
+      setAccessToken(token);
     }
-    if (localStorage.getItem("expiresAt") * 1 < currentDate) {
+    if (expiresAt && expiresAt * 1 < currentDate) {
       setToken("");
       localStorage.removeItem("token");
       localStorage.removeItem("expiresAt");
@@ -124,7 +144,7 @@ export default function HomePage({
     );
 
     // Process each promise and set usersSavedTracks
-    const tracks = await axios
+    const tracks = (await axios
       .all(trackRequests)
       .then((responses) => {
         let data: object[] = [];
@@ -136,7 +156,7 @@ export default function HomePage({
       })
       .catch((error) => {
         console.log(error);
-      });
+      })) as Track[];
 
     // Split track list into smaller chunks for API calls
     const savedTracksChunks = [];
@@ -168,7 +188,7 @@ export default function HomePage({
     );
 
     // Process each promise and set usersSavedTracks
-    const trackAudioData = await axios
+    const trackAudioData = (await axios
       .all(dataRequests)
       .then((responses) => {
         let data: object[] = [];
@@ -176,11 +196,11 @@ export default function HomePage({
         responses.forEach((resp) => {
           data.push(...resp.data.audio_features);
         });
-        return data;
+        return data as Track[];
       })
       .catch((error) => {
         console.log(error);
-      });
+      })) as Track[];
 
     // Merge data from API calls
     let mergedTrackData = [];
@@ -195,7 +215,7 @@ export default function HomePage({
     return mergedTrackData;
   };
 
-  // FUnction to gather all API data and set state
+  // Function to gather all API data and set state
   const setAllData = async () => {
     const trackData = await getAllSavedTracks();
     const minTempoValue = Math.min.apply(
@@ -219,10 +239,11 @@ export default function HomePage({
     setMaxTempo(maxTempoValue);
     setUserSavedTracks(trackData);
     setTracksToDisplay(trackData);
+    console.log(trackData);
   };
 
   // Function to set filtered playlist data
-  const setFilteredPlaylistData = (trackData) => {
+  const setFilteredPlaylistData = (trackData: Track[]) => {
     let playlistLength = 0;
     let totalSteps = 0;
     for (let i = 0; i < trackData.length; i++) {
@@ -236,14 +257,13 @@ export default function HomePage({
     setPlaylistData({
       ...playlistData,
       steps: Math.floor(totalSteps).toLocaleString("en-US"),
-      length: playlistLength,
+      length: msToTime(playlistLength),
       count: playlistCount.toLocaleString("en-US"),
     });
   };
 
   // Function to handle filter button click. Filter songs by selected BPM and energy range
-  const handleFilter = (event) => {
-    event.preventDefault();
+  const handleFilter = () => {
     const filteredTracks = userSavedTracks.filter((track) => {
       return (
         Math.round(track.tempo) >= tempoRange[0] &&
@@ -317,9 +337,7 @@ export default function HomePage({
                           : "home-page__playlist-data"
                       }
                     >
-                      {!playlistData.length
-                        ? "- - -"
-                        : msToTime(playlistData.length)}
+                      {!playlistData.length ? "- - -" : playlistData.length}
                     </h4>
                   </div>
                   <div className="home-page__playlist-data-row">
