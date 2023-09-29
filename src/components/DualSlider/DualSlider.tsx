@@ -1,6 +1,18 @@
 import SliderMarks from "../SliderMarks/SliderMarks";
 import "./DualSlider.scss";
 
+type Props = {
+  min: number;
+  max: number;
+  range: number[];
+  setRange: React.Dispatch<React.SetStateAction<number[]>>;
+  minDistance: number;
+  showMarks: boolean;
+  showThumbLabel: boolean;
+  showOffsetSliderMarks: boolean;
+  dataIsLoaded: boolean;
+};
+
 export default function DualSlider({
   min,
   max,
@@ -11,7 +23,7 @@ export default function DualSlider({
   showThumbLabel,
   showOffsetSliderMarks,
   dataIsLoaded,
-}) {
+}: Props) {
   const handleRangeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(event.currentTarget.value);
     const thumbIndex = event.currentTarget.id;
@@ -52,22 +64,6 @@ export default function DualSlider({
           onInput={handleRangeChange}
           onChange={handleRangeChange}
         ></input>
-        {/* {showThumbLabel && dataIsLoaded && (
-          <label
-            className="dual-range__input-range-label-lower"
-            htmlFor="min"
-            style={{
-              //prettier-ignore
-              left: `max(calc(${minPos}% + (${8 - minPos * 0.15}px)), 2.5rem)`,
-            }}
-          >
-            <div className="dual-range__input-range-label-box">
-              <span className="dual-range__input-range-label-value">
-                {"Min " + range[0]}
-              </span>
-            </div>
-          </label>
-        )} */}
         <input
           className={
             dataIsLoaded
