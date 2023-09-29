@@ -5,11 +5,12 @@
   position: relative;
   display: flex;
   flex-direction: row;
-  align-items: start;
-  margin-bottom: 2rem;
+  align-items: center;
+  margin-bottom: 1.75rem;
 
   &__text {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
+    font-weight: 400;
   }
 
   &__help-icon {

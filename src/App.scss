@@ -1,5 +1,6 @@
 @use "./styles/partials/variables" as *;
 @use "./styles/partials/mixins" as *;
+@use "./styles/partials/fonts";
 
 *,
 *::before,
@@ -10,12 +11,10 @@
 }
 
 body {
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-family: $app-font;
+  font-weight: 300;
   background-color: $white;
   color: $black;
-  @include tablet {
-    background-color: $light-grey;
-  }
 }
 
 button {

@@ -4,7 +4,7 @@ import axios from "axios";
 import "./CreatePlaylistModal.scss";
 import Button from "../Button/Button";
 import closeIcon from "../../assets/close.svg";
-import { ToastData, Track } from "../../common/types";
+import { ToastData, Track, PlaylistData } from "../../common/types";
 
 const USER_ID_ENDPOINT = "https://api.spotify.com/v1/me";
 
@@ -14,11 +14,7 @@ type Props = {
   toast: { show: boolean; message: string; type: string };
   setToast: React.Dispatch<React.SetStateAction<ToastData>>;
   tempoRange: number[];
-  playlistData: {
-    length: string;
-    count: string | number;
-    steps: string | number;
-  };
+  playlistData: PlaylistData;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
@@ -38,7 +34,7 @@ export default function CreatePlaylistModal({
       " - " +
       tempoRange[1] +
       "bpm | " +
-      playlistData.steps +
+      playlistData.steps.toLocaleString("en-US") +
       " steps",
     public: true,
   });
@@ -104,7 +100,7 @@ export default function CreatePlaylistModal({
                   },
                 }
               )
-              .then((response) => {
+              .then(() => {
                 setToast({
                   show: true,
                   message:
@@ -196,13 +192,7 @@ export default function CreatePlaylistModal({
           value={playlistInfo.description}
           onChange={handlePlaylistInfoChange}
         ></textarea>
-        <Button
-          type="submit"
-          variant="primary"
-          text="CREATE"
-          disabled={false}
-          flashing={false}
-        />
+        <Button type="submit" variant="primary" text="CREATE" />
       </form>
     </div>
   );

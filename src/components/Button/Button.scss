@@ -1,4 +1,5 @@
 @use "../../styles/partials/variables" as *;
+@use "../../styles/partials/fonts";
 
 @mixin animate($animation, $duration, $method, $times) {
   animation: $animation $duration $method $times;
@@ -11,19 +12,20 @@
 }
 
 .button {
-  letter-spacing: 0.5px;
+  font-family: "Outfit";
+  letter-spacing: 2px;
   font-size: 14px;
   outline: none;
   border: none;
   height: 3rem;
   border-radius: 1.5rem;
-  font-weight: 600;
+  font-weight: 700;
   width: 100%;
   cursor: pointer;
 
   &-primary {
     @extend .button;
-    color: black;
+    color: $white;
     background-color: $spotify-green;
 
     &:hover {
@@ -63,12 +65,13 @@
 
   &-tertiary {
     @extend .button;
-    color: $spotify-green;
-    background-color: $black;
+    background-color: $light-grey;
+    color: $black;
     border: $spotify-green solid 1px;
-    width: 5rem;
-    height: 2.5rem;
-    font-size: 0.75rem;
+    width: 100%;
+    height: 2rem;
+    font-size: 0.875rem;
+    font-weight: 400;
 
     &:hover {
       background-color: $spotify-green-extra-light;
