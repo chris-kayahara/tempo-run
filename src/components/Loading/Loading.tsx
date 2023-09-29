@@ -7,7 +7,7 @@ type Props = {
 export default function Loading({ rowCount }: Props) {
   return (
     <>
-      {[...Array(rowCount)].map((e, i) => {
+      {[...Array(rowCount)].map((_e, i) => {
         return (
           <div className="loading" key={i}>
             <div className="loading__container-info">

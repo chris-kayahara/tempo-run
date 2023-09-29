@@ -20,7 +20,7 @@ export default function Tracklist({
   tracksToDisplay,
   userSavedTracks,
 }: Props) {
-  const [tracksPerPage, setTracksPerPage] = useState(10);
+  const tracksPerPage = 8;
   const [trackOffset, setTrackOffset] = useState(0);
   const [currentPageNumber, setCurrentPageNumber] = useState(0);
 
@@ -67,7 +67,7 @@ export default function Tracklist({
       </div>
       <div className="tracklist__list">
         {userSavedTracks.length === 0 ? (
-          <Loading rowCount={5} />
+          <Loading rowCount={8} />
         ) : (
           currentPage.map((track: Track) => {
             let artists = track.track.artists.map((artist) => artist.name);
@@ -96,7 +96,7 @@ export default function Tracklist({
                   <div className="tracklist__data-energy">
                     {!track.energy
                       ? "N/A"
-                      : [...Array(Math.ceil(track.energy * 5))].map((e, i) => {
+                      : [...Array(Math.ceil(track.energy * 5))].map((_e, i) => {
                           return (
                             <img
                               className="tracklist__data-energy-icon"

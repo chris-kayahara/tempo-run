@@ -79,28 +79,34 @@ export default function LoginPage({
   return (
     <div className="login-page">
       <div className="login-page__content">
-        <img className="login-page__logo" src={logo} />
-        <h1 className="login-page__title">{appName}</h1>
-        <p className="login-page__text">
-          Create jogging playlists from the saved songs in your Spotify library
-          and run to the beat of your music!
-        </p>
-        <p className="login-page__text">
-          Get started by signing into your Spotify account.
-        </p>
-        {showExpiredMessage && (
-          <p className="login-page__expired-message">
-            Session expired.<br></br>Please log back in to continue using this
-            application.
+        <div className="login-page__logo-container">
+          <img className="login-page__logo--light-grey" src={logo} />
+          <img className="login-page__logo--grey" src={logo} />
+          <img className="login-page__logo" src={logo} />
+        </div>
+        <div className="login-page__text-container">
+          <h1 className="login-page__title">{appName}</h1>
+          <p className="login-page__text">
+            Create jogging playlists from the saved songs in your Spotify
+            library and run to the beat of your music!
           </p>
-        )}
-        <Button onClick={handleLogin} text="LOGIN" variant={"primary"}></Button>
-        <a
-          className="login-page__register-link"
-          href="https://www.spotify.com/signup"
-        >
-          SIGN UP
-        </a>
+          <p className="login-page__text">
+            Get started by signing into your Spotify account.
+          </p>
+          {showExpiredMessage && (
+            <p className="login-page__expired-message">
+              Session expired.<br></br>Please log back in to continue using this
+              application.
+            </p>
+          )}
+          <div className="login-page__button-container">
+            <Button
+              onClick={handleLogin}
+              text="LOGIN"
+              variant={"primary"}
+            ></Button>
+          </div>
+        </div>
       </div>
       <Footer />
     </div>
