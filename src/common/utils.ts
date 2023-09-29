@@ -9,3 +9,9 @@ export const msToTime = (ms: number) => {
     ? minutes + ":" + (seconds < 10 ? "0" : "") + seconds
     : "Error";
 };
+
+export const msToHourMin = (ms: number) => {
+  const hours = Math.floor(ms / 1000 / 3600);
+  const minutes = Math.floor((ms / 1000 / 60) % 60);
+  return hours > 0 ? hours + "hr " + minutes + "min" : minutes + "min";
+};

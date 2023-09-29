@@ -29,3 +29,9 @@ export interface ToastData {
   message: string;
   type: string;
 }
+
+export interface PlaylistData {
+  length: number;
+  count: number;
+  steps: number;
+}

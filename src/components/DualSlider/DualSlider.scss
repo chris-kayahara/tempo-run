@@ -88,30 +88,33 @@ input[type="range"]::-moz-range-thumb {
 
   &__input-range-label {
     position: absolute;
-    transform: translateY(-1.6rem) translateX(-50%);
-    width: 5rem;
-    height: 1.5rem;
+    transform: translateY(-1.5rem) translateX(-50%);
+    width: 5.5rem;
+    height: 1.6rem;
   }
 
   &__input-range-label-box {
     position: absolute;
-    background-color: $spotify-green-light;
-    width: 5rem;
-    height: 1.5rem;
+    background-color: $spotify-green;
+    color: $white;
+    font-weight: 400;
+    font-size: 0.875rem;
+    width: 5.5rem;
+    height: 1.6rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 4px;
+    border-radius: 8px;
     z-index: 9;
   }
 
   &__input-range-label-arrow {
     position: absolute;
-    top: 45%;
+    top: 50%;
     left: 50%;
     width: 1rem;
     height: 1rem;
-    background-color: $spotify-green-light;
+    background-color: $spotify-green;
     transform: translateX(-50%) rotate(45deg);
     z-index: 1;
   }
@@ -121,9 +124,9 @@ input[type="range"]::-moz-range-thumb {
     width: 100%;
     top: 50%;
     transform: translateY(-50%);
-    height: 6px;
+    height: 0.1875rem;
     border-radius: 3px;
-    background: lightgrey;
+    background: $grey;
 
     &--loading {
       @extend .dual-range__rail;
@@ -134,7 +137,7 @@ input[type="range"]::-moz-range-thumb {
   &__inner-rail {
     position: absolute;
     height: 100%;
-    background: $spotify-green-light;
+    background: $spotify-green;
 
     &--hidden {
       display: none;
