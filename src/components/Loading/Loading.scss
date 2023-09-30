@@ -1,0 +1,119 @@
+@use "../../styles/partials/mixins" as *;
+
+$base-color: #e4e4e4;
+$shine-color: #f4f4f4;
+$animation-duration: 1.6s;
+
+@mixin flashing-animation {
+  animation: flash 2s ease-in-out infinite;
+}
+
+.loading {
+  width: 100%;
+  position: relative;
+  height: 6rem;
+  padding: 0 0.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px lightgrey solid;
+  gap: 1rem;
+  @include tablet {
+    padding: 0 1.5rem;
+  }
+  @include laptop {
+    height: 4rem;
+  }
+
+  &:first-child {
+    border-top: 1px lightgrey solid;
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+
+    &-info {
+      @extend .loading__container;
+      @include laptop {
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+        flex: 1;
+      }
+    }
+    &-title-artist {
+      @extend .loading__container;
+      @include laptop {
+        flex: 1.2;
+      }
+    }
+    &-album {
+      @include laptop {
+        flex: 1;
+      }
+    }
+    &-data {
+      @extend .loading__container;
+      @include tablet {
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 1rem;
+        width: 15rem;
+      }
+    }
+  }
+
+  &__data {
+    background-color: $base-color;
+    height: 1.15rem;
+    width: 4.375rem;
+    border-radius: 0.25rem;
+    animation: flash 1s ease-in-out alternate infinite;
+    &-title {
+      @extend .loading__data;
+      width: 10em;
+    }
+    &-artist {
+      @extend .loading__data;
+      width: 100%;
+      @include tablet {
+        width: 18rem;
+      }
+    }
+    &-album {
+      @extend .loading__data;
+      width: 8rem;
+    }
+    &-length {
+      @extend .loading__data;
+      width: 2.75rem;
+    }
+    &-tempo {
+      @extend .loading__data;
+      width: 4.75rem;
+    }
+    &-energy {
+      @extend .loading__data;
+      width: 5rem;
+    }
+  }
+
+  &__bottom-padding {
+    @include tablet {
+      height: 1.25rem;
+      width: 100%;
+    }
+  }
+}
+
+@keyframes flash {
+  from {
+    background-color: $base-color;
+  }
+  to {
+    background-color: $shine-color;
+  }
+}

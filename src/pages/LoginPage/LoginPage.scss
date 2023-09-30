@@ -1,0 +1,116 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+
+.login-page {
+  height: 100vh;
+  position: relative;
+
+  &__content {
+    background-color: $light-grey;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    max-width: 30rem;
+    border-radius: 2rem;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    box-shadow: $card-shadow;
+
+    @include tablet {
+      max-width: 40rem;
+    }
+
+    @include desktop {
+      flex-direction: row-reverse;
+      max-width: 70rem;
+    }
+  }
+
+  &__logo-container {
+    background-color: $white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 3rem 1.5rem;
+    width: 100%;
+    border-radius: 2rem;
+
+    @include tablet {
+      padding: 3rem 2.5rem;
+    }
+
+    @include desktop {
+      padding: 3rem 3rem;
+      width: 50%;
+    }
+  }
+
+  &__logo {
+    width: 30%;
+    &--grey {
+      @extend .login-page__logo;
+      filter: invert(99%) sepia(4%) saturate(237%) hue-rotate(235deg)
+        brightness(115%) contrast(80%);
+    }
+    &--light-grey {
+      @extend .login-page__logo;
+      filter: invert(100%) sepia(23%) saturate(68%) hue-rotate(186deg)
+        brightness(109%) contrast(91%);
+    }
+  }
+
+  &__text-container {
+    padding: 1.5rem;
+
+    @include tablet {
+      padding: 2rem;
+    }
+    @include desktop {
+      padding: 5.625rem 3.5rem 5.625rem 5.625rem;
+      width: 50%;
+    }
+  }
+
+  &__title {
+    letter-spacing: 3px;
+    font-size: 1.875rem;
+    font-weight: 300;
+    margin-bottom: 0.875rem;
+
+    @include tablet {
+      font-size: 2.5rem;
+    }
+  }
+
+  &__text {
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+    @include tablet {
+      font-size: 1rem;
+    }
+  }
+
+  &__expired-message {
+    color: $red;
+    text-align: center;
+    font-weight: 400;
+
+    @include laptop {
+      text-align: left;
+    }
+  }
+
+  &__button-container {
+    margin-top: 1.5rem;
+
+    @include tablet {
+      margin-top: 2rem;
+    }
+
+    @include desktop {
+      width: 10rem;
+    }
+  }
+}

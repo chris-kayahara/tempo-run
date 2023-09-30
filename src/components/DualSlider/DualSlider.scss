@@ -1,0 +1,164 @@
+@use "../../styles/partials/variables" as *;
+
+$base-color: #e4e4e4;
+$shine-color: #f4f4f4;
+$animation-duration: 1.6s;
+
+@mixin flashing-animation {
+  animation: flash 2s ease-in-out infinite;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border-radius: 50%;
+  cursor: pointer;
+  pointer-events: auto;
+  height: 20px;
+  width: 20px;
+  border: 0;
+}
+
+input[type="range"]::-moz-range-thumb {
+  border-radius: 50%;
+  cursor: pointer;
+  pointer-events: auto;
+  height: 20px;
+  width: 20px;
+  border: 0;
+}
+
+.dual-range {
+  margin: 0 auto 0 auto;
+  width: 100%;
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0);
+
+  &__input-range {
+    background-color: rgba(0, 0, 0, 0);
+    margin: 0;
+    position: absolute;
+    appearance: none;
+    overflow: hidden;
+    width: 100%;
+    z-index: 1;
+    pointer-events: none;
+
+    &-lower {
+      @extend .dual-range__input-range;
+      transform: translateY(5px);
+
+      &--hidden {
+        display: none;
+      }
+      &::-webkit-slider-thumb {
+        background: $black;
+        overflow: visible;
+      }
+      &::-moz-range-thumb {
+        background: $black;
+      }
+      &:active + .dual-range__input-range-label-lower {
+        opacity: 1;
+      }
+    }
+    &-upper {
+      @extend .dual-range__input-range;
+      transform: translateY(5px);
+
+      &--hidden {
+        display: none;
+      }
+
+      &::-webkit-slider-thumb {
+        background: $black;
+        z-index: -1;
+      }
+      &::-moz-range-thumb {
+        background: $black;
+        z-index: -1;
+      }
+      &:active + .dual-range__input-range-label-upper {
+        opacity: 1;
+      }
+    }
+  }
+
+  &__input-range-label {
+    position: absolute;
+    transform: translateY(-1.5rem) translateX(-50%);
+    width: 5.5rem;
+    height: 1.6rem;
+  }
+
+  &__input-range-label-box {
+    position: absolute;
+    background-color: $spotify-green;
+    color: $white;
+    font-weight: 400;
+    font-size: 0.875rem;
+    width: 5.5rem;
+    height: 1.6rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    z-index: 9;
+  }
+
+  &__input-range-label-arrow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1rem;
+    height: 1rem;
+    background-color: $spotify-green;
+    transform: translateX(-50%) rotate(45deg);
+    z-index: 1;
+  }
+
+  &__rail {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 0.1875rem;
+    border-radius: 3px;
+    background: $grey;
+
+    &--loading {
+      @extend .dual-range__rail;
+      animation: flash 1s ease-in-out alternate infinite;
+    }
+  }
+
+  &__inner-rail {
+    position: absolute;
+    height: 100%;
+    background: $spotify-green;
+
+    &--hidden {
+      display: none;
+    }
+  }
+
+  &__min-max-container {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    top: 100%;
+  }
+}
+
+@keyframes flash {
+  from {
+    background-color: $base-color;
+  }
+  to {
+    background-color: $shine-color;
+  }
+}

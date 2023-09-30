@@ -1,0 +1,21 @@
+@use "../../styles/partials/mixins" as *;
+@use "../../styles/partials/variables" as *;
+
+.filter-header {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 1.75rem;
+
+  &__text {
+    font-size: 1.25rem;
+    font-weight: 400;
+  }
+
+  &__help-icon {
+    width: 1.25rem;
+    margin-left: 0.25rem;
+    cursor: pointer;
+  }
+}
