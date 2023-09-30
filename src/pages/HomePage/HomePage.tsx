@@ -116,7 +116,7 @@ export default function HomePage({
         return response.data.total;
       })
       .catch((error) => {
-        console.log(error.response.data.error);
+        console.log(error);
       });
     return totalTracks;
   };
@@ -236,7 +236,6 @@ export default function HomePage({
     setMaxTempo(maxTempoValue);
     setUserSavedTracks(trackData);
     setTracksToDisplay(trackData);
-    console.log(trackData);
   };
 
   // Function to set filtered playlist data
