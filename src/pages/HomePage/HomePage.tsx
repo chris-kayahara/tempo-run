@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { msToTime, msToHourMin } from "../../common/utils";
+import { msToHourMin } from "../../common/utils";
 import axios from "axios";
 
 import "./HomePage.scss";

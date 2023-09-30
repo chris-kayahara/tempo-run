@@ -96,6 +96,10 @@
     color: $red;
     text-align: center;
     font-weight: 400;
+
+    @include laptop {
+      text-align: left;
+    }
   }
 
   &__button-container {
