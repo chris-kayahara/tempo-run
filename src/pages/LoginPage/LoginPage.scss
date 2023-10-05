@@ -49,15 +49,21 @@
 
   &__logo {
     width: 30%;
+
+    &--black {
+      @extend .login-page__logo;
+      filter: invert(15%) sepia(0%) saturate(22%) hue-rotate(231deg)
+        brightness(99%) contrast(98%);
+    }
     &--grey {
       @extend .login-page__logo;
-      filter: invert(99%) sepia(4%) saturate(237%) hue-rotate(235deg)
-        brightness(115%) contrast(80%);
+      filter: invert(99%) sepia(4%) saturate(11%) hue-rotate(286deg)
+        brightness(112%) contrast(80%);
     }
     &--light-grey {
       @extend .login-page__logo;
-      filter: invert(100%) sepia(23%) saturate(68%) hue-rotate(186deg)
-        brightness(109%) contrast(91%);
+      filter: invert(92%) sepia(86%) saturate(40%) hue-rotate(160deg)
+        brightness(115%) contrast(90%);
     }
   }
 
@@ -97,17 +103,13 @@
     text-align: center;
     font-weight: 400;
 
-    @include laptop {
+    @include desktop {
       text-align: left;
     }
   }
 
   &__button-container {
     margin-top: 1.5rem;
-
-    @include tablet {
-      margin-top: 2rem;
-    }
 
     @include desktop {
       width: 10rem;

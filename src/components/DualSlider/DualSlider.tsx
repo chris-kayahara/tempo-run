@@ -84,7 +84,7 @@ export default function DualSlider({
             className="dual-range__input-range-label"
             style={{
               //prettier-ignore
-              left: `calc(${labelPos}% + (${10 - labelPos * 0.2}px))`,
+              left: `calc(${labelPos}% + (${9 - labelPos * 0.18}px))`,
             }}
           >
             <div className="dual-range__input-range-label-arrow"></div>
