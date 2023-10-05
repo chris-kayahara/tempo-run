@@ -5,6 +5,7 @@ import "./CreatePlaylistModal.scss";
 import Button from "../Button/Button";
 import closeIcon from "../../assets/close.svg";
 import { ToastData, Track, PlaylistData } from "../../common/types";
+import LoadingCircle from "../LoadingCircle/LoadingCircle";
 
 const USER_ID_ENDPOINT = "https://api.spotify.com/v1/me";
 
@@ -39,6 +40,7 @@ export default function CreatePlaylistModal({
     public: true,
   });
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // Function to get userId
   const getUserId = async () => {
@@ -69,67 +71,61 @@ export default function CreatePlaylistModal({
   // Function to POST new filtered playlist
   const handlePostPlaylist = async (event: React.SyntheticEvent) => {
     event.preventDefault();
+
     const userId = await getUserId();
-    !playlistInfo.name || !playlistInfo.description
-      ? setError(true)
-      : axios
+    if (!playlistInfo.name || !playlistInfo.description) {
+      setError(true);
+      return;
+    }
+    setLoading(true);
+    axios
+      .post(
+        `https://api.spotify.com/v1/users/${userId}/playlists`,
+        playlistInfo,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        const playlistId = response.data.id;
+        const trackIds = tracksToDisplay.map((track: Track) => {
+          return track.uri;
+        });
+        axios
           .post(
-            `https://api.spotify.com/v1/users/${userId}/playlists`,
-            playlistInfo,
+            `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+            {
+              uris: trackIds,
+              position: 0,
+            },
             {
               headers: {
                 Authorization: `Bearer ${accessToken}`,
               },
             }
           )
-          .then((response) => {
-            const playlistId = response.data.id;
-            const trackIds = tracksToDisplay.map((track: Track) => {
-              return track.uri;
+          .then(() => {
+            setToast({
+              show: true,
+              message:
+                "Playlist successfully added to your Spotify Account! Open Spotify to listen.",
+              type: "success",
             });
-            axios
-              .post(
-                `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
-                {
-                  uris: trackIds,
-                  position: 0,
-                },
-                {
-                  headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                  },
-                }
-              )
-              .then(() => {
-                setToast({
-                  show: true,
-                  message:
-                    "Playlist successfully added to your Spotify Account! Open Spotify to listen.",
-                  type: "success",
-                });
-                setTimeout(() => {
-                  setToast({ ...toast, show: false });
-                }, 4900);
-                closeModal();
-              })
-              .catch((error) => {
-                console.log(error);
-                setToast({
-                  show: true,
-                  message: "Error creating playlist. Try refreshing the page.",
-                  type: "error",
-                });
-                setTimeout(() => {
-                  setToast({ ...toast, show: false });
-                }, 4900);
-                closeModal();
-              });
+            setTimeout(() => {
+              setToast({ ...toast, show: false });
+            }, 4900);
+            setLoading(false);
+            closeModal();
           })
           .catch((error) => {
             console.log(error);
+            const errorCode = error.response.status;
+            const errorMessage = error.response.statusText;
             setToast({
               show: true,
-              message: "Error creating playlist. Try refreshing the page.",
+              message: `Error ${errorCode}: ${errorMessage}.\n Could not add tracks to playlist.\nTry refreshing the page.`,
               type: "error",
             });
             setTimeout(() => {
@@ -137,6 +133,21 @@ export default function CreatePlaylistModal({
             }, 4900);
             closeModal();
           });
+      })
+      .catch((error) => {
+        const errorCode = error.response.data.error.status;
+        const errorMessage = error.response.data.error.message;
+        console.log(error);
+        setToast({
+          show: true,
+          message: `Error ${errorCode}: ${errorMessage}.\n Could not create playlist.\nTry refreshing the page.`,
+          type: "error",
+        });
+        setTimeout(() => {
+          setToast({ ...toast, show: false });
+        }, 4900);
+        closeModal();
+      });
   };
 
   // Function to handle closing the CreatePlaylistModal
@@ -193,6 +204,7 @@ export default function CreatePlaylistModal({
           onChange={handlePlaylistInfoChange}
         ></textarea>
         <Button type="submit" variant="primary" text="CREATE" />
+        <LoadingCircle show={loading} />
       </form>
     </div>
   );

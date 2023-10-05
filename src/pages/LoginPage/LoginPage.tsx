@@ -82,7 +82,7 @@ export default function LoginPage({
         <div className="login-page__logo-container">
           <img className="login-page__logo--light-grey" src={logo} />
           <img className="login-page__logo--grey" src={logo} />
-          <img className="login-page__logo" src={logo} />
+          <img className="login-page__logo--black" src={logo} />
         </div>
         <div className="login-page__text-container">
           <h1 className="login-page__title">{appName}</h1>
@@ -95,8 +95,8 @@ export default function LoginPage({
           </p>
           {showExpiredMessage && (
             <p className="login-page__expired-message">
-              Session expired.<br></br>Please log back in to continue using this
-              application.
+              Session expired.<br></br>Please log in again to continue using
+              this application.
             </p>
           )}
           <div className="login-page__button-container">
