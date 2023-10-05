@@ -13,8 +13,8 @@ input[type="range"]::-webkit-slider-thumb {
   border-radius: 50%;
   cursor: pointer;
   pointer-events: auto;
-  height: 20px;
-  width: 20px;
+  height: 1.125rem;
+  width: 1.125rem;
   border: 0;
 }
 
@@ -22,15 +22,15 @@ input[type="range"]::-moz-range-thumb {
   border-radius: 50%;
   cursor: pointer;
   pointer-events: auto;
-  height: 20px;
-  width: 20px;
+  height: 1.125rem;
+  width: 1.125rem;
   border: 0;
 }
 
 .dual-range {
   margin: 0 auto 0 auto;
   width: 100%;
-  height: 30px;
+  height: 1.75rem;
   display: flex;
   flex-direction: row;
   position: relative;
@@ -49,6 +49,7 @@ input[type="range"]::-moz-range-thumb {
     &-lower {
       @extend .dual-range__input-range;
       transform: translateY(5px);
+      height: 1.125rem;
 
       &--hidden {
         display: none;
@@ -59,14 +60,13 @@ input[type="range"]::-moz-range-thumb {
       }
       &::-moz-range-thumb {
         background: $black;
-      }
-      &:active + .dual-range__input-range-label-lower {
-        opacity: 1;
+        overflow: visible;
       }
     }
     &-upper {
       @extend .dual-range__input-range;
       transform: translateY(5px);
+      height: 1.125rem;
 
       &--hidden {
         display: none;
@@ -75,13 +75,12 @@ input[type="range"]::-moz-range-thumb {
       &::-webkit-slider-thumb {
         background: $black;
         z-index: -1;
+        overflow: visible;
       }
       &::-moz-range-thumb {
         background: $black;
         z-index: -1;
-      }
-      &:active + .dual-range__input-range-label-upper {
-        opacity: 1;
+        overflow: visible;
       }
     }
   }
