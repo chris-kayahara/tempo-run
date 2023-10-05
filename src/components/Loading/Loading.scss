@@ -11,7 +11,7 @@ $animation-duration: 1.6s;
 .loading {
   width: 100%;
   position: relative;
-  height: 6rem;
+  height: 5rem;
   padding: 0 0.5rem;
   display: flex;
   flex-direction: row;
@@ -23,7 +23,7 @@ $animation-duration: 1.6s;
     padding: 0 1.5rem;
   }
   @include laptop {
-    height: 4rem;
+    height: 3.625rem;
   }
 
   &:first-child {
@@ -68,7 +68,7 @@ $animation-duration: 1.6s;
 
   &__data {
     background-color: $base-color;
-    height: 1.15rem;
+    height: 1rem;
     width: 4.375rem;
     border-radius: 0.25rem;
     animation: flash 1s ease-in-out alternate infinite;
