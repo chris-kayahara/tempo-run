@@ -39,7 +39,7 @@
       line-height: 1.75rem;
 
       @include tablet {
-        font-size: 2.5rem;
+        font-size: 2rem;
       }
     }
 
@@ -166,14 +166,14 @@
     height: 8rem;
     border: 1px $black solid;
     border-radius: 0.5rem;
-    padding: 0.5rem;
+    padding: 0.5rem 0.5rem 0.25rem 0.5rem;
 
     @include tablet {
       height: 11rem;
     }
 
     @include laptop {
-      padding: 0.875rem;
+      padding: 0.875rem 0.875rem 0.55rem 0.875rem;
     }
 
     &--unloaded {
@@ -189,7 +189,7 @@
 
   &__playlist-data {
     font-size: 1.5rem;
-    line-height: 1.75rem;
+    line-height: 2.25rem;
 
     @include tablet {
       font-size: 1.75rem;
