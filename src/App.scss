@@ -11,7 +11,7 @@
 }
 
 body {
-  font-family: "Outfit", "Helvetica", "Arial", sans-serif;
+  font-family: $app-font;
   font-weight: 300;
   background-color: $white;
   color: $black;
