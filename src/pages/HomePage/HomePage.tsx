@@ -414,7 +414,7 @@ export default function HomePage({
                 </div>
                 <div className="home-page__button-container">
                   <Button
-                    disabled={!listIsFiltered}
+                    disabled={!listIsFiltered || tracksToDisplay.length === 0}
                     text={"CREATE PLAYLIST"}
                     onClick={() => {
                       setShowModal(true);
