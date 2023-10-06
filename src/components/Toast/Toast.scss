@@ -5,13 +5,13 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 320px;
-  height: 5rem;
+  max-width: 300px;
   background-color: $white;
   padding: 0.75rem;
   padding: 1rem;
-  border-radius: 0.5rem;
   font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5rem;
   position: fixed;
   bottom: 2rem;
   left: 50%;
@@ -27,12 +27,16 @@
   }
 
   &--success {
-    color: $spotify-green;
-    border: $spotify-green 1px solid;
+    background-color: $spotify-green;
+    color: $white;
+    border-radius: 2.5rem;
+    height: 5rem;
   }
   &--error {
-    color: $red;
-    border: $red 1px solid;
+    background-color: $red;
+    color: $white;
+    border-radius: 3.125rem;
+    height: 6.25rem;
   }
 
   &__message {
