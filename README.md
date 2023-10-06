@@ -7,3 +7,5 @@ The Spotify Running App is a front-end application which allows users to log int
 - Fix font errors
 - Disable CREATE PLAYLIST button when no tracks are available
 - Edit toast to be pill shaped
+- Add login-page animation
+- Remove card bordering on login-page (maybe)
