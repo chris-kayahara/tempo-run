@@ -110,7 +110,7 @@ export default function CreatePlaylistModal({
             setToast({
               show: true,
               message:
-                "Playlist successfully added to your Spotify Account! Open Spotify to listen.",
+                "Playlist successfully created!\nOpen Spotify to listen.",
               type: "success",
             });
             setTimeout(() => {
@@ -125,7 +125,7 @@ export default function CreatePlaylistModal({
             const errorMessage = error.response.statusText;
             setToast({
               show: true,
-              message: `Error ${errorCode}: ${errorMessage}.\n Could not add tracks to playlist.\nTry refreshing the page.`,
+              message: `Error ${errorCode}: ${errorMessage}.\nCould not add tracks to playlist.\nTry refreshing the page.`,
               type: "error",
             });
             setTimeout(() => {
@@ -140,7 +140,7 @@ export default function CreatePlaylistModal({
         console.log(error);
         setToast({
           show: true,
-          message: `Error ${errorCode}: ${errorMessage}.\n Could not create playlist.\nTry refreshing the page.`,
+          message: `Error ${errorCode}: ${errorMessage}.\nCould not create playlist.\nTry refreshing the page.`,
           type: "error",
         });
         setTimeout(() => {
