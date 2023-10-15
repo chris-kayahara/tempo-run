@@ -1,3 +1,5 @@
+### <p align="center"><img width="150px" height="150px" src="https://raw.githubusercontent.com/chris-kayahara/tempo-run/main/src/public/favicon.ico"></p>
+
 # [TEMPO RUN](https://temporun.netlify.app/)
 
 *TEMPO RUN is a front-end web application which allows users to log into their Spotify account and create a running playlist from their saved track library and run to the beat of their music.*
