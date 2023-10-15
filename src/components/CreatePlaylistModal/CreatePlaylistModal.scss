@@ -63,6 +63,7 @@
       border-radius: 1rem;
       outline: none;
       border: 1px solid $grey;
+      font-size: 0.875rem;
       &::placeholder {
         color: $grey;
       }
@@ -82,6 +83,7 @@
       font-family: $app-font;
       border: 1px solid $grey;
       resize: none;
+      font-size: 0.875rem;
       &::placeholder {
         color: $grey;
       }
