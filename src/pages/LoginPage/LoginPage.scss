@@ -1,6 +1,9 @@
 @use "../../styles/partials/variables" as *;
 @use "../../styles/partials/mixins" as *;
 
+$leftLogoOffset: 20%;
+$rightLogoOffset: 80%;
+
 .login-page {
   height: 100vh;
   position: relative;
@@ -16,9 +19,7 @@
     transform: translate(-50%, -50%);
     top: 50%;
     left: 50%;
-    animation: fadeInAnimation ease-in-out 1s;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
+    @include fadeIn;
 
     @include tablet {
       max-width: 40rem;
@@ -35,41 +36,63 @@
 
   &__logo-container {
     background-color: $white;
+    position: relative;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 3rem 1.5rem;
+    align-items: center;
     margin: 0 0.9375rem;
     border-radius: 2rem;
+    height: 60vw;
 
     @include tablet {
       margin: 0;
-      padding: 3rem 2.5rem;
+      height: 23.125rem;
     }
 
     @include desktop {
-      padding: 3rem 3rem;
       width: 50%;
+      height: auto;
     }
   }
 
   &__logo {
-    width: 30%;
+    width: 25%;
+    height: 100%;
+    padding: 2rem 0;
 
     &--black {
       @extend .login-page__logo;
       filter: invert(15%) sepia(0%) saturate(22%) hue-rotate(231deg)
         brightness(99%) contrast(98%);
+      position: absolute;
+      left: $leftLogoOffset;
+      transform: translateX(-50%);
+      animation: blackLogoAnimation ease-in-out 1.5s;
+      animation-iteration-count: 1;
+      animation-fill-mode: forwards;
+      animation-delay: 1s;
     }
     &--grey {
       @extend .login-page__logo;
       filter: invert(99%) sepia(4%) saturate(11%) hue-rotate(286deg)
         brightness(112%) contrast(80%);
+      position: absolute;
+      left: 50%;
+      opacity: 0;
+      transform: translateX(-50%);
+      animation: greyLogoAnimation 0.1s;
+      animation-iteration-count: 1;
+      animation-fill-mode: forwards;
+      animation-delay: 1.75s;
     }
     &--light-grey {
       @extend .login-page__logo;
       filter: invert(92%) sepia(86%) saturate(40%) hue-rotate(160deg)
         brightness(115%) contrast(90%);
+      position: absolute;
+      transform: translateX(-50%);
+      left: $leftLogoOffset;
     }
   }
 
@@ -120,6 +143,24 @@
     @include desktop {
       width: 10rem;
     }
+  }
+}
+
+@keyframes blackLogoAnimation {
+  0% {
+    left: $leftLogoOffset;
+  }
+  100% {
+    left: $rightLogoOffset;
+  }
+}
+
+@keyframes greyLogoAnimation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }
 
