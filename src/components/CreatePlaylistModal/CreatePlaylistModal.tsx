@@ -9,6 +9,7 @@ import LoadingCircle from "../LoadingCircle/LoadingCircle";
 
 const USER_ID_ENDPOINT = "https://api.spotify.com/v1/me";
 
+//Prop types
 type Props = {
   accessToken: string | null;
   tracksToDisplay: Track[];
