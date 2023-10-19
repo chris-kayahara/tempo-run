@@ -33,7 +33,7 @@
 
     &-heading {
       letter-spacing: 3px;
-      font-size: 1.75rem;
+      font-size: 1.5rem;
       font-weight: 300;
       line-height: 1.75rem;
 
@@ -161,14 +161,14 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 0.5rem;
     height: 8rem;
     border: 1px $black solid;
     border-radius: 0.5rem;
-    padding: 0.5rem 0.5rem 0.25rem 0.5rem;
+    padding: 0.5rem 0.5rem 0.5rem 0.5rem;
 
     @include tablet {
       height: 11rem;
+      padding: 0.5rem 0.5rem 0.25rem 0.5rem;
     }
 
     @include laptop {
@@ -187,11 +187,12 @@
   }
 
   &__playlist-data {
-    font-size: 1.5rem;
-    line-height: 2.25rem;
+    font-size: 1.35rem;
+    line-height: 1.75rem;
 
     @include tablet {
       font-size: 1.75rem;
+      line-height: 2.25rem;
     }
     @include laptop {
       font-size: 2rem;

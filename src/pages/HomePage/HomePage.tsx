@@ -231,7 +231,7 @@ export default function HomePage({
         return Math.round(item.tempo);
       })
     );
-
+    console.log(trackData);
     setMinTempo(minTempoValue);
     setMaxTempo(maxTempoValue);
     setUserSavedTracks(trackData);

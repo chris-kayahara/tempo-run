@@ -1,5 +1,8 @@
 export interface Artist {
   name: string;
+  external_urls: {
+    spotify: string;
+  };
 }
 
 export interface Track {
@@ -9,11 +12,19 @@ export interface Track {
   duration_ms: number;
   uri: string;
   track: {
-    album: { name: string };
+    album: {
+      name: string;
+      external_urls: {
+        spotify: string;
+      };
+    };
     name: string;
     artists: Artist[];
     id: string;
     duration_ms: number;
+    external_urls: {
+      spotify: string;
+    };
   };
 }
 
