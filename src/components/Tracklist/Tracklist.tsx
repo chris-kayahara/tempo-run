@@ -6,6 +6,7 @@ import durationIcon from "../../assets/duration.svg";
 import energyIcon from "../../assets/energy.svg";
 import energyFilledIcon from "../../assets/energy-filled.svg";
 import tempoIcon from "../../assets/tempo.svg";
+import spotifyIcon from "../../assets/Spotify_Icon_RGB_Green.png";
 import Loading from "../Loading/Loading";
 import { Track } from "../../common/types";
 
@@ -45,8 +46,11 @@ export default function Tracklist({
         <div className="tracklist__mask"></div>
       )}
       <div className="tracklist__heading-container">
-        <h4 className="tracklist__heading-title">Title</h4>
-        <h4 className="tracklist__heading-album">Album</h4>
+        <div className="tracklist__heading-icon-spacer"></div>
+        <div className="tracklist__heading-title-album-container">
+          <h4 className="tracklist__heading-title">Title</h4>
+          <h4 className="tracklist__heading-album">Album</h4>
+        </div>
         <div className="tracklist__heading-icon-container">
           <img
             className="tracklist__heading-length-icon"
@@ -70,21 +74,49 @@ export default function Tracklist({
           <Loading rowCount={8} />
         ) : (
           currentPage.map((track: Track) => {
-            let artists = track.track.artists.map((artist) => artist.name);
+            let artists = track.track.artists.map((artist) => artist);
             return (
               <div className="tracklist__row" key={track.track.id}>
+                <a target="_blank" href={track.track.external_urls.spotify}>
+                  {" "}
+                  <img src={spotifyIcon} className="tracklist__spotify-icon" />
+                </a>
+
                 <div className="tracklist__info-container">
                   <div className="tracklist__title-artist-container">
-                    <div className="tracklist__data-title">
-                      {track.track.name}
-                    </div>
-                    <div className="tracklist__data-artist">
-                      {artists.join(", ")}
-                    </div>
+                    <span className="tracklist__span-container">
+                      <a
+                        className="tracklist__data-title"
+                        target="_blank"
+                        href={track.track.external_urls.spotify}
+                      >
+                        {track.track.name}
+                      </a>
+                    </span>
+                    <span className="tracklist__span-container">
+                      {artists.map((artist, index) => {
+                        return (
+                          <a
+                            key={artist.name}
+                            className="tracklist__data-artist"
+                            target="_blank"
+                            href={artist.external_urls.spotify}
+                          >
+                            {(index ? ", " : "") + artist.name}
+                          </a>
+                        );
+                      })}
+                    </span>
                   </div>
-                  <div className="tracklist__data-album">
-                    {track.track.album.name}
-                  </div>
+                  <span className="tracklist__span-container">
+                    <a
+                      className="tracklist__data-album"
+                      target="_blank"
+                      href={track.track.album.external_urls.spotify}
+                    >
+                      {track.track.album.name}
+                    </a>
+                  </span>
                 </div>
                 <div className="tracklist__data-container">
                   <div className="tracklist__data-length">

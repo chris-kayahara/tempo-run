@@ -76,21 +76,27 @@
     text-overflow: ellipsis;
     font-size: 1rem;
     font-weight: 400;
+
+    &-icon-spacer {
+      width: 3rem;
+    }
+
+    &-title-album-container {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      gap: 1rem;
+    }
     &-title {
       @extend .tracklist__heading;
-      @include laptop {
-        width: 30rem;
-      }
-    }
-    &-artist {
-      @extend .tracklist__heading;
+      min-width: 50%;
     }
     &-album {
       @extend .tracklist__heading;
       display: none;
+      min-width: 50%;
       @include laptop {
         display: block;
-        width: 25rem;
       }
     }
     &-icon-container {
@@ -99,6 +105,7 @@
       display: flex;
       flex-direction: row;
       align-items: center;
+      justify-content: space-between;
       gap: 1rem;
     }
     &-length {
@@ -154,10 +161,29 @@
     }
 
     @include tablet {
-      padding: 0 1.5rem;
+      padding: 0 1rem;
     }
     @include laptop {
       height: 3.625rem;
+    }
+  }
+
+  &__spotify-icon {
+    width: 2rem;
+  }
+
+  &__info-container {
+    display: flex;
+    flex-direction: column;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    gap: 0.125rem;
+    width: 100%;
+    @include laptop {
+      flex-direction: row;
+      align-items: center;
+      gap: 1rem;
     }
   }
 
@@ -168,8 +194,32 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    min-width: 50%;
     @include laptop {
-      width: 30rem;
+      max-width: 50%;
+    }
+  }
+
+  &__span-container {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__data-container {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-between;
+    width: 4.375rem;
+    gap: 0.25rem;
+
+    @include tablet {
+      flex-direction: row;
+      align-items: center;
+      width: 15rem;
+      min-width: 15rem;
+      gap: 1rem;
     }
   }
 
@@ -178,24 +228,33 @@
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 0.875rem;
+    color: $black;
+    text-decoration: none;
 
     &-title {
       @extend .tracklist__data;
       font-weight: bold;
+      &:hover {
+        text-decoration: underline;
+      }
     }
     &-artist {
       @extend .tracklist__data;
+      &:hover {
+        text-decoration: underline;
+      }
     }
     &-album {
       @extend .tracklist__data;
       color: $grey;
-
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       @include laptop {
         color: inherit;
-        width: 25rem;
+      }
+      &:hover {
+        text-decoration: underline;
       }
     }
     &-length {
@@ -237,37 +296,6 @@
         @extend .tracklist__data-energy-icon;
         opacity: 0.4;
       }
-    }
-  }
-
-  &__info-container {
-    display: flex;
-    flex-direction: column;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    gap: 0.125rem;
-    @include laptop {
-      flex-direction: row;
-      align-items: center;
-      gap: 1rem;
-    }
-  }
-
-  &__data-container {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    justify-content: space-between;
-    width: 4.375rem;
-    gap: 0.25rem;
-
-    @include tablet {
-      flex-direction: row;
-      align-items: center;
-      width: 15rem;
-      min-width: 15rem;
-      gap: 1rem;
     }
   }
 
