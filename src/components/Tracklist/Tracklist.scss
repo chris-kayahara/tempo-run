@@ -60,7 +60,7 @@
     background-color: $light-grey;
     width: 100%;
     flex-direction: row;
-    padding: 0.25rem 1.5rem;
+    padding: 0.25rem 1rem;
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
@@ -78,7 +78,8 @@
     font-weight: 400;
 
     &-icon-spacer {
-      width: 3rem;
+      min-width: 2rem;
+      height: 20px;
     }
 
     &-title-album-container {
@@ -204,6 +205,8 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
   }
 
   &__data-container {
