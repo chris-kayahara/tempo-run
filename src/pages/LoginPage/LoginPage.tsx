@@ -26,12 +26,7 @@ export default function LoginPage({
   const CLIENT_ID = import.meta.env.VITE_CLIENT_ID;
   const REDIRECT_URI = import.meta.env.VITE_REDIRECT_URI;
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
-  const SCOPES = [
-    "user-library-read",
-    "playlist-modify-private",
-    "playlist-modify-public",
-    "playlist-read-private",
-  ];
+  const SCOPES = ["user-library-read", "playlist-modify-public"];
   const SPACE_DELIMITER = "%20";
   const SCOPES_URL_PARAM = SCOPES.join(SPACE_DELIMITER);
   const RESPONSE_TYPE = "token";
